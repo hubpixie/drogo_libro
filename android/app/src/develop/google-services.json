@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "708268091084",
+    "firebase_url": "https://drogo-libro.firebaseio.com",
+    "project_id": "drogo-libro",
+    "storage_bucket": "drogo-libro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708268091084:android:16726e89192a3b09d84469",
+        "android_client_info": {
+          "package_name": "com.pixie.drogoLibro.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "708268091084-2ea7pna1puj69i4tgs86pi08otnqj9ae.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_7x2I5LaJ5yUdm3eAn9YiCk_5WZ3SSy4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "708268091084-2ea7pna1puj69i4tgs86pi08otnqj9ae.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "708268091084-e5it0d3u6ka5fhne13jvqs4lj8kf3gmk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.pixie.drogoLibro.dev"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
