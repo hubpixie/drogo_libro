@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>708268091084-e5it0d3u6ka5fhne13jvqs4lj8kf3gmk.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.708268091084-e5it0d3u6ka5fhne13jvqs4lj8kf3gmk</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCawEgOqyzMmJNeNBVEylfVKU6x0PxC2cc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>708268091084</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.pixie.drogoLibro.dev</string>
+	<key>PROJECT_ID</key>
+	<string>drogo-libro</string>
+	<key>STORAGE_BUCKET</key>
+	<string>drogo-libro.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:708268091084:ios:db67685d4390374cd84469</string>
+	<key>DATABASE_URL</key>
+	<string>https://drogo-libro.firebaseio.com</string>
+</dict>
+</plist>
