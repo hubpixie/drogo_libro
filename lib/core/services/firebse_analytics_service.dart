@@ -9,13 +9,16 @@ enum AnalyticsEvent {
 
 enum AnalyticsRoute {
    home,
+   login,
 }
 extension AnalyticsRouteInfo on AnalyticsRoute {
 
   String get screenName {
     switch (this) {
       case AnalyticsRoute.home:
-        return '/home';
+        return '/';
+      case AnalyticsRoute.login:
+        return 'login';
       default:
         return null;
     }
@@ -24,6 +27,7 @@ extension AnalyticsRouteInfo on AnalyticsRoute {
   String get screenClass {
     switch (this) {
       case AnalyticsRoute.home:
+      case AnalyticsRoute.login:
         return this.toString().split(".")[1];
       default:
         return null;
@@ -34,30 +38,25 @@ extension AnalyticsRouteInfo on AnalyticsRoute {
 }
 
 /// アナリティクス
-class FirebaseUtil {
-  FirebaseAnalytics _analytics;
-  FirebaseAnalyticsObserver _observer;
+class FirebaseAnalyticsService {
+  static FirebaseAnalytics _analytics;
   
-  FirebaseAnalytics get analytics => FirebaseUtil.shared()._analytics;
-  FirebaseAnalyticsObserver get observer => FirebaseUtil.shared()._observer;
-
-  static FirebaseUtil _instance;
-  static FirebaseUtil shared(){
-    if (_instance == null) {
-      _instance = new FirebaseUtil();
-      if (!kIsWeb) {
-        _instance._analytics = FirebaseAnalytics();
-        _instance._observer = FirebaseAnalyticsObserver(analytics: _instance._analytics);
+  FirebaseAnalytics get analytics => _analytics;
+  FirebaseAnalyticsObserver get observer {
+    if (!kIsWeb) {
+      if(_analytics == null) {
+        _analytics = FirebaseAnalytics();
       }
+      return FirebaseAnalyticsObserver(analytics: _analytics);
+    } else {
+      return null;
     }
-    return _instance;
-  }
-
+  } 
 
   /// 画面遷移時に画面名を送信
   Future<void> sendViewEvent({@required AnalyticsRoute route}) async {
     if (kIsWeb) {return;}
-    analytics.setCurrentScreen(screenName: route.screenName, screenClassOverride: route.screenClass);
+    _analytics.setCurrentScreen(screenName: route.screenName, screenClassOverride: route.screenClass);
   }
 
   /// ボタンタップイベント送信
@@ -75,6 +74,6 @@ class FirebaseUtil {
       {@required AnalyticsEvent event,
       Map<String, dynamic> parameterMap}) async {
     final eventName = event.toString().split('.')[1];
-    analytics.logEvent(name: eventName, parameters: parameterMap);
+    _analytics.logEvent(name: eventName, parameters: parameterMap);
   }
 }
