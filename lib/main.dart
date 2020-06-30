@@ -22,9 +22,8 @@ class MyApp extends StatelessWidget {
           ServiceSetting.locator<AuthenticationService>().userController.stream,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Drogo Libro',
         theme: ThemeData(),
-        initialRoute: 'login',
+        initialRoute: 'splash',
         onGenerateRoute: ScreenRouter.generateRoute,
         navigatorObservers: kIsWeb ? 
           [] : [ServiceSetting.locator<FirebaseAnalyticsService>().observer],

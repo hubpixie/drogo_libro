@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:drogo_libro/core/models/post.dart';
 import 'package:drogo_libro/ui/views/home_view.dart';
 import 'package:drogo_libro/ui/views/login_view.dart';
+import 'package:drogo_libro/ui/views/splash_view.dart';
 import 'package:drogo_libro/ui/views/post_view.dart';
 
 const String initialRoute = "login";
@@ -12,6 +13,8 @@ class ScreenRouter {
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(builder: (_) => HomeView());
+      case 'splash':
+        return MaterialPageRoute(builder: (_) => SplashView());
       case 'login':
         return MaterialPageRoute(builder: (_) => LoginView());
       case 'post':
