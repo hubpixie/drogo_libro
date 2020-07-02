@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:drogo_libro/core/models/post.dart';
-import 'package:drogo_libro/ui/views/home_view.dart';
+import 'package:drogo_libro/ui/views/my_tabs_container.dart';
 import 'package:drogo_libro/ui/views/login_view.dart';
 import 'package:drogo_libro/ui/views/splash_view.dart';
 import 'package:drogo_libro/ui/views/post_view.dart';
@@ -12,8 +12,8 @@ class ScreenRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     ScreenRouteName sr = ScreenRouteNameSummary.fromString(settings.name);
     switch (sr) {
-      case ScreenRouteName.home:
-        return MaterialPageRoute(builder: (_) => HomeView(), settings: settings);
+      case ScreenRouteName.myTabs:
+        return MaterialPageRoute(builder: (_) => MyTabsContainer(), settings: settings);
       case ScreenRouteName.splash:
         return MaterialPageRoute(builder: (_) => SplashView(), settings: settings);
       case ScreenRouteName.login:
