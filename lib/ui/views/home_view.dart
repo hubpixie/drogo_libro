@@ -7,6 +7,7 @@ import 'package:drogo_libro/core/viewmodels/home_model.dart';
 import 'package:drogo_libro/ui/shared/app_colors.dart';
 import 'package:drogo_libro/ui/shared/text_styles.dart';
 import 'package:drogo_libro/ui/shared/ui_helpers.dart';
+import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
 import 'package:drogo_libro/ui/widgets/postlist_item.dart';
 
 import 'base_view.dart';
@@ -46,7 +47,7 @@ class HomeView extends StatelessWidget {
      itemBuilder: (context, index) => PostListItem(
       post: posts[index],
       onTap: () {
-        Navigator.pushNamed(context, 'post', arguments: posts[index]);
+        Navigator.pushNamed(context, ScreenRouteName.post.name, arguments: posts[index]);
       },
      )
   );

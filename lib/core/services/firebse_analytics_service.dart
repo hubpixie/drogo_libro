@@ -7,17 +7,18 @@ enum AnalyticsEvent {
   button,
 }
 
-enum AnalyticsRoute {
+/// アナリティクス用送信元クラス
+enum AnalyticsSender {
    home,
    login,
 }
-extension AnalyticsRouteInfo on AnalyticsRoute {
+extension AnalyticsSenderSummary on AnalyticsSender {
 
   String get screenName {
     switch (this) {
-      case AnalyticsRoute.home:
+      case AnalyticsSender.home:
         return '/';
-      case AnalyticsRoute.login:
+      case AnalyticsSender.login:
         return 'login';
       default:
         return null;
@@ -26,15 +27,13 @@ extension AnalyticsRouteInfo on AnalyticsRoute {
 
   String get screenClass {
     switch (this) {
-      case AnalyticsRoute.home:
-      case AnalyticsRoute.login:
-        return this.toString().split(".")[1];
+      case AnalyticsSender.home:
+      case AnalyticsSender.login:
+        return this.toString().split(".").last;
       default:
         return null;
     }
   }
-
-
 }
 
 /// アナリティクス
@@ -54,9 +53,9 @@ class FirebaseAnalyticsService {
   } 
 
   /// 画面遷移時に画面名を送信
-  Future<void> sendViewEvent({@required AnalyticsRoute route}) async {
+  Future<void> sendViewEvent({@required AnalyticsSender sender}) async {
     if (kIsWeb) {return;}
-    _analytics.setCurrentScreen(screenName: route.screenName, screenClassOverride: route.screenClass);
+    _analytics.setCurrentScreen(screenName: sender.screenName, screenClassOverride: sender.screenClass);
   }
 
   /// ボタンタップイベント送信

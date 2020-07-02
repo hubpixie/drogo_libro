@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:drogo_libro/core/services/authentication_service.dart';
 import 'package:drogo_libro/config/service_setting.dart';
-import 'package:drogo_libro/ui/screen_router.dart';
 import 'package:drogo_libro/core/models/user.dart';
 import 'package:drogo_libro/core/services/firebse_analytics_service.dart';
+
+import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
+import 'package:drogo_libro/ui/screen_router.dart';
 
 void main() {
   ServiceSetting.setup();
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(),
-        initialRoute: 'splash',
+        initialRoute: ScreenRouteName.splash.name,
         onGenerateRoute: ScreenRouter.generateRoute,
         navigatorObservers: kIsWeb ? 
           [] : [ServiceSetting.locator<FirebaseAnalyticsService>().observer],
