@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
 
 class SplashView extends StatefulWidget {
   @override
@@ -7,7 +8,7 @@ class SplashView extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashView> {
   void navigationPage() {
-    Navigator.pushNamed(context, 'login');
+    Navigator.pushNamed(context, ScreenRouteName.login.name);
   }
 
   @override

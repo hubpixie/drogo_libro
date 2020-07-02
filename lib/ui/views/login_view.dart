@@ -1,11 +1,13 @@
-import 'package:drogo_libro/core/services/firebse_analytics_service.dart';
 import 'package:flutter/material.dart';
+
+import 'package:drogo_libro/config/service_setting.dart';
+import 'package:drogo_libro/core/services/firebse_analytics_service.dart';
 import 'package:drogo_libro/core/enums/viewstate.dart';
 import 'package:drogo_libro/core/viewmodels/login_model.dart';
 import 'package:drogo_libro/ui/shared/app_colors.dart';
+import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
 import 'package:drogo_libro/ui/widgets/login_header.dart';
-import 'base_view.dart';
-import '../../config/service_setting.dart';
+import 'package:drogo_libro/ui/views/base_view.dart';
 
 class LoginView extends StatefulWidget {
   @override
@@ -18,7 +20,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   void initState() {
     super.initState();
-    ServiceSetting.locator<FirebaseAnalyticsService>().sendViewEvent(route: AnalyticsRoute.login);
+    ServiceSetting.locator<FirebaseAnalyticsService>().sendViewEvent(sender: AnalyticsSender.login);
   }
 
   @override
@@ -43,7 +45,7 @@ class _LoginViewState extends State<LoginView> {
               onPressed: () async { 
                 var loginSuccess = await model.login(_controller.text);
                 if(loginSuccess){
-                  Navigator.pushNamed(context, '/');
+                  Navigator.pushNamed(context, ScreenRouteName.home.name);
                 }
               },
             )
