@@ -45,7 +45,7 @@ class _LoginViewState extends State<LoginView> {
               onPressed: () async { 
                 var loginSuccess = await model.login(_controller.text);
                 if(loginSuccess){
-                  Navigator.pushNamed(context, ScreenRouteName.home.name);
+                  Navigator.pushNamed(context, ScreenRouteName.myTabs.name);
                 }
               },
             )

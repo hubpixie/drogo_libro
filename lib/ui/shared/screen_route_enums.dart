@@ -3,6 +3,7 @@ enum ScreenRouteName {
   splash,  
   login,
   home,
+  myTabs,
   post,
 }
 extension ScreenRouteNameSummary on ScreenRouteName {
@@ -13,6 +14,8 @@ extension ScreenRouteNameSummary on ScreenRouteName {
         return 'splash';
       case ScreenRouteName.login:
         return 'login';
+      case ScreenRouteName.myTabs:
+        return 'myTabs';
       case ScreenRouteName.home:
         return '/';
       case ScreenRouteName.post:
