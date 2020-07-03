@@ -1,3 +1,4 @@
+import 'package:drogo_libro/ui/views/ny_settings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -12,7 +13,7 @@ class _MyTabsContainerState extends State<MyTabsContainer> {
   static const List<String> _tabTitles =  ["Myくすり", "検索", "アラーム", "設定"];
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
+  static List<Widget> _widgetOptions = <Widget>[
     Text(
       'Index 0: Myくすり',
       style: optionStyle,
@@ -25,10 +26,7 @@ class _MyTabsContainerState extends State<MyTabsContainer> {
       'Index 2: アラーム',
       style: optionStyle,
     ),
-    Text(
-      'Index 3: 設定',
-      style: optionStyle,
-    ),    
+    MySettingsView(),    
   ];
 
   void _onItemTapped(int index) {
