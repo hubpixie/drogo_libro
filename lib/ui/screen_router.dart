@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:drogo_libro/core/models/post.dart';
+
+import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
 import 'package:drogo_libro/ui/views/my_tabs_container.dart';
 import 'package:drogo_libro/ui/views/login_view.dart';
 import 'package:drogo_libro/ui/views/splash_view.dart';
 import 'package:drogo_libro/ui/views/post_view.dart';
-import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
+import 'package:drogo_libro/ui/views/passcode_view.dart';
 
 
 class ScreenRouter {
@@ -18,6 +20,8 @@ class ScreenRouter {
         return MaterialPageRoute(builder: (_) => SplashView(), settings: settings);
       case ScreenRouteName.login:
         return MaterialPageRoute(builder: (_) => LoginView(), settings: settings);
+      case ScreenRouteName.passcode:
+        return MaterialPageRoute(builder: (_) => PasscodeView(title: 'Passcode Lock Screen'), settings: settings);
       case ScreenRouteName.post:
         var post = settings.arguments as Post;
         return MaterialPageRoute(builder: (_) => PostView(post: post), settings: settings);
