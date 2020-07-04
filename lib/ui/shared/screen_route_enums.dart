@@ -5,6 +5,7 @@ enum ScreenRouteName {
   home,
   myTabs,
   passcode,
+  drogoDetail,
   post,
 }
 extension ScreenRouteNameSummary on ScreenRouteName {
@@ -21,6 +22,8 @@ extension ScreenRouteNameSummary on ScreenRouteName {
         return '/';
       case ScreenRouteName.passcode:
         return 'passcode';
+      case ScreenRouteName.drogoDetail:
+        return 'drogoDetail';
       case ScreenRouteName.post:
         return 'post';
       default:

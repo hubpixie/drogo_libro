@@ -8,6 +8,7 @@ import 'package:drogo_libro/ui/views/login_view.dart';
 import 'package:drogo_libro/ui/views/splash_view.dart';
 import 'package:drogo_libro/ui/views/post_view.dart';
 import 'package:drogo_libro/ui/views/passcode_view.dart';
+import 'package:drogo_libro/ui/views/drogo_detail_view.dart';
 
 
 class ScreenRouter {
@@ -22,6 +23,10 @@ class ScreenRouter {
         return MaterialPageRoute(builder: (_) => LoginView(), settings: settings);
       case ScreenRouteName.passcode:
         return MaterialPageRoute(builder: (_) => PasscodeView(title: 'Passcode Lock Screen'), settings: settings);
+      case ScreenRouteName.drogoDetail:
+          final Map<String, String> arg = settings.arguments;
+        return MaterialPageRoute(builder: (_) => DrogoDetailView(id: arg["id"], name: arg["name"], desc: arg["desc"]), 
+          settings: settings);
       case ScreenRouteName.post:
         var post = settings.arguments as Post;
         return MaterialPageRoute(builder: (_) => PostView(post: post), settings: settings);

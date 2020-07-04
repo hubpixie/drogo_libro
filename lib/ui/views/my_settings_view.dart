@@ -12,6 +12,9 @@ import 'package:drogo_libro/ui/widgets/postlist_item.dart';
 import 'base_view.dart';
 
 class MySettingsView extends StatelessWidget {
+  final String title;
+  MySettingsView({this.title});
+
   @override
   Widget build(BuildContext context) {
     return BaseView<HomeModel>(
@@ -31,7 +34,7 @@ class MySettingsView extends StatelessWidget {
               },
             ),
             UIHelper.verticalSpaceSmall(),
-            Expanded(child: getPostsUi(model.posts)),
+            //Expanded(child: getPostsUi(model.posts)),
         ],)
       ),
     );
