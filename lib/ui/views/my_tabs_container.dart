@@ -1,7 +1,11 @@
-import 'package:drogo_libro/ui/views/ny_settings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+
+import 'package:drogo_libro/ui/views/my_drogo_view.dart';
+import 'package:drogo_libro/ui/views/my_search_view.dart';
+import 'package:drogo_libro/ui/views/my_alarm_view.dart';
+import 'package:drogo_libro/ui/views/my_settings_view.dart';
 
 class MyTabsContainer extends StatefulWidget {
   @override
@@ -11,21 +15,10 @@ class MyTabsContainer extends StatefulWidget {
 class _MyTabsContainerState extends State<MyTabsContainer> {
   int _selectedIndex = 0;
   static const List<String> _tabTitles =  ["Myくすり", "検索", "アラーム", "設定"];
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Myくすり',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: 検索',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: アラーム',
-      style: optionStyle,
-    ),
+    MyDrogoView(title: _tabTitles[0]),
+    MySearchView(title: _tabTitles[1]),
+    MyAlarmView(title: _tabTitles[2]),
     MySettingsView(),    
   ];
 
@@ -43,9 +36,13 @@ class _MyTabsContainerState extends State<MyTabsContainer> {
         title: Text(_tabTitles[_selectedIndex]),
         automaticallyImplyLeading: false,
       ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _widgetOptions,
       ),
+      // Center(
+      //   child: _widgetOptions.elementAt(_selectedIndex),
+      // ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
