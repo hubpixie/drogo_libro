@@ -27,7 +27,7 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return BaseView<LoginModel>(
         builder: (context, model, child) => Scaffold(
-          backgroundColor: backgroundColor,
+          backgroundColor: AppColors.backgroundColor,
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[

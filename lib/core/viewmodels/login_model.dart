@@ -1,10 +1,10 @@
 import 'package:drogo_libro/core/enums/viewstate.dart';
 import 'package:drogo_libro/core/services/authentication_service.dart';
-import 'package:drogo_libro/core/viewmodels/base_model.dart';
+import 'package:drogo_libro/core/viewmodels/base_view_model.dart';
 
 import 'package:drogo_libro/config/service_setting.dart';
 
-class LoginModel extends BaseModel {
+class LoginModel extends BaseViewModel {
   final AuthenticationService _authenticationService = ServiceSetting.locator<AuthenticationService>();
 
   String errorMessage;

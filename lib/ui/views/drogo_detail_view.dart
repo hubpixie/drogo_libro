@@ -1,31 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:drogo_libro/core/enums/viewstate.dart';
 import 'package:drogo_libro/core/models/user.dart';
-import 'package:drogo_libro/core/viewmodels/home_model.dart';
+import 'package:drogo_libro/core/viewmodels/drogo_view_model.dart';
+import 'package:drogo_libro/core/models/drogo_info.dart';
 import 'package:drogo_libro/ui/shared/app_colors.dart';
 
-import 'base_view.dart';
-
 class DrogoDetailView extends StatelessWidget {
-  final String id;
-  final String name;
-  final String desc;
-  DrogoDetailView({this.id, this.name, this.desc});
+  final DrogoInfo drogoItem;
+  DrogoDetailView({this.drogoItem});
 
   @override
   Widget build(BuildContext context) {
-    return BaseView<HomeModel>(
+    return /*BaseView<HomeModel>(
       onModelReady: (model) => model.getPosts(Provider.of<User>(context).id),
-      builder: (context, model, child) => Scaffold(
-        backgroundColor: backgroundColor,
+      builder: (context, model, child) => */Scaffold(
+        backgroundColor: AppColors.backgroundColor,
         appBar: AppBar(
           backgroundColor: Color(0xFF64B7DA),
-          title: Text("くすり名・用法の明細"),
+          title: Text("くすり・用法の明細"),
         ),
-        body: model.state == ViewState.Busy
-        ? Center(child: CircularProgressIndicator())
-         : Column(
+        body: Column(
            crossAxisAlignment: CrossAxisAlignment.start,
            children: <Widget>[
             Container(padding: const EdgeInsets.all(20.0),
@@ -38,13 +31,13 @@ class DrogoDetailView extends StatelessWidget {
                 new Padding(padding: EdgeInsets.all(10.0)),
                 Align (
                   alignment: Alignment.centerLeft,
-                  child: new Text("No      ${this.id}"),
+                  child: new Text("No      ${this.drogoItem.id}"),
                 ),
                 new Padding(padding: EdgeInsets.all(10.0)),
                 new TextFormField(
-                  initialValue: "${this.name}",
+                  initialValue: "${this.drogoItem.drogoSummaryList[0].drogoName}",
                   decoration: new InputDecoration(
-                    labelText: "くすり名",
+                    labelText: "くすり１",
                     fillColor: Colors.white,
                     border: new OutlineInputBorder(
                       borderRadius: new BorderRadius.circular(10.0),
@@ -66,7 +59,7 @@ class DrogoDetailView extends StatelessWidget {
                 ),
                 new Padding(padding: EdgeInsets.only(top: 10.0)),
                 new TextFormField(
-                  initialValue: "${this.desc}",
+                  initialValue: "${this.drogoItem.drogoSummaryList[0].usage}",
                   decoration: new InputDecoration(
                     labelText: "用法",
                     fillColor: Colors.white,
@@ -93,8 +86,8 @@ class DrogoDetailView extends StatelessWidget {
           ), 
           Expanded(child: Text("")),
         ],)
-      ),
-    );
+      );
+    //);
   }
 
 }

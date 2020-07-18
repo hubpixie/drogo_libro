@@ -24,8 +24,8 @@ class ScreenRouter {
       case ScreenRouteName.passcode:
         return MaterialPageRoute(builder: (_) => PasscodeView(title: 'Passcode Lock Screen'), settings: settings);
       case ScreenRouteName.drogoDetail:
-          final Map<String, String> arg = settings.arguments;
-        return MaterialPageRoute(builder: (_) => DrogoDetailView(id: arg["id"], name: arg["name"], desc: arg["desc"]), 
+          final Map<String, dynamic> arg = settings.arguments;
+        return MaterialPageRoute(builder: (_) => DrogoDetailView(drogoItem: arg["drogoItem"]), 
           settings: settings);
       case ScreenRouteName.post:
         var post = settings.arguments as Post;

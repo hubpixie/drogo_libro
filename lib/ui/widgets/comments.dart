@@ -35,7 +35,7 @@ class CommentItem extends StatelessWidget {
       padding: EdgeInsets.all(10.0),
       margin: EdgeInsets.symmetric(vertical: 10.0),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10.0), color: commentColor),
+          borderRadius: BorderRadius.circular(10.0), color: AppColors.commentColor),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
