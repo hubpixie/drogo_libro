@@ -1,9 +1,9 @@
 import 'package:drogo_libro/core/services/posts_service.dart';
 import 'package:drogo_libro/config/service_setting.dart';
 
-import 'base_model.dart';
+import 'base_view_model.dart';
 
-class LikeButtonModel extends BaseModel {
+class LikeButtonModel extends BaseViewModel {
   PostsService _postsService = ServiceSetting.locator<PostsService>();
 
   int postLikes(int postId) {

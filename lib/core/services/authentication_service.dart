@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:drogo_libro/core/models/user.dart';
+import 'package:drogo_libro/config/service_setting.dart';
 
-import '../../config/service_setting.dart';
 import 'web_api.dart';
 
 class AuthenticationService {

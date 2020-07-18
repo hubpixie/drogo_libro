@@ -5,13 +5,15 @@ import 'package:flutter/foundation.dart';
 
 import 'package:drogo_libro/core/models/comment.dart';
 import 'package:drogo_libro/core/models/post.dart';
+import 'package:drogo_libro/core/models/drogo_info.dart';
 import 'package:drogo_libro/core/models/user.dart';
 import 'package:http/io_client.dart';
 import 'package:http/http.dart' as http;
 
 /// The service responsible for networking requests
 class WebApi {
-  static const _endpoint = 'https://jsonplaceholder.typicode.com';
+  // static const _endpoint = 'https://jsonplaceholder.typicode.com';
+  static const _endpoint = 'http://192.168.0.7:3000';
   
   static dynamic _httpClient;
   dynamic client;
@@ -56,6 +58,15 @@ class WebApi {
     return posts;
   }
 
+  Future<List<DrogoInfo>> getDrogoInfosForUser(int userId) async {
+      // Get user posts for id
+      var response = await client.get('$_endpoint/drogo_infos');
+
+      // parse into List
+      var parsed = json.decode(response.body) as List<dynamic>;
+      return parsed.map((element) => DrogoInfo.fromJson(element)).toList();
+  }
+  
   Future<List<Comment>> getCommentsForPost(int postId) async {
     var comments = List<Comment>();
 

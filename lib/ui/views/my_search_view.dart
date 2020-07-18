@@ -16,7 +16,7 @@ class MySearchView extends StatelessWidget {
     return BaseView<HomeModel>(
       onModelReady: (model) => model.getPosts(Provider.of<User>(context).id),
       builder: (context, model, child) => Scaffold(
-        backgroundColor: backgroundColor,
+        backgroundColor: AppColors.backgroundColor,
         body: model.state == ViewState.Busy
         ? Center(child: CircularProgressIndicator())
          : Column(

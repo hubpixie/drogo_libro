@@ -40,9 +40,6 @@ class _MyTabsContainerState extends State<MyTabsContainer> {
         index: _selectedIndex,
         children: _widgetOptions,
       ),
-      // Center(
-      //   child: _widgetOptions.elementAt(_selectedIndex),
-      // ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
