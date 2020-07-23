@@ -45,7 +45,7 @@ class DrogoCell extends StatelessWidget {
                     style: new TextStyle(color: AppColors.labelColor, fontSize: 13.0), ),
                   new Padding(padding: EdgeInsets.all(4.0)),
                   SizedBox(
-                    width: screenWidth == 320 ? 55 : 85,
+                    width: screenWidth == 320 ? 55 : 80,
                     child: new Text(this.drogoItem.doctorName, softWrap: false, overflow: TextOverflow.ellipsis, textAlign: TextAlign.left,),
                   ),
                 ],
@@ -53,7 +53,7 @@ class DrogoCell extends StatelessWidget {
               new Row(
                 children: <Widget>[
                   new Padding(padding: EdgeInsets.all(8.0)),
-                  new Text('お薬名',
+                  new Text('薬名',
                     style: new TextStyle(color: AppColors.labelColor, fontSize: 13.0),),
                   new Padding(padding: EdgeInsets.all(4.0)),
                   new Text(this.drogoItem.drogoSummaryList[0].drogoName),
@@ -80,7 +80,7 @@ class DrogoCell extends StatelessWidget {
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black45)
                 ),
-                child: Row(children: [
+                child: Row(children: <Widget>[
                   new Padding(padding: EdgeInsets.all(8.0)),
                   new SizedBox(
                     width: 80.0,

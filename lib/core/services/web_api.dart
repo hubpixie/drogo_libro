@@ -13,7 +13,7 @@ import 'package:http/http.dart' as http;
 /// The service responsible for networking requests
 class WebApi {
   // static const _endpoint = 'https://jsonplaceholder.typicode.com';
-  static const _endpoint = 'http://192.168.0.7:3000';
+  static const _endpoint = 'http://192.168.0.3:3000';
   
   static dynamic _httpClient;
   dynamic client;
