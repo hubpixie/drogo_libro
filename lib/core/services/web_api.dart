@@ -7,13 +7,15 @@ import 'package:drogo_libro/core/models/comment.dart';
 import 'package:drogo_libro/core/models/post.dart';
 import 'package:drogo_libro/core/models/drogo_info.dart';
 import 'package:drogo_libro/core/models/user.dart';
+import 'package:drogo_libro/core/models/drogo_search_param.dart';
 import 'package:http/io_client.dart';
 import 'package:http/http.dart' as http;
 
 /// The service responsible for networking requests
 class WebApi {
   // static const _endpoint = 'https://jsonplaceholder.typicode.com';
-  static const _endpoint = 'http://192.168.0.7:3000';
+  // static const _endpoint = 'http://MacBook-Air.local:3000';
+  static const _endpoint = 'http://192.168.0.6:3000';
   
   static dynamic _httpClient;
   dynamic client;
@@ -58,9 +60,26 @@ class WebApi {
     return posts;
   }
 
-  Future<List<DrogoInfo>> getDrogoInfosForUser(int userId) async {
+  Future<List<DrogoInfo>> getDrogoInfosForUser(int userId,
+    {DrogoSearchParam param}) async {
       // Get user posts for id
-      var response = await client.get('$_endpoint/drogo_infos');
+      var url = ('$_endpoint/drogo_infos?userId=$userId');
+      if(param != null) {
+        if (param.dispeningDate != null) {
+          url += '&dispening_date=${param.dispeningDate}';
+        } else if(param.drogoName != null ) {
+          url += '&drogo_name=${param.drogoName}';
+        } else if(param.usage != null ) {
+          url += '&usage=${param.usage}';
+        } else if(param.times != null ) {
+          url += '&times=${param.times}';
+        } else if(param.medicalInstituteName != null ) {
+          url += '&medical_institute_name_like=${param.medicalInstituteName}';
+        } else if(param.doctorName != null ) {
+          url += '&doctor_name_like=${param.doctorName}';
+        }
+      }
+      var response = await client.get(url);
 
       // parse into List
       var parsed = json.decode(response.body) as List<dynamic>;

@@ -11,24 +11,24 @@ class DrogoSummary {
   DrogoSummary({this.drogoName, this.days, this.unit, this.usage, this.times, this.amount, this.notaBene});
 
   DrogoSummary.fromJson(Map<String, dynamic> json) {
-    drogoName = json["drogoName"];
+    drogoName = json["drogo_name"];
     days = json["days"];
     unit = json["unit"];
     usage = json["usage"];
     times = json["times"];
     amount = json["amount"];
-    notaBene = json["notaBene"];
+    notaBene = json["nota_bene"];
   }
 
    Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['drogoName'] = this.drogoName;
+    data['drogo_name'] = this.drogoName;
     data['days'] = this.days;
     data['unit'] = this.unit;
     data['usage'] = this.usage;
     data['times'] = this.times;
     data['amount'] = this.amount;
-    data['notaBene'] = this.notaBene;
+    data['nota_bene'] = this.notaBene;
     return data;
   }
 
@@ -45,22 +45,22 @@ class DrogoInfo {
 
   DrogoInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    userId = json['userId'];
-    dispeningDate = json['dispeningDate'];
-    medicalInstituteName = json['medicalInstituteName'];
-    doctorName = json['doctorName'];
-    final dsList = json['drogoSummaryList'] as List;
+    userId = json['user_id'];
+    dispeningDate = json['dispening_date'];
+    medicalInstituteName = json['medical_institute_name'];
+    doctorName = json['doctor_name'];
+    final dsList = json['drogo_summary_list'] as List;
     drogoSummaryList = dsList.map((element) => DrogoSummary.fromJson(element)).toList();
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['userId'] = this.userId;
-    data['dispeningDate'] = this.dispeningDate;
-    data['medicalInstituteName'] = this.medicalInstituteName;
-    data['doctorName'] = this.doctorName;
-    data['drogoSummaryList'] = this.drogoSummaryList;
+    data['user_id'] = this.userId;
+    data['dispening_date'] = this.dispeningDate;
+    data['medical_institute_name'] = this.medicalInstituteName;
+    data['doctor_name'] = this.doctorName;
+    data['drogo_summary_list'] = this.drogoSummaryList;
     return data;
   }
 }

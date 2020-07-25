@@ -1,4 +1,5 @@
 import 'package:drogo_libro/core/enums/viewstate.dart';
+import 'package:drogo_libro/core/models/drogo_search_param.dart';
 import 'package:drogo_libro/core/models/drogo_info.dart';
 import 'package:drogo_libro/core/services/drogo_infos_service.dart';
 import 'package:drogo_libro/config/service_setting.dart';
@@ -10,9 +11,12 @@ class DrogoViewModel extends BaseViewModel {
   
   List<DrogoInfo> get drogoInfoList => _drogoService.drogoInfoList;
 
-  Future getDrogoInfoList(int userId) async {
+  Future getDrogoInfoList(int userId, 
+    {DrogoSearchParam param}) async {
+
     setState(ViewState.Busy);
-    await _drogoService.getDrogoInfosForUser(userId);
+    await _drogoService.getDrogoInfosForUser(userId,
+      param: param);
     setState(ViewState.Idle);
   }
 }

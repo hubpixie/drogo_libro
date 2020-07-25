@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+
+import 'package:drogo_libro/core/enums/code_enums.dart';
+import 'package:drogo_libro/core/models/drogo_info.dart';
 import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
 import 'package:drogo_libro/ui/shared/app_colors.dart';
-import 'package:drogo_libro/core/models/drogo_info.dart';
 
 class DrogoCell extends StatelessWidget {
 
@@ -45,7 +47,7 @@ class DrogoCell extends StatelessWidget {
                     style: new TextStyle(color: AppColors.labelColor, fontSize: 13.0), ),
                   new Padding(padding: EdgeInsets.all(4.0)),
                   SizedBox(
-                    width: screenWidth == 320 ? 55 : 85,
+                    width: screenWidth == 320 ? 55 : 80,
                     child: new Text(this.drogoItem.doctorName, softWrap: false, overflow: TextOverflow.ellipsis, textAlign: TextAlign.left,),
                   ),
                 ],
@@ -70,9 +72,12 @@ class DrogoCell extends StatelessWidget {
                   new Text('(内服)',
                     style: new TextStyle(color: AppColors.labelColor, fontSize: 13.0),),
                   new Padding(padding: EdgeInsets.all(4.0)),
-                  new Text("1 日 ${this.drogoItem.drogoSummaryList[0].times}回　朝昼夕食後"),
-                  new Padding(padding: EdgeInsets.all(6.0)),
-                  new Text("1 回 ${this.drogoItem.drogoSummaryList[0].amount}錠", softWrap: true, maxLines: 1,),
+                  new Text("1日${this.drogoItem.drogoSummaryList[0].times}回", 
+                    ),
+                  new Padding(padding: EdgeInsets.all(4.0)),
+                  new Text("${DrogoUsages.values[this.drogoItem.drogoSummaryList[0].usage].name}"),
+                  new Padding(padding: EdgeInsets.all(4.0)),
+                  new Text("1回${this.drogoItem.drogoSummaryList[0].amount}錠", softWrap: true, maxLines: 1,),
                 ],
               ),
               new Container(
@@ -80,7 +85,7 @@ class DrogoCell extends StatelessWidget {
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black45)
                 ),
-                child: Row(children: [
+                child: Row(children: <Widget>[
                   new Padding(padding: EdgeInsets.all(8.0)),
                   new SizedBox(
                     width: 80.0,
@@ -90,7 +95,7 @@ class DrogoCell extends StatelessWidget {
                       ),
                     ),
                   new SizedBox(
-                      width: screenWidth - 150.0,
+                      width: screenWidth - 152.0,
                       child: new Text('${this.drogoItem.drogoSummaryList[0].notaBene}', 
                         style: new TextStyle(fontSize: 12.0), 
                       maxLines: 3),

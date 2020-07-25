@@ -1,4 +1,4 @@
-/// アナリティクス用送信元クラス
+/// 遷移元画面クラス
 enum ScreenRouteName {
   splash,  
   login,
