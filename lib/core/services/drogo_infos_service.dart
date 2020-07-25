@@ -1,4 +1,5 @@
 import 'package:drogo_libro/core/models/drogo_info.dart';
+import 'package:drogo_libro/core/models/drogo_search_param.dart';
 import 'package:drogo_libro/config/service_setting.dart';
 
 import 'web_api.dart';
@@ -9,8 +10,9 @@ class DrogoInfosService {
   List<DrogoInfo> _drogoInfos;
   List<DrogoInfo> get drogoInfoList => _drogoInfos;
 
-  Future getDrogoInfosForUser(int userId) async {
-    _drogoInfos = await _api.getDrogoInfosForUser(userId);
+  Future getDrogoInfosForUser(int userId, 
+    {DrogoSearchParam param}) async {
+    _drogoInfos = await _api.getDrogoInfosForUser(userId, param: param);
   }
 
 } 
