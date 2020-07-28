@@ -15,7 +15,7 @@ import 'package:http/http.dart' as http;
 class WebApi {
   // static const _endpoint = 'https://jsonplaceholder.typicode.com';
   // static const _endpoint = 'http://MacBook-Air.local:3000';
-  static const _endpoint = 'http://192.168.0.6:3000';
+  static const _endpoint = 'http://192.168.0.3:3000';
   
   static dynamic _httpClient;
   dynamic client;

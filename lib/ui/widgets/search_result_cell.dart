@@ -16,7 +16,7 @@ class SearchResultCell extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return GestureDetector(
-      onTap: () =>  Navigator.pushNamed(context, ScreenRouteName.drogoDetail.name,
+      onTap: () =>  Navigator.pushNamed(context, ScreenRouteName.editDrogoDetail.name,
               arguments: {"drogoItem": this.drogoItem}),
       child: Card(
           child: new Column(

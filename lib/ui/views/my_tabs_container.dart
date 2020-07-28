@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import 'package:drogo_libro/ui/shared/app_colors.dart';
 import 'package:drogo_libro/ui/views/my_drogo_view.dart';
-import 'package:drogo_libro/ui/views/my_search_view.dart';
+import 'package:drogo_libro/ui/views/for_you_view.dart';
 import 'package:drogo_libro/ui/views/my_alarm_view.dart';
 import 'package:drogo_libro/ui/views/my_settings_view.dart';
 
@@ -14,10 +15,10 @@ class MyTabsContainer extends StatefulWidget {
 
 class _MyTabsContainerState extends State<MyTabsContainer> {
   int _selectedIndex = 0;
-  static const List<String> _tabTitles =  ["Myくすり", "検索", "アラーム", "設定"];
+  static const List<String> _tabTitles =  ["Myくすり", "For you", "アラーム", "設定"];
   static List<Widget> _widgetOptions = <Widget>[
     MyDrogoView(title: _tabTitles[0]),
-    MySearchView(title: _tabTitles[1]),
+    ForyouView(title: _tabTitles[1]),
     MyAlarmView(title: _tabTitles[2]),
     MySettingsView(),    
   ];
@@ -32,7 +33,7 @@ class _MyTabsContainerState extends State<MyTabsContainer> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF64B7DA),
+        backgroundColor: AppColors.appBarBackgroundColor,
         title: Text(_tabTitles[_selectedIndex]),
         automaticallyImplyLeading: false,
       ),
@@ -42,22 +43,22 @@ class _MyTabsContainerState extends State<MyTabsContainer> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text("Myくすり"),
+            title: Text(_tabTitles[0]),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            title: Text('検索'),
+            icon: Icon(Icons.local_library),
+            title: Text(_tabTitles[1]),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.alarm),
-            title: Text('アラーム'),
+            title: Text(_tabTitles[2]),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            title: Text('設定'),
+            title: Text(_tabTitles[3]),
           ),
         ],
         currentIndex: _selectedIndex,

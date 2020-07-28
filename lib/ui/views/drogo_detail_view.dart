@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:drogo_libro/core/models/user.dart';
-import 'package:drogo_libro/core/viewmodels/drogo_view_model.dart';
+
 import 'package:drogo_libro/core/models/drogo_info.dart';
 import 'package:drogo_libro/ui/shared/app_colors.dart';
 
@@ -10,12 +9,18 @@ class DrogoDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return /*BaseView<HomeModel>(
-      onModelReady: (model) => model.getPosts(Provider.of<User>(context).id),
-      builder: (context, model, child) => */Scaffold(
-        backgroundColor: AppColors.backgroundColor,
+    if(this.drogoItem == null) {
+      return Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xFF64B7DA),
+          backgroundColor: AppColors.appBarBackgroundColor,
+          title: Text("くすり・用法の明細"),
+        ),
+      );
+    } else
+    return Scaffold(
+        backgroundColor: AppColors.mainBackgroundColor,
+        appBar: AppBar(
+          backgroundColor: AppColors.appBarBackgroundColor,
           title: Text("くすり・用法の明細"),
         ),
         body: Column(

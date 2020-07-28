@@ -2,25 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:drogo_libro/core/enums/viewstate.dart';
 import 'package:drogo_libro/core/models/user.dart';
-import 'package:drogo_libro/core/models/drogo_search_param.dart';
 import 'package:drogo_libro/core/viewmodels/drogo_view_model.dart';
 
-import 'package:drogo_libro/ui/shared/search_enums.dart';
 import 'package:drogo_libro/ui/shared/app_colors.dart';
-import 'package:drogo_libro/ui/widgets/search_result_cell.dart';
+import 'package:drogo_libro/ui/widgets/drogo_cell.dart';
 
 import 'base_view.dart';
 
-class MySearchResultView extends StatefulWidget {
-  final DrogoSearchParam searchedParam;
-  final SearchType searchedType;
-  MySearchResultView({this.searchedParam, this.searchedType});
+class DrogoListView extends StatefulWidget {
+  final String title;
+  DrogoListView({this.title});
 
   @override
-  State<StatefulWidget> createState() => _MySearchResultViewState();
+  State<StatefulWidget> createState() => _DrogoListViewState();
 }
 
-class _MySearchResultViewState extends State<MySearchResultView> {
+class _DrogoListViewState extends State<DrogoListView> {
   @override
   void initState() {
     super.initState();
@@ -29,8 +26,12 @@ class _MySearchResultViewState extends State<MySearchResultView> {
   @override
     Widget build(BuildContext context) {
     return BaseView<DrogoViewModel>(
-      onModelReady: (viewModel) => viewModel.getDrogoInfoList(Provider.of<User>(context).id, param: widget.searchedParam),
+      onModelReady: (viewModel) => viewModel.getDrogoInfoList(Provider.of<User>(context).id),
       builder: (context, viewModel, child) => Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.appBarBackgroundColor,
+          title: Text(widget.title),
+        ),
         backgroundColor: AppColors.mainBackgroundColor,
         body: viewModel.state == ViewState.Busy
         ? Center(child: CircularProgressIndicator())
@@ -44,8 +45,7 @@ class _MySearchResultViewState extends State<MySearchResultView> {
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
-                      return SearchResultCell(searchedType: widget.searchedType, 
-                        drogoItem: viewModel.drogoInfoList[index]);
+                      return DrogoCell(drogoItem: viewModel.drogoInfoList[index]);
                   },
                 ),
               )
