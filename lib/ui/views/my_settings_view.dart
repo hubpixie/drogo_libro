@@ -20,7 +20,7 @@ class MySettingsView extends StatelessWidget {
     return BaseView<HomeModel>(
       onModelReady: (model) => model.getPosts(Provider.of<User>(context).id),
       builder: (context, model, child) => Scaffold(
-        backgroundColor: AppColors.backgroundColor,
+        backgroundColor: AppColors.mainBackgroundColor,
         body: model.state == ViewState.Busy
         ? Center(child: CircularProgressIndicator())
          : Column(

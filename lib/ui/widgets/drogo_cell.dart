@@ -16,7 +16,7 @@ class DrogoCell extends StatelessWidget {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     return GestureDetector(
-      onTap: () =>  Navigator.pushNamed(context, ScreenRouteName.drogoDetail.name,
+      onTap: () =>  Navigator.pushNamed(context, ScreenRouteName.editDrogoDetail.name,
               arguments: {"drogoItem": this.drogoItem}),
       child: Card(
           child: new Column(
@@ -106,7 +106,7 @@ class DrogoCell extends StatelessWidget {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.only(left: screenWidth - 130, bottom: 8.0),
-                    child: Text("詳細を見る", style: new TextStyle(color: AppColors.backgroundColor, fontSize: 13.0),),
+                    child: Text("詳細を見る", style: new TextStyle(color: AppColors.mainBackgroundColor, fontSize: 13.0),),
                   ),
                 ],
               ),

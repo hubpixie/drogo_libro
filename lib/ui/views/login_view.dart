@@ -27,7 +27,7 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return BaseView<LoginModel>(
         builder: (context, model, child) => Scaffold(
-          backgroundColor: AppColors.backgroundColor,
+          backgroundColor: AppColors.mainBackgroundColor,
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -43,6 +43,10 @@ class _LoginViewState extends State<LoginView> {
                 style: TextStyle(color: Colors.black),
               ),
               onPressed: () async { 
+                // キーボードを閉じる
+                FocusScope.of(context).unfocus();
+
+                // ログイン認証
                 var loginSuccess = await model.login(_controller.text);
                 if(loginSuccess){
                   Navigator.pushNamed(context, ScreenRouteName.myTabs.name);

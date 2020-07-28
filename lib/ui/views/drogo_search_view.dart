@@ -4,18 +4,20 @@ import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart
 
 import 'package:drogo_libro/core/enums/code_enums.dart';
 import 'package:drogo_libro/core/models/drogo_search_param.dart';
+
+import 'package:drogo_libro/ui/shared/app_colors.dart';
 import 'package:drogo_libro/ui/shared/search_enums.dart';
 import 'package:drogo_libro/ui/views/my_search_result_view.dart';
 
-class MySearchView extends StatefulWidget {
+class DrogoSearchView extends StatefulWidget {
   final String title;
-  MySearchView({this.title});
+  DrogoSearchView({this.title});
 
   @override
-  _MySearchViewState createState() => new _MySearchViewState();
+  _DrogoSearchViewState createState() => new _DrogoSearchViewState();
 }
 
-class _MySearchViewState extends State<MySearchView> with SingleTickerProviderStateMixin {
+class _DrogoSearchViewState extends State<DrogoSearchView> with SingleTickerProviderStateMixin {
 
   //==========================<
   // Const defines
@@ -52,6 +54,10 @@ class _MySearchViewState extends State<MySearchView> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.appBarBackgroundColor,
+        title: Text(widget.title),
+      ),
       body: new Column(
         children: <Widget>[
           Padding(

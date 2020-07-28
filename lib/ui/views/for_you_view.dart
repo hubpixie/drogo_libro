@@ -7,9 +7,9 @@ import 'package:drogo_libro/ui/shared/app_colors.dart';
 
 import 'base_view.dart';
 
-class MyAlarmView extends StatelessWidget {
+class ForyouView extends StatelessWidget {
   final String title;
-  MyAlarmView({this.title});
+  ForyouView({this.title});
 
   @override
   Widget build(BuildContext context) {
