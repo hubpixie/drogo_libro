@@ -2,22 +2,21 @@ import 'package:flutter/material.dart';
 
 import 'package:drogo_libro/core/enums/code_enums.dart';
 import 'package:drogo_libro/core/models/drogo_info.dart';
-import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
 import 'package:drogo_libro/ui/shared/app_colors.dart';
 
+typedef CellSelectedDelegate = void Function(Object);
 class DrogoCell extends StatelessWidget {
-
   final DrogoInfo drogoItem;
+  final CellSelectedDelegate onCellSelected;
 
-  DrogoCell({this.drogoItem});
+  DrogoCell({this.drogoItem, this.onCellSelected});
 
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
 
     return GestureDetector(
-      onTap: () =>  Navigator.pushNamed(context, ScreenRouteName.editDrogoDetail.name,
-              arguments: {"drogoItem": this.drogoItem}),
+      onTap: () =>  this.onCellSelected({"drogoItem": this.drogoItem}),
       child: Card(
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +76,8 @@ class DrogoCell extends StatelessWidget {
                   new Padding(padding: EdgeInsets.all(4.0)),
                   new Text("${DrogoUsages.values[this.drogoItem.drogoSummaryList[0].usage].name}"),
                   new Padding(padding: EdgeInsets.all(4.0)),
-                  new Text("1回${this.drogoItem.drogoSummaryList[0].amount}錠", softWrap: true, maxLines: 1,),
+                  new Text("1回${this.drogoItem.drogoSummaryList[0].amount}錠", softWrap: true, maxLines: 1,
+                    style: TextStyle(height: 1.2),),
                 ],
               ),
               new Container(
@@ -87,17 +87,20 @@ class DrogoCell extends StatelessWidget {
                 ),
                 child: Row(children: <Widget>[
                   new Padding(padding: EdgeInsets.all(8.0)),
-                  new SizedBox(
+                  new Container(
+                    alignment: Alignment.topLeft,
                     width: 80.0,
                     child: new Text('※この薬服用にあたって',
                       style: new TextStyle(color: AppColors.labelColor, 
                       fontSize: 12.0), maxLines: 3,
                       ),
                     ),
-                  new SizedBox(
+                  new Container(
+                    alignment: Alignment.centerLeft,
                       width: screenWidth - 152.0,
+                      height: 50,
                       child: new Text('${this.drogoItem.drogoSummaryList[0].notaBene}', 
-                        style: new TextStyle(fontSize: 12.0), 
+                        style: new TextStyle(fontSize: 12.0, height: 1.2), 
                       maxLines: 3),
                     )
                 ],),

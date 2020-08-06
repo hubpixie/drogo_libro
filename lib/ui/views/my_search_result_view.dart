@@ -5,6 +5,7 @@ import 'package:drogo_libro/core/models/user.dart';
 import 'package:drogo_libro/core/models/drogo_search_param.dart';
 import 'package:drogo_libro/core/viewmodels/drogo_view_model.dart';
 
+import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
 import 'package:drogo_libro/ui/shared/search_enums.dart';
 import 'package:drogo_libro/ui/shared/app_colors.dart';
 import 'package:drogo_libro/ui/widgets/search_result_cell.dart';
@@ -40,12 +41,18 @@ class _MySearchResultViewState extends State<MySearchResultView> {
               Expanded(
                 child: ListView.builder(
                     padding: const EdgeInsets.all(8),
-                    itemCount: viewModel.drogoInfoList.length,
+                    itemCount: viewModel.drogoInfoList.result.length,
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
-                      return SearchResultCell(searchedType: widget.searchedType, 
-                        drogoItem: viewModel.drogoInfoList[index]);
+                      return SearchResultCell(
+                        searchedType: widget.searchedType, 
+                        drogoItem: viewModel.drogoInfoList.result[index],
+                        onCellSelected: (arguments) {
+                        Navigator.pushNamed(context, ScreenRouteName.editDrogoDetail.name,
+                                      arguments: arguments); 
+                        }                       
+                      );
                   },
                 ),
               )

@@ -28,7 +28,7 @@ class PostListItem extends StatelessWidget {
             Text(
               '${post.title} - ${post.likes.toString()}',
               maxLines: 2,
-              style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16.0),
+              style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16.0, height: 1.2),
             ),
             Text(post.body, maxLines: 2, overflow: TextOverflow.ellipsis)
           ],

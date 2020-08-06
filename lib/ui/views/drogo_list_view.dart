@@ -4,6 +4,7 @@ import 'package:drogo_libro/core/enums/viewstate.dart';
 import 'package:drogo_libro/core/models/user.dart';
 import 'package:drogo_libro/core/viewmodels/drogo_view_model.dart';
 
+import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
 import 'package:drogo_libro/ui/shared/app_colors.dart';
 import 'package:drogo_libro/ui/widgets/drogo_cell.dart';
 
@@ -41,11 +42,16 @@ class _DrogoListViewState extends State<DrogoListView> {
               Expanded(
                 child: ListView.builder(
                     padding: const EdgeInsets.all(8),
-                    itemCount: viewModel.drogoInfoList.length,
+                    itemCount: viewModel.drogoInfoList.result.length,
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
-                      return DrogoCell(drogoItem: viewModel.drogoInfoList[index]);
+                      return DrogoCell(
+                        drogoItem: viewModel.drogoInfoList.result[index],
+                        onCellSelected: (arguments) {
+                        Navigator.pushNamed(context, ScreenRouteName.editDrogoDetail.name,
+                                      arguments: arguments);                        
+                      },);
                   },
                 ),
               )

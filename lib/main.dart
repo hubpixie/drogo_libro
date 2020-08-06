@@ -8,7 +8,7 @@ import 'package:drogo_libro/core/models/user.dart';
 import 'package:drogo_libro/core/services/firebse_analytics_service.dart';
 
 import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
-import 'package:drogo_libro/ui/screen_router.dart';
+import 'package:drogo_libro/ui/screen_route_manager.dart';
 
 void main() {
   ServiceSetting.setup();
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(),
         initialRoute: ScreenRouteName.splash.name,
-        onGenerateRoute: ScreenRouter.generateRoute,
+        onGenerateRoute: ScreenRouteManager.generateRoute,
         navigatorObservers: kIsWeb ? 
           [] : [ServiceSetting.locator<FirebaseAnalyticsService>().observer],
       ),

@@ -36,7 +36,7 @@ class HomeView extends StatelessWidget {
               style: subHeaderStyle),
             ),
             UIHelper.verticalSpaceSmall(),
-            Expanded(child: getPostsUi(model.posts)),
+            Expanded(child: getPostsUi(model.posts.result)),
         ],)
       ),
     );

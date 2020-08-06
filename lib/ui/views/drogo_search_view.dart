@@ -201,7 +201,7 @@ class _DrogoSearchViewState extends State<DrogoSearchView> with SingleTickerProv
               style: BorderStyle.solid,
               color: Colors.black54)),
         ),
-        child:GestureDetector(
+        child: GestureDetector(
           onTap: () => {
               DatePicker.showDatePicker(
                 context,

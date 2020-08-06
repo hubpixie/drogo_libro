@@ -13,9 +13,9 @@ class AuthenticationService {
   Future<bool> login(int userId) async {
     var fetchedUser = await _api.getUserProfile(userId);
 
-    var hasUser = fetchedUser != null;
+    var hasUser = fetchedUser.hasData;
     if(hasUser) {
-      userController.add(fetchedUser);
+      userController.add(fetchedUser.result);
     }
 
     return hasUser;

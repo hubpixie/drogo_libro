@@ -2,22 +2,23 @@ import 'package:flutter/material.dart';
 
 import 'package:drogo_libro/core/enums/code_enums.dart';
 import 'package:drogo_libro/core/models/drogo_info.dart';
-import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
+
 import 'package:drogo_libro/ui/shared/app_colors.dart';
 import 'package:drogo_libro/ui/shared/search_enums.dart';
 
+typedef CellSelectedDelegate = void Function(Object);
 class SearchResultCell extends StatelessWidget {
   final SearchType searchedType;
   final DrogoInfo drogoItem;
+  final CellSelectedDelegate onCellSelected;
 
-  SearchResultCell({this.searchedType, this.drogoItem});
+  SearchResultCell({this.searchedType, this.drogoItem, this.onCellSelected});
 
   @override
   Widget build(BuildContext context) {
 
     return GestureDetector(
-      onTap: () =>  Navigator.pushNamed(context, ScreenRouteName.editDrogoDetail.name,
-              arguments: {"drogoItem": this.drogoItem}),
+      onTap: () =>  this.onCellSelected({"drogoItem": this.drogoItem}),
       child: Card(
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
