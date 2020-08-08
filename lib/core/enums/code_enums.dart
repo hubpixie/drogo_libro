@@ -1,3 +1,4 @@
+
 /// コード名称クラス
 /// 
 
@@ -258,15 +259,20 @@ extension MedicalHistoryTypeDescripts on MedicalHistoryTypes {
   }
 }
 
+typedef PreSortProc = List<int> Function(List<int>);
 class CodeEnumsUtil {
-  static  T toAnyEnum<T>(List<T> values, int rawValue) {
+  /// Convert a rawValue to enum value
+  ///  - param [enumValues] : all enums of T
+  ///  - param [rawValue] : an index value of enum
+  static  T toAnyEnum<T>(List<T> enumValues, int rawValue) {
     T ret;
-    for(int idx = 0; idx < values.length; idx++) {
+    for(int idx = 0; idx < enumValues.length; idx++) {
       if(idx == rawValue) {
-        ret = values[idx];
+        ret = enumValues[idx];
         break;
       }
     }
     return ret;
   }
+
 }

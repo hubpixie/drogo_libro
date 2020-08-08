@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
 import 'package:drogo_libro/core/enums/viewstate.dart';
-import 'package:drogo_libro/core/enums/code_enums.dart';
 import 'package:drogo_libro/core/models/user.dart';
+import 'package:drogo_libro/core/enums/code_enums.dart';
 import 'package:drogo_libro/core/models/foryou_info.dart';
 import 'package:drogo_libro/core/viewmodels/foryou_view_model.dart';
 import 'package:drogo_libro/ui/shared/app_colors.dart';
@@ -36,6 +36,7 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
   @override
   void initState() {
     _itemValue = widget.itemValue;
+   
     _scaffoldKey = GlobalKey<ScaffoldState>();
     super.initState();
   }
@@ -65,67 +66,54 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
   }
 
   Widget _dataBody(ForyouViewModel viewModel) {
-    _itemValue = (_itemValue == null) ? (viewModel.foryouInfo == null || viewModel.foryouInfo.result == null ? ForyouInfo() : viewModel.foryouInfo.result ) : _itemValue;
-
-    Widget dataBody = Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children : <Widget>[
-        Expanded(
-          child: ListView.builder(
-              padding: const EdgeInsets.all(8),
-              itemCount: 1,
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemBuilder: (BuildContext context, int index) {
-                switch(widget.routeName) {
-                  case ScreenRouteName.editBloodType:
-                    return BloodTypeEditCell(
-                      bloodType: _itemValue != null  ? _itemValue.bloodType : null,
-                      onCellEditing: (newValue) {
-                        setState(() {
-                          if(newValue != null) {
-                            if(_itemValue.bloodType == null) {
-                              _isButtonEnabled = true;
-                            } else {
-                              BloodTypes oldValue = _itemValue.bloodType;
-                              if (oldValue != newValue) {
-                                _isButtonEnabled = true;
-                              }
-                            }
-                          }
-                          _itemValue.bloodType = newValue;
-                        });
-                      }
-                    );
-                  case ScreenRouteName.editMedicalHistory:
-                    return MedicalHistoryEditCell();
-                  case ScreenRouteName.editAllergy:
-                    return AllergyHistoryEditCell();
-                  case ScreenRouteName.editSuplements:
-                    return SuplementInfoEditCell();
-                  case ScreenRouteName.editSideEffect:
-                    return SideEffectEditCell();
-                  default:
-                    return Container();
-                }
-            },
-          ),
-        ),
-        Container(
-          width: 200.0,
-          height: 50.0,
-          margin: EdgeInsets.only(bottom: 20.0),
-          child: FlatButton(
-            onPressed: _isButtonEnabled ? () => _saveButtonOnTapped(viewModel) : null,
-            child: Text('保存',
-              style: TextStyle(color: _isButtonEnabled ? Colors.white : Colors.white30,
-              fontSize: 20.0)),
-            color: Colors.blueAccent,
-            disabledColor: Colors.grey[400],
-          ),
+    if(viewModel.foryouInfo != null) {
+      if(!viewModel.foryouInfo.hasError || viewModel.foryouInfo.isNotFound) {
+        if(!viewModel.foryouInfo.hasData) {
+          _itemValue = ForyouInfo();
+        } else {
+          _itemValue = viewModel.foryouInfo.result;
+        }
+      }
+    } else {
+        _itemValue = ForyouInfo();
+    }
+    
+    Widget dataBody = GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          // キーボードを閉じる
+          FocusScope.of(context).unfocus();
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children : <Widget>[
+            Expanded(
+              child: ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: 1,
+                  //scrollDirection: Axis.vertical,
+                  //shrinkWrap: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _buildCardPart(context, index, viewModel);
+                  }
+              ),
+            ),
+            Container(
+              width: 200.0,
+              height: 50.0,
+              margin: EdgeInsets.only(bottom: 20.0),
+              child: FlatButton(
+                onPressed: _isButtonEnabled ? () => _saveButtonOnTapped(viewModel) : null,
+                child: Text('保存',
+                  style: TextStyle(color: _isButtonEnabled ? Colors.white : Colors.white30,
+                  fontSize: 20.0)),
+                color: Colors.blueAccent,
+                disabledColor: Colors.grey[400],
+              ),
+            )
+          ],
         )
-      ],
-    );
+      );
 
     return  LoadingOverlay(
       opacity: 0.7,
@@ -134,6 +122,82 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
     );
   }
 
+ Widget _buildCardPart(BuildContext context, int index, ForyouViewModel viewModel) {
+    switch(widget.routeName) {
+      case ScreenRouteName.editBloodType:
+        return BloodTypeEditCell(
+          itemValue: ForyouInfo(bloodType: _itemValue.bloodType),
+          onCellEditing: (newValue) {
+            setState(() {
+              ForyouInfo newItemValue = newValue;
+              if(newItemValue != null) {
+                if(_itemValue.bloodType == null) {
+                  _isButtonEnabled = true;
+                } else {
+                  if (_itemValue.bloodType != newItemValue.bloodType) {
+                    _isButtonEnabled = true;
+                  }
+                }
+              }
+              _itemValue.bloodType = newItemValue.bloodType;
+            });
+          }
+        );
+      case ScreenRouteName.editMedicalHistory:
+        return MedicalHistoryEditCell(
+          itemValue: ForyouInfo(medicalHistoryTypeList: _itemValue.medicalHistoryTypeList != null ? [..._itemValue.medicalHistoryTypeList.map((e) => e).toList()] : null, 
+            medicalHdText: _itemValue.medicalHdText, medicalEtcText: _itemValue.medicalEtcText),
+          onCellEditing: (newValue) {
+            setState(() {
+              ForyouInfo newItemValue = newValue;
+              /// each checkbox
+              if(!_isButtonEnabled) {
+                _isButtonEnabled = _isCheckboxValuesChanged(
+                _itemValue.medicalHistoryTypeList, newItemValue.medicalHistoryTypeList);
+              }
+              _itemValue.medicalHistoryTypeList = newItemValue.medicalHistoryTypeList;
+
+              /// hd text
+              if(!_isButtonEnabled) {
+                _isButtonEnabled = newItemValue.medicalHdText != _itemValue.medicalHdText;
+              }
+              _itemValue.medicalHdText = newItemValue.medicalHdText;
+              
+              /// etc text
+              if(!_isButtonEnabled) {
+                _isButtonEnabled = newItemValue.medicalEtcText != _itemValue.medicalEtcText;
+              }
+              _itemValue.medicalEtcText = newItemValue.medicalEtcText;
+            });
+          }
+        );
+      case ScreenRouteName.editAllergy:
+        return AllergyHistoryEditCell();
+      case ScreenRouteName.editSuplements:
+        return SuplementInfoEditCell();
+      case ScreenRouteName.editSideEffect:
+        return SideEffectEditCell();
+      default:
+        return Container();
+    }
+ }
+
+ bool _isCheckboxValuesChanged(List<bool> currentValue, List<bool> newValue) {
+    bool ret  = false;
+    if(newValue != null) {
+      if(currentValue == null) {
+        ret = true;
+      } else {
+        for(int idx = 0; idx < currentValue.length; idx++) {
+          if(currentValue[idx] != newValue[idx]) {
+            ret = true;
+            break;
+          }
+        }
+      }
+    }
+    return ret;
+ }
   /// 保存ボタンタップ時
   ///
  void _saveButtonOnTapped(ForyouViewModel viewModel) async {
@@ -167,12 +231,11 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
   void _showErrorSnackBarIfNeed(ForyouViewModel viewModel) {
     final snackBar = SnackBar(
         backgroundColor: Colors.red,
-        content: Text('保存できません\n(error:${viewModel.foryouInfoUpdated.code})', style: TextStyle(color: Colors.white),),
+        content: Text('保存できません\n(error:${viewModel.foryouInfoUpdated.errorCode})', style: TextStyle(color: Colors.white),),
         action: SnackBarAction(
           label: 'OK',
           onPressed: () {
-            Navigator.of(context).pop(null);
-            return Future.value(false);
+            _scaffoldKey.currentState.hideCurrentSnackBar();
           },
         ),
         duration: Duration(seconds: 60),

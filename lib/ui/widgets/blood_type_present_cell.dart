@@ -1,25 +1,26 @@
+import 'package:drogo_libro/core/models/foryou_info.dart';
 import 'package:flutter/material.dart';
 
 import 'package:drogo_libro/core/enums/code_enums.dart';
 
 typedef CellEditingDelegate = void Function();
 class BloodTypePresentCell extends StatefulWidget {
-  final BloodTypes bloodType;
+  final ForyouInfo itemValue;
   final CellEditingDelegate onCellEditing;
 
-  BloodTypePresentCell({this.bloodType, this.onCellEditing});
+  BloodTypePresentCell({this.itemValue, this.onCellEditing});
 
   @override
   _BloodTypePresentCellState createState() => _BloodTypePresentCellState();
 }
 
 class _BloodTypePresentCellState extends State<BloodTypePresentCell> {
-  BloodTypes _bloodType;
+  ForyouInfo _itemValue;
   List<Color> _lableColorList;
 
   @override
   void initState() {
-    _lableColorList = List.filled(6, Colors.black38);
+    _lableColorList = List.filled(BloodTypes.values.length, Colors.black38);
     super.initState();
   }
 
@@ -32,8 +33,7 @@ class _BloodTypePresentCellState extends State<BloodTypePresentCell> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    _bloodType = widget.bloodType;
-    _updateRadioTextColor();
+    _itemValue = widget.itemValue == null ? ForyouInfo() : widget.itemValue;
 
     return Theme(
       data: Theme.of(context).copyWith(
@@ -78,7 +78,7 @@ class _BloodTypePresentCellState extends State<BloodTypePresentCell> {
                 Radio(
                   activeColor: Colors.black,
                   value: BloodTypes.a,
-                  groupValue: _bloodType,
+                  groupValue: _itemValue.bloodType,
                   onChanged: (BloodTypes value) => _handleRadio(value),
                 ),
                 Container(
@@ -90,7 +90,7 @@ class _BloodTypePresentCellState extends State<BloodTypePresentCell> {
                 Radio(
                   activeColor: Colors.black,
                   value: BloodTypes.b,
-                  groupValue: _bloodType,
+                  groupValue: _itemValue.bloodType,
                   onChanged: (BloodTypes value) => _handleRadio(value),
                 ),
                 Container(
@@ -102,7 +102,7 @@ class _BloodTypePresentCellState extends State<BloodTypePresentCell> {
                 Radio(
                   activeColor: Colors.black,
                   value: BloodTypes.ab,
-                  groupValue: _bloodType,
+                  groupValue: _itemValue.bloodType,
                   onChanged: (BloodTypes value) => _handleRadio(value),
                 ),
                 Container(
@@ -123,7 +123,7 @@ class _BloodTypePresentCellState extends State<BloodTypePresentCell> {
                 Radio(
                   activeColor: Colors.black,
                   value: BloodTypes.o,
-                  groupValue: _bloodType,
+                  groupValue: _itemValue.bloodType,
                   onChanged: (BloodTypes value) => _handleRadio(value),
                 ),
                 Container(
@@ -135,7 +135,7 @@ class _BloodTypePresentCellState extends State<BloodTypePresentCell> {
                 Radio(
                   activeColor: Colors.black,
                   value: BloodTypes.rhPlus,
-                  groupValue: _bloodType,
+                  groupValue: _itemValue.bloodType,
                   onChanged: (BloodTypes value) => _handleRadio(value),
                 ),
                 Container(
@@ -147,7 +147,7 @@ class _BloodTypePresentCellState extends State<BloodTypePresentCell> {
                 Radio(
                   activeColor: Colors.black,
                   value: BloodTypes.rhMinus,
-                  groupValue: _bloodType,
+                  groupValue: _itemValue.bloodType,
                   onChanged: (BloodTypes value) => _handleRadio(value),
                 ),
                 Container(
@@ -167,15 +167,13 @@ class _BloodTypePresentCellState extends State<BloodTypePresentCell> {
     for (int idx = 0; idx < _lableColorList.length; idx++) {
       _lableColorList[idx] = Colors.black38;
     }
-    if(_bloodType != null) {
-      _lableColorList[_bloodType.index] = Colors.black;
+    if(_itemValue != null && _itemValue.bloodType != null) {
+      _lableColorList[_itemValue.bloodType.index] = Colors.black;
     }
   }
 
   void _handleRadio(BloodTypes value) {
     setState(() {
-      // _bloodType = value;
-      // _updateRadioTextColor();
     });
   }
 }

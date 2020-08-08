@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 
 import 'package:drogo_libro/core/enums/code_enums.dart';
+import 'package:drogo_libro/core/models/foryou_info.dart';
 
-typedef CellEditingDelegate = void Function(BloodTypes);
+typedef CellEditingDelegate = void Function(dynamic);
 class BloodTypeEditCell extends StatefulWidget {
-  final BloodTypes bloodType;
+  final ForyouInfo itemValue;
   final CellEditingDelegate onCellEditing;
 
-  BloodTypeEditCell({this.bloodType, this.onCellEditing});
+  BloodTypeEditCell({this.itemValue, this.onCellEditing});
 
   @override
   _BloodTypeEditCellState createState() => _BloodTypeEditCellState();
 }
 
 class _BloodTypeEditCellState extends State<BloodTypeEditCell> {
-  BloodTypes _bloodType;
+  ForyouInfo _itemValue;
 
   @override
   void initState() {
@@ -23,8 +24,7 @@ class _BloodTypeEditCellState extends State<BloodTypeEditCell> {
 
   @override
   Widget build(BuildContext context) {
-    _bloodType = widget.bloodType;
-
+    _itemValue = widget.itemValue == null ? ForyouInfo() : widget.itemValue;
     return 
       Card(child: Column(
            crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,8 +49,8 @@ class _BloodTypeEditCellState extends State<BloodTypeEditCell> {
                 ),
                 Radio(
                   value: BloodTypes.a,
-                  groupValue: _bloodType,
-                  onChanged: (BloodTypes value) => _handleRadio(value),
+                  groupValue: _itemValue.bloodType,
+                  onChanged: (BloodTypes value) => _radioOnChanged(value),
                 ),
                 Container(
                   width: 40,
@@ -60,8 +60,8 @@ class _BloodTypeEditCellState extends State<BloodTypeEditCell> {
                 ),
                 Radio(
                   value: BloodTypes.b,
-                  groupValue: _bloodType,
-                  onChanged: (BloodTypes value) => _handleRadio(value),
+                  groupValue: _itemValue.bloodType,
+                  onChanged: (BloodTypes value) => _radioOnChanged(value),
                 ),
                 Container(
                   width: 40,
@@ -71,8 +71,8 @@ class _BloodTypeEditCellState extends State<BloodTypeEditCell> {
                 ),
                 Radio(
                   value: BloodTypes.ab,
-                  groupValue: _bloodType,
-                  onChanged: (BloodTypes value) => _handleRadio(value),
+                  groupValue: _itemValue.bloodType,
+                  onChanged: (BloodTypes value) => _radioOnChanged(value),
                 ),
                 Container(
                   width: 40,
@@ -91,8 +91,8 @@ class _BloodTypeEditCellState extends State<BloodTypeEditCell> {
                 ),
                 Radio(
                   value: BloodTypes.o,
-                  groupValue: _bloodType,
-                  onChanged: (BloodTypes value) => _handleRadio(value),
+                  groupValue: _itemValue.bloodType,
+                  onChanged: (BloodTypes value) => _radioOnChanged(value),
                 ),
                 Container(
                   width: 40,
@@ -102,8 +102,8 @@ class _BloodTypeEditCellState extends State<BloodTypeEditCell> {
                 ),
                 Radio(
                   value: BloodTypes.rhPlus,
-                  groupValue: _bloodType,
-                  onChanged: (BloodTypes value) => _handleRadio(value),
+                  groupValue: _itemValue.bloodType,
+                  onChanged: (BloodTypes value) => _radioOnChanged(value),
                 ),
                 Container(
                   width: 40,
@@ -113,8 +113,8 @@ class _BloodTypeEditCellState extends State<BloodTypeEditCell> {
                 ),
                 Radio(
                   value: BloodTypes.rhMinus,
-                  groupValue: _bloodType,
-                  onChanged: (BloodTypes value) => _handleRadio(value),
+                  groupValue: _itemValue.bloodType,
+                  onChanged: (BloodTypes value) => _radioOnChanged(value),
                 ),
                 Container(
                   width: 40,
@@ -128,10 +128,10 @@ class _BloodTypeEditCellState extends State<BloodTypeEditCell> {
       );
   }
 
-  void _handleRadio(BloodTypes value) {
+  void _radioOnChanged(BloodTypes value) {
     setState(() {
-      widget.onCellEditing(value);
-      _bloodType = value;
+      _itemValue.bloodType = value;
+      widget.onCellEditing(_itemValue);
     });
   }
 }

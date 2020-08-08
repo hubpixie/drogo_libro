@@ -18,8 +18,8 @@ import 'package:drogo_libro/core/models/drogo_search_param.dart';
 /// The service responsible for networking requests
 class WebApi {
   // static const _endpoint = 'https://jsonplaceholder.typicode.com';
-  static const _endpoint = 'http://macbook-air.local:3000';
-  // static const _endpoint = 'http://192.168.0.6:3000';
+  // static const _endpoint = 'http://macbook-air.local:3000';
+  static const _endpoint = 'http://192.168.0.9:3000';
   static const _commonHeaders = {'Accept': 'application/json', 
     'Content-type': 'application/json'};
   

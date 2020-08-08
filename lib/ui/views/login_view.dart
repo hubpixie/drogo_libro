@@ -37,9 +37,7 @@ class _LoginViewState extends State<LoginView> {
                 LoginHeader(
                   validationMessage: viewModel.errorMessage,
                   controller: _controller),
-                viewModel.state == ViewState.Busy
-                ? CircularProgressIndicator()
-                : FlatButton(
+                FlatButton(
                   color: Colors.white,
                   child: Text(
                     'Login',

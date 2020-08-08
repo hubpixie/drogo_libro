@@ -1,96 +1,74 @@
+import 'package:drogo_libro/core/models/foryou_info.dart';
 import 'package:flutter/material.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
 
 import 'package:drogo_libro/core/enums/code_enums.dart';
-import 'package:drogo_libro/core/models/foryou_info.dart';
 
-typedef CellEditingDelegate = void Function(dynamic);
-class MedicalHistoryEditCell extends StatefulWidget {
+typedef CellEditingDelegate = void Function();
+class MedicalHistoryPresnetCell extends StatefulWidget {
   final ForyouInfo itemValue;
   final CellEditingDelegate onCellEditing;
 
-  MedicalHistoryEditCell({this.itemValue, this.onCellEditing});
+  MedicalHistoryPresnetCell({this.itemValue, this.onCellEditing});
 
   @override
-  _MedicalHistoryEditCellState createState() => _MedicalHistoryEditCellState();
+  _MedicalHistoryPresentCellState createState() => _MedicalHistoryPresentCellState();
 }
 
-class _MedicalHistoryEditCellState extends State<MedicalHistoryEditCell> {
+class _MedicalHistoryPresentCellState extends State<MedicalHistoryPresnetCell> {
   ForyouInfo _itemValue;
-  TextEditingController _hdTextController;
-  TextEditingController _etcTextController;
-  FocusNode _hdFocusNode;
-  FocusNode _etcFocusNode;
+  List<Color> _lableColorList;
 
 
   @override
   void initState() {
-    _hdTextController = TextEditingController();
-    _etcTextController = TextEditingController();
-    if(widget.itemValue != null) {
-      _hdTextController.text = widget.itemValue.medicalHdText;
-      _etcTextController.text = widget.itemValue.medicalEtcText;
-    }
-
-    // 入力フォーカス関しイベント処理
-    _hdFocusNode = FocusNode();
-    _hdFocusNode.addListener(() {
-      if(!_hdFocusNode.hasFocus) {
-        _hdTextOnEditigComplete();
-      }
-    });
-    _etcFocusNode = FocusNode();
-    _etcFocusNode.addListener(() {
-      if(!_etcFocusNode.hasFocus) {
-        _etcTextOnEditigComplete();
-      }
-    });
-    
-    // キーボード開閉時監視イベント作成
-    KeyboardVisibilityNotification().addNewListener(
-      onChange: (bool visible) {
-        if(!visible) {
-          if(_hdFocusNode.hasFocus) {
-            _hdTextOnEditigComplete();
-          }
-          if(_etcFocusNode.hasFocus) {
-            _etcTextOnEditigComplete();
-          }
-        }
-      },
-    );    
-
+    _lableColorList = List.filled(MedicalHistoryTypes.values.length, Colors.black38);
+   
     super.initState();
-  }
+}
 
   @override
   void dispose() {
-    _hdTextController.dispose();
-    _etcTextController.dispose();
-    _hdFocusNode.dispose();
-    _etcFocusNode.dispose();
-
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     _itemValue = widget.itemValue == null ? ForyouInfo() : widget.itemValue;
     _itemValue.medicalHistoryTypeList = _itemValue.medicalHistoryTypeList != null ? _itemValue.medicalHistoryTypeList : List.filled(MedicalHistoryTypes.values.length, false);
+    _itemValue.medicalHdText = _itemValue.medicalHdText != null ? _itemValue.medicalHdText : '';
+    _itemValue.medicalEtcText = _itemValue.medicalEtcText != null ? _itemValue.medicalEtcText : '';
 
-    return 
-      Card(child: Column(
+    return Theme(
+      data: Theme.of(context).copyWith(
+        unselectedWidgetColor: Colors.black38,
+        disabledColor: Colors.grey[400]
+      ),
+      child: Card(child: Column(
            crossAxisAlignment: CrossAxisAlignment.start,
            children: <Widget>[
              Row(
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(8),
-                  child: Text(" ",
+                  child: Text("既往歴",
                     style: TextStyle(fontSize: 20.0),),
                 ),
-                Text("複数項目がチェックできます",
-                    style: TextStyle(fontSize: 14.0),)
+                Container(
+                  width: 20,
+                  height: 20,
+                  margin: EdgeInsets.only(left: screenWidth - 140),
+                  alignment: Alignment.bottomCenter,
+                  child: IconButton( //編集ボタン
+                    onPressed: () {
+                      setState(() {
+                        widget.onCellEditing();
+                      });
+                    },
+                    padding: new EdgeInsets.all(0.0),
+                    icon: Icon(Icons.edit, color: Colors.black38, size: 20.0),
+                    ),
+                )
               ]
              ),
             Row(
@@ -101,18 +79,20 @@ class _MedicalHistoryEditCellState extends State<MedicalHistoryEditCell> {
                     style: TextStyle(fontSize: 16.0),),
                 ),
                 Checkbox(
+                  activeColor: Colors.black,
                   value: _itemValue.medicalHistoryTypeList[MedicalHistoryTypes.hypertension.index],
                   onChanged: (bool value) => _checkboxOnChanged(MedicalHistoryTypes.hypertension.index, value),
                 ),
                 Container(
                   alignment: Alignment.centerLeft,
-                  child: Text(MedicalHistoryTypes.hypertension.name, style: TextStyle(fontSize: 16.0),),
+                  child: Text(MedicalHistoryTypes.hypertension.name, style: TextStyle(fontSize: 16.0, color: _lableColorList[MedicalHistoryTypes.hypertension.index]),),
                 ),
                 Checkbox(
+                  activeColor: Colors.black,
                   value: _itemValue.medicalHistoryTypeList[MedicalHistoryTypes.hyperlipidemia.index],
                   onChanged: (bool value) => _checkboxOnChanged(MedicalHistoryTypes.hyperlipidemia.index, value),
                 ),
-                Text(MedicalHistoryTypes.hyperlipidemia.name, style: TextStyle(fontSize: 16.0),),
+                Text(MedicalHistoryTypes.hyperlipidemia.name, style: TextStyle(fontSize: 16.0, color: _lableColorList[MedicalHistoryTypes.hyperlipidemia.index]),),
               ],
             ),
             Row(
@@ -123,15 +103,17 @@ class _MedicalHistoryEditCellState extends State<MedicalHistoryEditCell> {
                     style: TextStyle(fontSize: 16.0),),
                 ),
                 Checkbox(
+                  activeColor: Colors.black,
                   value: _itemValue.medicalHistoryTypeList[MedicalHistoryTypes.dm.index],
                   onChanged: (bool value) => _checkboxOnChanged(MedicalHistoryTypes.dm.index, value),
                 ),
-                Text(MedicalHistoryTypes.dm.name, style: TextStyle(fontSize: 16.0),),
+                Text(MedicalHistoryTypes.dm.name, style: TextStyle(fontSize: 16.0, color: _lableColorList[MedicalHistoryTypes.dm.index]),),
                 Checkbox(
+                  activeColor: Colors.black,
                   value: _itemValue.medicalHistoryTypeList[MedicalHistoryTypes.glaucoma.index],
                   onChanged: (bool value) => _checkboxOnChanged(MedicalHistoryTypes.glaucoma.index, value),
                 ),
-                Text(MedicalHistoryTypes.glaucoma.name, style: TextStyle(fontSize: 16.0),),
+                Text(MedicalHistoryTypes.glaucoma.name, style: TextStyle(fontSize: 16.0, color: _lableColorList[MedicalHistoryTypes.glaucoma.index]),),
               ],
             ),
             Row(
@@ -142,15 +124,17 @@ class _MedicalHistoryEditCellState extends State<MedicalHistoryEditCell> {
                     style: TextStyle(fontSize: 16.0),),
                 ),
                 Checkbox(
+                  activeColor: Colors.black,
                   value: _itemValue.medicalHistoryTypeList[MedicalHistoryTypes.kd.index],
                   onChanged: (bool value) => _checkboxOnChanged(MedicalHistoryTypes.kd.index, value),
                 ),
-                Text(MedicalHistoryTypes.kd.name, style: TextStyle(fontSize: 16.0),),
+                Text(MedicalHistoryTypes.kd.name, style: TextStyle(fontSize: 16.0, color: _lableColorList[MedicalHistoryTypes.kd.index]),),
                 Checkbox(
+                  activeColor: Colors.black,
                   value: _itemValue.medicalHistoryTypeList[MedicalHistoryTypes.asthma.index],
                   onChanged: (bool value) => _checkboxOnChanged(MedicalHistoryTypes.asthma.index, value),
                 ),
-                Text(MedicalHistoryTypes.asthma.name, style: TextStyle(fontSize: 16.0),),
+                Text(MedicalHistoryTypes.asthma.name, style: TextStyle(fontSize: 16.0, color: _lableColorList[MedicalHistoryTypes.asthma.index]),),
               ],
             ),
             Row(
@@ -161,15 +145,17 @@ class _MedicalHistoryEditCellState extends State<MedicalHistoryEditCell> {
                     style: TextStyle(fontSize: 16.0),),
                 ),
                 Checkbox(
+                  activeColor: Colors.black,
                   value: _itemValue.medicalHistoryTypeList[MedicalHistoryTypes.bph.index],
                   onChanged: (bool value) => _checkboxOnChanged(MedicalHistoryTypes.bph.index, value),
                 ),
-                Text(MedicalHistoryTypes.bph.name, style: TextStyle(fontSize: 16.0),),
+                Text(MedicalHistoryTypes.bph.name, style: TextStyle(fontSize: 16.0, color: _lableColorList[MedicalHistoryTypes.bph.index]),),
                 Checkbox(
+                  activeColor: Colors.black,
                   value: _itemValue.medicalHistoryTypeList[MedicalHistoryTypes.ld.index],
                   onChanged: (bool value) => _checkboxOnChanged(MedicalHistoryTypes.ld.index, value),
                 ),
-                Text(MedicalHistoryTypes.ld.name, style: TextStyle(fontSize: 16.0),),
+                Text(MedicalHistoryTypes.ld.name, style: TextStyle(fontSize: 16.0, color: _lableColorList[MedicalHistoryTypes.ld.index]),),
               ],
             ),
             Row(
@@ -180,10 +166,11 @@ class _MedicalHistoryEditCellState extends State<MedicalHistoryEditCell> {
                     style: TextStyle(fontSize: 16.0),),
                 ),
                 Checkbox(
+                  activeColor: Colors.black,
                   value: _itemValue.medicalHistoryTypeList[MedicalHistoryTypes.gdu.index],
                   onChanged: (bool value) => _checkboxOnChanged(MedicalHistoryTypes.gdu.index, value),
                 ),
-                Text(MedicalHistoryTypes.gdu.name, style: TextStyle(fontSize: 16.0),),
+                Text(MedicalHistoryTypes.gdu.name, style: TextStyle(fontSize: 16.0, color: _lableColorList[MedicalHistoryTypes.gdu.index]),),
               ],
             ),
             Row(
@@ -194,28 +181,17 @@ class _MedicalHistoryEditCellState extends State<MedicalHistoryEditCell> {
                     style: TextStyle(fontSize: 16.0),),
                 ),
                 Checkbox(
+                  activeColor: Colors.black,
                   value: _itemValue.medicalHistoryTypeList[MedicalHistoryTypes.hd.index],
                   onChanged: (bool value) => _checkboxOnChanged(MedicalHistoryTypes.hd.index, value),
                 ),
-                Text(MedicalHistoryTypes.hd.name, style: TextStyle(fontSize: 16.0),),
+                Text(MedicalHistoryTypes.hd.name, style: TextStyle(fontSize: 16.0, color: _lableColorList[MedicalHistoryTypes.hd.index]),),
                 Text(" (", style: TextStyle(fontSize: 16.0),),
                 Container(
                   width: MediaQuery.of(context).size.width - 190,
                   padding: EdgeInsets.symmetric(horizontal: 0.0),
-                  child: TextFormField(
-                    keyboardType: TextInputType.multiline,
+                  child: Text(_itemValue.medicalHdText,
                     maxLines: null,
-                    controller: _hdTextController,
-                    focusNode: _hdFocusNode,
-                    onChanged: (String text) {
-                      setState(() {
-                        // _itemValue.medicalHistoryTypeList[MedicalHistoryTypes.hd.index] = text.isNotEmpty;
-                      });
-                    },
-                    onEditingComplete: () => _hdTextOnEditigComplete(),
-                    decoration: InputDecoration(
-                      hintText: '${MedicalHistoryTypes.hd.name}を入力',
-                    ),
                     style: TextStyle(fontSize: 12.0, height: 1.0),
                   ),
                 ),
@@ -230,28 +206,17 @@ class _MedicalHistoryEditCellState extends State<MedicalHistoryEditCell> {
                     style: TextStyle(fontSize: 16.0),),
                 ),
                 Checkbox(
+                  activeColor: Colors.black,
                   value: _itemValue.medicalHistoryTypeList[MedicalHistoryTypes.etc.index],
                   onChanged: (bool value) => _checkboxOnChanged(MedicalHistoryTypes.etc.index, value),
                 ),
-                Text(MedicalHistoryTypes.etc.name, style: TextStyle(fontSize: 16.0),),
+                Text(MedicalHistoryTypes.etc.name, style: TextStyle(fontSize: 16.0,color: _lableColorList[MedicalHistoryTypes.etc.index]),),
                 Text(" (", style: TextStyle(fontSize: 16.0),),
                 Container(
                   width: MediaQuery.of(context).size.width - 190,
                   padding: EdgeInsets.symmetric(vertical: 5.0),
-                  child: TextFormField(
-                    keyboardType: TextInputType.multiline,
+                  child: Text(_itemValue.medicalEtcText,
                     maxLines: null,
-                    controller: _etcTextController,
-                    focusNode: _etcFocusNode,
-                    onChanged: (String text) {
-                      setState(() {
-                        // _itemValue.medicalHistoryTypeList[MedicalHistoryTypes.etc.index] = text.isNotEmpty;
-                      });
-                    },
-                    onEditingComplete: () => _etcTextOnEditigComplete(),
-                    decoration: InputDecoration(
-                      hintText: '${MedicalHistoryTypes.etc.name}を入力',
-                    ),
                     style: TextStyle(fontSize: 12.0, height: 1.0),
                   ),
                 ),
@@ -259,51 +224,17 @@ class _MedicalHistoryEditCellState extends State<MedicalHistoryEditCell> {
               ]
             ),
         ],)
-      );
+      )
+    );
+  }
+
+  void _updateRadioTextColor() {
+    for (int idx = 0; idx < _lableColorList.length; idx++) {
+      _lableColorList[idx] = _itemValue.medicalHistoryTypeList != null && _itemValue.medicalHistoryTypeList[idx] ? Colors.black : Colors.black38;
+    }
   }
 
   // チェックボックス選択時の処理
   void _checkboxOnChanged(int index, bool value) {
-    setState(() {
-      // 相関チェック
-      if (!value) {
-        _hdTextController.text = (MedicalHistoryTypes.hd.index == index) ? '' : _hdTextController.text;
-        _etcTextController.text = (MedicalHistoryTypes.etc.index == index) ? '' : _etcTextController.text;
-      }
-      // 該当チェックボックスにチェック状態の更新を行う
-      _itemValue.medicalHistoryTypeList[index] = value;
-
-      // テキストも更新する
-      _itemValue.medicalHdText = _hdTextController.text;
-      _itemValue.medicalEtcText = _etcTextController.text;
-
-      // 親ページ画面へ反映する
-      widget.onCellEditing(_itemValue);
-    });
   }
-
-  /// ETCテキストフィールド入力完了時の処理
-  void _hdTextOnEditigComplete() {
-    setState(() {
-      // 入力あり時、該当チェックボックスをONにする
-      _itemValue.medicalHistoryTypeList[MedicalHistoryTypes.hd.index] = _hdTextController.text.isNotEmpty;
-
-      // 親ページへ反映さえる
-      _itemValue.medicalHdText = _hdTextController.text;
-      widget.onCellEditing(_itemValue);
-    });
-  }
-
-  /// ETCテキストフィールド入力完了時の処理
-  void _etcTextOnEditigComplete() {
-    setState(() {
-      // 入力あり時、該当チェックボックスをONにする
-      _itemValue.medicalHistoryTypeList[MedicalHistoryTypes.etc.index] = _etcTextController.text.isNotEmpty;
-
-      // 親ページへ反映さえる
-      _itemValue.medicalEtcText = _etcTextController.text;
-      widget.onCellEditing(_itemValue);
-    });
-  }
-
 }

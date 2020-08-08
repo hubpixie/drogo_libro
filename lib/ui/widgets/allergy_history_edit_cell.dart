@@ -110,8 +110,6 @@ class _AllergyHistoryEditCellState extends State<AllergyHistoryEditCell> {
   // チェックボックス選択時の処理
   void _checkboxOnChanged(int index, bool value) {
     setState(() {
-      // キーボードを閉じる
-      FocusScope.of(context).unfocus();
 
       // 該当チェックボックスにチェック状態の更新を行う
       _allergyTypeList[index] = value;

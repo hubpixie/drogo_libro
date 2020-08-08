@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:drogo_libro/config/service_setting.dart';
 import 'package:drogo_libro/core/enums/viewstate.dart';
-import 'package:drogo_libro/core/enums/http_status.dart';
 
 import 'package:drogo_libro/core/models/data_result.dart';
 import 'package:drogo_libro/core/models/foryou_info.dart';
@@ -20,11 +19,7 @@ class ForyouViewModel extends BaseViewModel {
   ///  
   Future getForyouInfo(int userId) async {
     setState(ViewState.Busy);
-    try {
-      await _foryouService.getForyouInfoForUser(userId);
-    } catch(error){
-      DataResult<ForyouInfo>.error(HttpStatus.unkwnown, error);
-    }
+    await _foryouService.getForyouInfoForUser(userId);
     setState(ViewState.Idle);
   }
 
@@ -33,14 +28,10 @@ class ForyouViewModel extends BaseViewModel {
   Future updateForyouInfo(ForyouInfo body) async {
 
     setState(ViewState.Busy);
-    try {
-      if(body.id == null) {
-        await _foryouService.createForyouInfo(body);
-      } else {
-        await _foryouService.updateForyouInfo(body);
-      }
-    } catch(error){
-      DataResult<ForyouInfo>.error(HttpStatus.unkwnown, error);
+    if(body.id == null) {
+      await _foryouService.createForyouInfo(body);
+    } else {
+      await _foryouService.updateForyouInfo(body);
     }
     setState(ViewState.Idle);
   }

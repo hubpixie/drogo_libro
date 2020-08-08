@@ -12,7 +12,7 @@ import 'package:drogo_libro/ui/shared/app_colors.dart';
 import 'package:drogo_libro/ui/widgets/blood_type_present_cell.dart';
 import 'package:drogo_libro/ui/widgets/allergy_history_edit_cell.dart';
 import 'package:drogo_libro/ui/widgets/suplement_info_edit_cell.dart';
-import 'package:drogo_libro/ui/widgets/medical_history_edit_cell.dart';
+import 'package:drogo_libro/ui/widgets/medical_history_present_cell.dart';
 import 'package:drogo_libro/ui/widgets/side_effect_edit_cell.dart';
 
 import 'base_view.dart';
@@ -65,42 +65,7 @@ class _ForyouPresentViewState extends State<ForyouPresentView> {
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
-                      if(viewModel.foryouInfo != null) {
-                        if(!viewModel.foryouInfo.hasError) {
-                          if(!viewModel.foryouInfo.hasData) {
-                            _itemValue = ForyouInfo();
-                          } else {
-                            _itemValue = viewModel.foryouInfo.result;
-                          }
-                        }
-                      }
-                      switch(index) {
-                        case 0:
-                          return BloodTypePresentCell(
-                            bloodType: _itemValue != null ? _itemValue.bloodType : null,
-                            onCellEditing: () {
-                              Navigator.pushNamed(context, ScreenRouteName.editBloodType.name, arguments: {"bloodType": _itemValue.bloodType})
-                              .then((result) async {
-                                setState(() {
-                                  ForyouInfo value = result;
-                                  _itemValue.bloodType = value != null ? value.bloodType : null;
-                                  // reload this page due to data updated.
-                                  Navigator.pushReplacement(context,
-                                   MaterialPageRoute(builder: (BuildContext context) => super.widget));
-                                });
-                              });
-                            });
-                        case 1:
-                          return MedicalHistoryEditCell();
-                        case 2:
-                          return AllergyHistoryEditCell();
-                        case 3:
-                          return SuplementInfoEditCell();
-                        case 4:
-                          return SideEffectEditCell();
-                        default:
-                          return Container();
-                      }
+                      return _buildCardPart(context, index, viewModel);
                   },
                 ),
               )
@@ -114,6 +79,70 @@ class _ForyouPresentViewState extends State<ForyouPresentView> {
       ),
     );
   }
+
+  Widget _buildCardPart(BuildContext context, int index, ForyouViewModel viewModel) {
+    if(viewModel.foryouInfo != null) {
+      if(!viewModel.foryouInfo.hasError || viewModel.foryouInfo.isNotFound) {
+        if(!viewModel.foryouInfo.hasData) {
+          _itemValue = ForyouInfo();
+        } else {
+          _itemValue = viewModel.foryouInfo.result;
+        }
+      }
+    } else {
+        _itemValue = ForyouInfo();
+    }
+    
+    switch(index) {
+      case 0:
+        return BloodTypePresentCell(
+          itemValue: _itemValue,
+          onCellEditing: () {
+            Navigator.pushNamed(context, ScreenRouteName.editBloodType.name)
+            .then((result) async {
+              setState(() {
+                ForyouInfo value = result;
+                if (value != null) {
+                  _itemValue.bloodType = value.bloodType;
+                }
+
+                // reload this page due to data updated.
+                Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (BuildContext context) => super.widget));
+              });
+            });
+          });
+      case 1:
+        return MedicalHistoryPresnetCell(
+          itemValue: _itemValue,
+          onCellEditing: () {
+            Navigator.pushNamed(context, ScreenRouteName.editMedicalHistory.name)
+            .then((result) async {
+              setState(() {
+                ForyouInfo value = result;
+                if (value != null) {
+                  _itemValue.medicalHistoryTypeList = value.medicalHistoryTypeList;
+                  _itemValue.medicalHdText = value.medicalHdText;
+                  _itemValue.medicalEtcText = value.medicalEtcText;
+                }
+
+                // reload this page due to data updated.
+                Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (BuildContext context) => super.widget));
+              });
+            });
+          });
+      case 2:
+        return AllergyHistoryEditCell();
+      case 3:
+        return SuplementInfoEditCell();
+      case 4:
+        return SideEffectEditCell();
+      default:
+        return Container();
+    }
+
+  }
   
   void _showErrorSnackBarIfNeed(ForyouViewModel viewModel) {
     if(viewModel.state == ViewState.Busy || viewModel.foryouInfo == null || !viewModel.foryouInfo.hasError) {
@@ -121,15 +150,16 @@ class _ForyouPresentViewState extends State<ForyouPresentView> {
     }
     final snackBar = SnackBar(
         backgroundColor: Colors.red,
-        content: Text('エラーが発生しました\n(error:${viewModel.foryouInfo.code})', style: TextStyle(color: Colors.white),),
+        content: Text('エラーが発生しました\n(error:${viewModel.foryouInfo.errorCode})', style: TextStyle(color: Colors.white),),
         action: SnackBarAction(
           label: 'OK',
-          onPressed: () {},
+          onPressed: () {
+            _scaffoldKey.currentState.hideCurrentSnackBar();
+          },
         ),
         duration: Duration(seconds: 60),
       );
       _scaffoldKey.currentState.showSnackBar(snackBar);
-      // Scaffold.of(context).showSnackBar(snackBar);
   }
 
 }
