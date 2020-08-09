@@ -11,7 +11,7 @@ import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
 import 'package:drogo_libro/ui/shared/app_colors.dart';
 import 'package:drogo_libro/ui/widgets/blood_type_present_cell.dart';
 import 'package:drogo_libro/ui/widgets/allergy_history_present_cell.dart';
-import 'package:drogo_libro/ui/widgets/suplement_info_edit_cell.dart';
+import 'package:drogo_libro/ui/widgets/suplement_info_present_cell.dart';
 import 'package:drogo_libro/ui/widgets/medical_history_present_cell.dart';
 import 'package:drogo_libro/ui/widgets/side_effect_edit_cell.dart';
 
@@ -152,7 +152,24 @@ class _ForyouPresentViewState extends State<ForyouPresentView> {
             });
           });
       case 3:
-        return SuplementInfoEditCell();
+        return SuplementInfoPresentCell(
+          itemValue: _itemValue,
+          onCellEditing: () {
+            Navigator.pushNamed(context, ScreenRouteName.editSuplements.name)
+            .then((result) async {
+              setState(() {
+                ForyouInfo value = result;
+                if (value != null) {
+                  _itemValue.suplementTypeList = value.suplementTypeList;
+                  _itemValue.suplementEtcText = value.suplementEtcText;
+                }
+
+                // reload this page due to data updated.
+                Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (BuildContext context) => super.widget));
+              });
+            });
+          });
       case 4:
         return SideEffectEditCell();
       default:

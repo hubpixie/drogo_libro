@@ -9,10 +9,13 @@ class ForyouInfo{
   String medicalEtcText;
   List<bool> allergyHistoryTypeList;
   String allergyEtcText;
+  List<bool> suplementTypeList;
+  String suplementEtcText;
   
   ForyouInfo({this.id, this.userId, this.bloodType, 
     this.medicalHistoryTypeList, this.medicalHdText, this.medicalEtcText,
-    this.allergyHistoryTypeList, this.allergyEtcText
+    this.allergyHistoryTypeList, this.allergyEtcText,
+    this.suplementTypeList, this.suplementEtcText,
     });
 
   ForyouInfo.fromJson(Map<String, dynamic> json) {
@@ -30,6 +33,11 @@ class ForyouInfo{
       return dsList.map((element) => element != 0).toList();
     }();
     allergyEtcText = json['allergy_etc_text'];
+    suplementTypeList = () {
+      final dsList = json['suplement_type_list'] as List;
+      return dsList.map((element) => element != 0).toList();
+    }();
+    suplementEtcText = json['suplement_etc_text'];
   }
 
   Map<String, dynamic> toJson() {
@@ -42,6 +50,8 @@ class ForyouInfo{
     data['medical_etc_text'] = this.medicalEtcText;
     data['allergy_history_type_list'] = this.allergyHistoryTypeList.map((element) => element ? 1 : 0).toList();
     data['allergy_etc_text'] = this.allergyEtcText;
+    data['suplement_type_list'] = this.suplementTypeList.map((element) => element ? 1 : 0).toList();
+    data['suplement_etc_text'] = this.suplementEtcText;
 
     return data;
   }

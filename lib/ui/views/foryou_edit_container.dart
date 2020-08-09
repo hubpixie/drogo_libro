@@ -193,7 +193,27 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
           }
         );
       case ScreenRouteName.editSuplements:
-        return SuplementInfoEditCell();
+        return SuplementInfoEditCell(
+          itemValue: ForyouInfo(suplementTypeList: _itemValue.suplementTypeList != null ? [..._itemValue.suplementTypeList] : null, 
+            suplementEtcText: _itemValue.suplementEtcText),
+          onCellEditing: (newValue) {
+            setState(() {
+              ForyouInfo newItemValue = newValue;
+              /// each checkbox
+              if(!_isButtonEnabled) {
+                _isButtonEnabled = _isCheckboxValuesChanged(
+                _itemValue.suplementTypeList, newItemValue.suplementTypeList);
+              }
+              _itemValue.suplementTypeList = newItemValue.suplementTypeList;
+
+              /// etc text
+              if(!_isButtonEnabled) {
+                _isButtonEnabled = newItemValue.suplementEtcText != _itemValue.suplementEtcText;
+              }
+              _itemValue.suplementEtcText = newItemValue.suplementEtcText;
+            });
+          }
+        );
       case ScreenRouteName.editSideEffect:
         return SideEffectEditCell();
       default:
