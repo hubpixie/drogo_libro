@@ -12,8 +12,8 @@ import 'base_view_model.dart';
 class ForyouViewModel extends BaseViewModel {
   ForyouInfosService _foryouService = ServiceSetting.locator<ForyouInfosService>();
   
-  DataResult get foryouInfo => _foryouService.foryouInfo;
-  DataResult get foryouInfoUpdated => _foryouService.foryouInfoUpdated;
+  DataResult get fetchedForyouInfo => _foryouService.fetchedForyouInfo;
+  DataResult get updatedForyouInfo => _foryouService.updatedForyouInfo;
 
   /// get foryou info
   ///  

@@ -17,7 +17,7 @@ class Comments extends StatelessWidget {
       builder: (context, model, child) => model.state == ViewState.Busy 
       ? Center(child: CircularProgressIndicator())
       : Expanded(child: ListView(
-        children: model.comments.result
+        children: model.fetchedComments.result
                   .map((comment) => CommentItem(comment)).toList(),
       ),)
     );

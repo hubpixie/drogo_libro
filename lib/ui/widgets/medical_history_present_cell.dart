@@ -1,7 +1,8 @@
-import 'package:drogo_libro/core/models/foryou_info.dart';
+
 import 'package:flutter/material.dart';
 
 import 'package:drogo_libro/core/enums/code_enums.dart';
+import 'package:drogo_libro/core/models/foryou_info.dart';
 
 typedef CellEditingDelegate = void Function();
 class MedicalHistoryPresnetCell extends StatefulWidget {
@@ -38,6 +39,7 @@ class _MedicalHistoryPresentCellState extends State<MedicalHistoryPresnetCell> {
     _itemValue.medicalHistoryTypeList = _itemValue.medicalHistoryTypeList != null ? _itemValue.medicalHistoryTypeList : List.filled(MedicalHistoryTypes.values.length, false);
     _itemValue.medicalHdText = _itemValue.medicalHdText != null ? _itemValue.medicalHdText : '';
     _itemValue.medicalEtcText = _itemValue.medicalEtcText != null ? _itemValue.medicalEtcText : '';
+    _updateCheckTextColor();
 
     return Theme(
       data: Theme.of(context).copyWith(
@@ -186,16 +188,22 @@ class _MedicalHistoryPresentCellState extends State<MedicalHistoryPresnetCell> {
                   onChanged: (bool value) => _checkboxOnChanged(MedicalHistoryTypes.hd.index, value),
                 ),
                 Text(MedicalHistoryTypes.hd.name, style: TextStyle(fontSize: 16.0, color: _lableColorList[MedicalHistoryTypes.hd.index]),),
-                Text(" (", style: TextStyle(fontSize: 16.0),),
+                Text("  "),
                 Container(
                   width: MediaQuery.of(context).size.width - 190,
-                  padding: EdgeInsets.symmetric(horizontal: 0.0),
+                  padding: EdgeInsets.symmetric(vertical: 5.0),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: _lableColorList[MedicalHistoryTypes.hd.index],
+                        width: 1.0))),
                   child: Text(_itemValue.medicalHdText,
                     maxLines: null,
-                    style: TextStyle(fontSize: 12.0, height: 1.0),
+                    style: TextStyle(fontSize: 14.0, height: 1.0,
+                      color: _lableColorList[MedicalHistoryTypes.hd.index],
+                    ),
                   ),
                 ),
-                Text(" )", style: TextStyle(fontSize: 16.0),),
               ]
             ),
             Row(
@@ -211,16 +219,22 @@ class _MedicalHistoryPresentCellState extends State<MedicalHistoryPresnetCell> {
                   onChanged: (bool value) => _checkboxOnChanged(MedicalHistoryTypes.etc.index, value),
                 ),
                 Text(MedicalHistoryTypes.etc.name, style: TextStyle(fontSize: 16.0,color: _lableColorList[MedicalHistoryTypes.etc.index]),),
-                Text(" (", style: TextStyle(fontSize: 16.0),),
+                Text("  "),
                 Container(
                   width: MediaQuery.of(context).size.width - 190,
                   padding: EdgeInsets.symmetric(vertical: 5.0),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: _lableColorList[MedicalHistoryTypes.etc.index],
+                        width: 1.0))),
                   child: Text(_itemValue.medicalEtcText,
                     maxLines: null,
-                    style: TextStyle(fontSize: 12.0, height: 1.0),
+                    style: TextStyle(fontSize: 14.0, height: 1.0,
+                      color: _lableColorList[MedicalHistoryTypes.etc.index],
+                    ),
                   ),
                 ),
-                Text(" )", style: TextStyle(fontSize: 16.0),),
               ]
             ),
         ],)
@@ -228,7 +242,7 @@ class _MedicalHistoryPresentCellState extends State<MedicalHistoryPresnetCell> {
     );
   }
 
-  void _updateRadioTextColor() {
+  void _updateCheckTextColor() {
     for (int idx = 0; idx < _lableColorList.length; idx++) {
       _lableColorList[idx] = _itemValue.medicalHistoryTypeList != null && _itemValue.medicalHistoryTypeList[idx] ? Colors.black : Colors.black38;
     }

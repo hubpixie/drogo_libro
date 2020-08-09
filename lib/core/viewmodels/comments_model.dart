@@ -8,11 +8,11 @@ import 'base_view_model.dart';
 class CommentsModel extends BaseViewModel {
   WebApi _api = ServiceSetting.locator<WebApi>();
 
-  DataResult comments;
+  DataResult fetchedComments;
 
   Future fetchComments(int postId) async {
     setState(ViewState.Busy);
-    comments = await _api.getCommentsForPost(postId);
+    fetchedComments = await _api.getCommentsForPost(postId);
     setState(ViewState.Idle);
   }
 }

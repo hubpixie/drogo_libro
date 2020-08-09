@@ -10,7 +10,7 @@ import 'package:drogo_libro/core/viewmodels/foryou_view_model.dart';
 import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
 import 'package:drogo_libro/ui/shared/app_colors.dart';
 import 'package:drogo_libro/ui/widgets/blood_type_present_cell.dart';
-import 'package:drogo_libro/ui/widgets/allergy_history_edit_cell.dart';
+import 'package:drogo_libro/ui/widgets/allergy_history_present_cell.dart';
 import 'package:drogo_libro/ui/widgets/suplement_info_edit_cell.dart';
 import 'package:drogo_libro/ui/widgets/medical_history_present_cell.dart';
 import 'package:drogo_libro/ui/widgets/side_effect_edit_cell.dart';
@@ -81,12 +81,12 @@ class _ForyouPresentViewState extends State<ForyouPresentView> {
   }
 
   Widget _buildCardPart(BuildContext context, int index, ForyouViewModel viewModel) {
-    if(viewModel.foryouInfo != null) {
-      if(!viewModel.foryouInfo.hasError || viewModel.foryouInfo.isNotFound) {
-        if(!viewModel.foryouInfo.hasData) {
+    if(viewModel.fetchedForyouInfo != null) {
+      if(!viewModel.fetchedForyouInfo.hasError || viewModel.fetchedForyouInfo.isNotFound) {
+        if(!viewModel.fetchedForyouInfo.hasData) {
           _itemValue = ForyouInfo();
         } else {
-          _itemValue = viewModel.foryouInfo.result;
+          _itemValue = viewModel.fetchedForyouInfo.result;
         }
       }
     } else {
@@ -133,7 +133,24 @@ class _ForyouPresentViewState extends State<ForyouPresentView> {
             });
           });
       case 2:
-        return AllergyHistoryEditCell();
+        return AllergyHistoryPresentCell(
+          itemValue: _itemValue,
+          onCellEditing: () {
+            Navigator.pushNamed(context, ScreenRouteName.editAllergy.name)
+            .then((result) async {
+              setState(() {
+                ForyouInfo value = result;
+                if (value != null) {
+                  _itemValue.allergyHistoryTypeList = value.allergyHistoryTypeList;
+                  _itemValue.allergyEtcText = value.allergyEtcText;
+                }
+
+                // reload this page due to data updated.
+                Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (BuildContext context) => super.widget));
+              });
+            });
+          });
       case 3:
         return SuplementInfoEditCell();
       case 4:
@@ -145,12 +162,12 @@ class _ForyouPresentViewState extends State<ForyouPresentView> {
   }
   
   void _showErrorSnackBarIfNeed(ForyouViewModel viewModel) {
-    if(viewModel.state == ViewState.Busy || viewModel.foryouInfo == null || !viewModel.foryouInfo.hasError) {
+    if(viewModel.state == ViewState.Busy || viewModel.fetchedForyouInfo == null || !viewModel.fetchedForyouInfo.hasError) {
       return;
     }
     final snackBar = SnackBar(
         backgroundColor: Colors.red,
-        content: Text('エラーが発生しました\n(error:${viewModel.foryouInfo.errorCode})', style: TextStyle(color: Colors.white),),
+        content: Text('エラーが発生しました\n(error:${viewModel.fetchedForyouInfo.errorCode})', style: TextStyle(color: Colors.white),),
         action: SnackBarAction(
           label: 'OK',
           onPressed: () {

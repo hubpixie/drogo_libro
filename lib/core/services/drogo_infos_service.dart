@@ -7,12 +7,12 @@ import 'web_api.dart';
 class DrogoInfosService {
   WebApi _api = ServiceSetting.locator<WebApi>();
 
-  DataResult _drogoInfos;
-  DataResult get drogoInfoList => _drogoInfos;
+  DataResult _fetchedDrogoInfos;
+  DataResult get fetchedDrogoInfos => _fetchedDrogoInfos;
 
   Future getDrogoInfosForUser(int userId, 
     {DrogoSearchParam param}) async {
-    _drogoInfos = await _api.getDrogoInfosForUser(userId, param: param);
+    _fetchedDrogoInfos = await _api.getDrogoInfosForUser(userId, param: param);
   }
 
 } 

@@ -9,9 +9,9 @@ import 'base_view_model.dart';
 class DrogoViewModel extends BaseViewModel {
   DrogoInfosService _drogoService = ServiceSetting.locator<DrogoInfosService>();
   
-  DataResult get drogoInfoList => _drogoService.drogoInfoList;
+  DataResult get fetchedDrogoInfos => _drogoService.fetchedDrogoInfos;
 
-  Future getDrogoInfoList(int userId, 
+  Future getDrogoInfos(int userId, 
     {DrogoSearchParam param}) async {
 
     setState(ViewState.Busy);

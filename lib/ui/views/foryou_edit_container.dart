@@ -4,7 +4,6 @@ import 'package:loading_overlay/loading_overlay.dart';
 
 import 'package:drogo_libro/core/enums/viewstate.dart';
 import 'package:drogo_libro/core/models/user.dart';
-import 'package:drogo_libro/core/enums/code_enums.dart';
 import 'package:drogo_libro/core/models/foryou_info.dart';
 import 'package:drogo_libro/core/viewmodels/foryou_view_model.dart';
 import 'package:drogo_libro/ui/shared/app_colors.dart';
@@ -66,12 +65,12 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
   }
 
   Widget _dataBody(ForyouViewModel viewModel) {
-    if(viewModel.foryouInfo != null) {
-      if(!viewModel.foryouInfo.hasError || viewModel.foryouInfo.isNotFound) {
-        if(!viewModel.foryouInfo.hasData) {
+    if(viewModel.fetchedForyouInfo != null) {
+      if(!viewModel.fetchedForyouInfo.hasError || viewModel.fetchedForyouInfo.isNotFound) {
+        if(!viewModel.fetchedForyouInfo.hasData) {
           _itemValue = ForyouInfo();
         } else {
-          _itemValue = viewModel.foryouInfo.result;
+          _itemValue = viewModel.fetchedForyouInfo.result;
         }
       }
     } else {
@@ -145,7 +144,7 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
         );
       case ScreenRouteName.editMedicalHistory:
         return MedicalHistoryEditCell(
-          itemValue: ForyouInfo(medicalHistoryTypeList: _itemValue.medicalHistoryTypeList != null ? [..._itemValue.medicalHistoryTypeList.map((e) => e).toList()] : null, 
+          itemValue: ForyouInfo(medicalHistoryTypeList: _itemValue.medicalHistoryTypeList != null ? [..._itemValue.medicalHistoryTypeList] : null, 
             medicalHdText: _itemValue.medicalHdText, medicalEtcText: _itemValue.medicalEtcText),
           onCellEditing: (newValue) {
             setState(() {
@@ -172,7 +171,27 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
           }
         );
       case ScreenRouteName.editAllergy:
-        return AllergyHistoryEditCell();
+        return AllergyHistoryEditCell(
+          itemValue: ForyouInfo(allergyHistoryTypeList: _itemValue.allergyHistoryTypeList != null ? [..._itemValue.allergyHistoryTypeList] : null, 
+            allergyEtcText: _itemValue.allergyEtcText),
+          onCellEditing: (newValue) {
+            setState(() {
+              ForyouInfo newItemValue = newValue;
+              /// each checkbox
+              if(!_isButtonEnabled) {
+                _isButtonEnabled = _isCheckboxValuesChanged(
+                _itemValue.allergyHistoryTypeList, newItemValue.allergyHistoryTypeList);
+              }
+              _itemValue.allergyHistoryTypeList = newItemValue.allergyHistoryTypeList;
+
+              /// etc text
+              if(!_isButtonEnabled) {
+                _isButtonEnabled = newItemValue.allergyEtcText != _itemValue.allergyEtcText;
+              }
+              _itemValue.allergyEtcText = newItemValue.allergyEtcText;
+            });
+          }
+        );
       case ScreenRouteName.editSuplements:
         return SuplementInfoEditCell();
       case ScreenRouteName.editSideEffect:
@@ -205,7 +224,7 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
       // Update data to run http put reqest.
       _itemValue.userId = context.read<User>().id;
       viewModel.updateForyouInfo(_itemValue).then((value) async {
-        if(viewModel.foryouInfoUpdated != null && !viewModel.foryouInfoUpdated.hasError) {
+        if(viewModel.updatedForyouInfo != null && !viewModel.updatedForyouInfo.hasError) {
           final snackBar = SnackBar(
               backgroundColor: Colors.deepPurple[900],
               content: Text('正常に保存しました', style: TextStyle(color: Colors.white),),
@@ -231,7 +250,7 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
   void _showErrorSnackBarIfNeed(ForyouViewModel viewModel) {
     final snackBar = SnackBar(
         backgroundColor: Colors.red,
-        content: Text('保存できません\n(error:${viewModel.foryouInfoUpdated.errorCode})', style: TextStyle(color: Colors.white),),
+        content: Text('保存できません\n(error:${viewModel.updatedForyouInfo.errorCode})', style: TextStyle(color: Colors.white),),
         action: SnackBarAction(
           label: 'OK',
           onPressed: () {

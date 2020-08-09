@@ -30,7 +30,7 @@ class _MySearchResultViewState extends State<MySearchResultView> {
   @override
     Widget build(BuildContext context) {
     return BaseView<DrogoViewModel>(
-      onModelReady: (viewModel) => viewModel.getDrogoInfoList(Provider.of<User>(context).id, param: widget.searchedParam),
+      onModelReady: (viewModel) => viewModel.getDrogoInfos(Provider.of<User>(context).id, param: widget.searchedParam),
       builder: (context, viewModel, child) => Scaffold(
         backgroundColor: AppColors.mainBackgroundColor,
         body: viewModel.state == ViewState.Busy
@@ -41,13 +41,13 @@ class _MySearchResultViewState extends State<MySearchResultView> {
               Expanded(
                 child: ListView.builder(
                     padding: const EdgeInsets.all(8),
-                    itemCount: viewModel.drogoInfoList.result.length,
+                    itemCount: viewModel.fetchedDrogoInfos.result.length,
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
                       return SearchResultCell(
                         searchedType: widget.searchedType, 
-                        drogoItem: viewModel.drogoInfoList.result[index],
+                        drogoItem: viewModel.fetchedDrogoInfos.result[index],
                         onCellSelected: (arguments) {
                         Navigator.pushNamed(context, ScreenRouteName.editDrogoDetail.name,
                                       arguments: arguments); 

@@ -8,27 +8,27 @@ class ForyouInfosService {
   WebApi _api = ServiceSetting.locator<WebApi>();
 
   
-  DataResult _foryouInfo;
-  DataResult _foryouInfoUpdated;
-  DataResult get foryouInfo => _foryouInfo;
-  DataResult get foryouInfoUpdated => _foryouInfoUpdated;
+  DataResult _fetchedForyouInfo;
+  DataResult _updatedForyouInfo;
+  DataResult get fetchedForyouInfo => _fetchedForyouInfo;
+  DataResult get updatedForyouInfo => _updatedForyouInfo;
 
   /// Get foryou
   /// 
   Future getForyouInfoForUser(int userId) async {
-    _foryouInfo = await _api.getForyouInfoForUser(userId);
+    _fetchedForyouInfo = await _api.getForyouInfoForUser(userId);
   }
 
   /// Create foryou
   /// 
   Future createForyouInfo(ForyouInfo body) async {
-    _foryouInfoUpdated = await _api.createForyouInfo(body);
+    _updatedForyouInfo = await _api.createForyouInfo(body);
   }
 
   /// Update foryou
   /// 
   Future updateForyouInfo(ForyouInfo body) async {
-    _foryouInfoUpdated = await _api.updateForyouInfo(body);
+    _updatedForyouInfo = await _api.updateForyouInfo(body);
   }
 
 } 

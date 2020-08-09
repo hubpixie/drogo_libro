@@ -34,7 +34,8 @@ class _BloodTypePresentCellState extends State<BloodTypePresentCell> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     _itemValue = widget.itemValue == null ? ForyouInfo() : widget.itemValue;
-
+    _updateRadioTextColor();
+    
     return Theme(
       data: Theme.of(context).copyWith(
         unselectedWidgetColor: Colors.black38,

@@ -6,14 +6,14 @@ import 'web_api.dart';
 class PostsService {
   WebApi _api = ServiceSetting.locator<WebApi>();
 
-  DataResult _posts;
-  DataResult get posts => _posts;
+  DataResult _fetchedPosts;
+  DataResult get posts => _fetchedPosts;
 
   Future getPostsForUser(int userId) async {
-    _posts = await _api.getPostsForUser(userId);
+    _fetchedPosts = await _api.getPostsForUser(userId);
   }
 
   void incrementLikes(int postId){
-    _posts.result.firstWhere((post) => post.id == postId).likes++;
+    _fetchedPosts.result.firstWhere((post) => post.id == postId).likes++;
   }
 } 

@@ -198,7 +198,7 @@ class _MedicalHistoryEditCellState extends State<MedicalHistoryEditCell> {
                   onChanged: (bool value) => _checkboxOnChanged(MedicalHistoryTypes.hd.index, value),
                 ),
                 Text(MedicalHistoryTypes.hd.name, style: TextStyle(fontSize: 16.0),),
-                Text(" (", style: TextStyle(fontSize: 16.0),),
+                Text('  '),
                 Container(
                   width: MediaQuery.of(context).size.width - 190,
                   padding: EdgeInsets.symmetric(horizontal: 0.0),
@@ -207,19 +207,13 @@ class _MedicalHistoryEditCellState extends State<MedicalHistoryEditCell> {
                     maxLines: null,
                     controller: _hdTextController,
                     focusNode: _hdFocusNode,
-                    onChanged: (String text) {
-                      setState(() {
-                        // _itemValue.medicalHistoryTypeList[MedicalHistoryTypes.hd.index] = text.isNotEmpty;
-                      });
-                    },
                     onEditingComplete: () => _hdTextOnEditigComplete(),
                     decoration: InputDecoration(
                       hintText: '${MedicalHistoryTypes.hd.name}を入力',
                     ),
-                    style: TextStyle(fontSize: 12.0, height: 1.0),
+                    style: TextStyle(fontSize: 14.0, height: 1.0),
                   ),
                 ),
-                Text(" )", style: TextStyle(fontSize: 16.0),),
               ]
             ),
             Row(
@@ -234,7 +228,7 @@ class _MedicalHistoryEditCellState extends State<MedicalHistoryEditCell> {
                   onChanged: (bool value) => _checkboxOnChanged(MedicalHistoryTypes.etc.index, value),
                 ),
                 Text(MedicalHistoryTypes.etc.name, style: TextStyle(fontSize: 16.0),),
-                Text(" (", style: TextStyle(fontSize: 16.0),),
+                Text('  '),
                 Container(
                   width: MediaQuery.of(context).size.width - 190,
                   padding: EdgeInsets.symmetric(vertical: 5.0),
@@ -243,19 +237,13 @@ class _MedicalHistoryEditCellState extends State<MedicalHistoryEditCell> {
                     maxLines: null,
                     controller: _etcTextController,
                     focusNode: _etcFocusNode,
-                    onChanged: (String text) {
-                      setState(() {
-                        // _itemValue.medicalHistoryTypeList[MedicalHistoryTypes.etc.index] = text.isNotEmpty;
-                      });
-                    },
                     onEditingComplete: () => _etcTextOnEditigComplete(),
                     decoration: InputDecoration(
                       hintText: '${MedicalHistoryTypes.etc.name}を入力',
                     ),
-                    style: TextStyle(fontSize: 12.0, height: 1.0),
+                    style: TextStyle(fontSize: 14.0, height: 1.0),
                   ),
                 ),
-                Text(" )", style: TextStyle(fontSize: 16.0),),
               ]
             ),
         ],)
