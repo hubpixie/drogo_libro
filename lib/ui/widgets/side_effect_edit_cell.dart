@@ -1,160 +1,129 @@
 import 'package:flutter/material.dart';
 
+import 'package:drogo_libro/core/models/foryou_info.dart';
+import 'package:drogo_libro/ui/widgets/side_effect_edit_row.dart';
+
+typedef CellEditingDelegate = void Function(dynamic);
 class SideEffectEditCell extends StatefulWidget {
+  final ForyouInfo itemValue;
+  final CellEditingDelegate onCellEditing;
+  final  GlobalKey<ScaffoldState> scaffoldKey;
+
+  SideEffectEditCell({this.itemValue, this.onCellEditing, this.scaffoldKey});
 
   @override
   _SideEffectEditCellState createState() => _SideEffectEditCellState();
 }
 
 class _SideEffectEditCellState extends State<SideEffectEditCell> {
-  double _screenWidth;
-  List<Widget> _sideEffectContents;
-  List<List> _textList;
-  int _usedCount = 1;
-
+  ForyouInfo _itemValue;
 
   @override
   void initState() {
     super.initState();
-    _sideEffectContents = [];
-    _textList = List.filled(5, ['','']);
-
   }
 
   @override
   void dispose() {
-    _sideEffectContents = null;
-    _textList = null;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _screenWidth = MediaQuery.of(context).size.width;
+    double screenWidth = MediaQuery.of(context).size.width;
+    _itemValue = widget.itemValue == null ? ForyouInfo() : widget.itemValue;
+    _itemValue.sideEffectList = _itemValue.sideEffectList != null ? _itemValue.sideEffectList : <SideEffectInfo>[];
 
-    if(_sideEffectContents.isEmpty) {
-      _initSideEffectContents();
-    }
-    return 
-      Card(child: Column(
+    return Card(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: _sideEffectContents,
-        )
-      );
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Text(" "),
+              ),
+              Text("最大${SideEffectInfo.kListMxLength}個まで記載可能",
+                  style: TextStyle(fontSize: 14.0),),
+              _itemValue.sideEffectList.length < SideEffectInfo.kListMxLength ? Container(
+                alignment: Alignment.bottomCenter,
+                margin: EdgeInsets.only(left: screenWidth - 230), 
+                height: 25,
+                child: IconButton(
+                  onPressed: () async {
+                    setState(() {
+                      _itemValue.sideEffectList.add(SideEffectInfo());
+                      // 呼び元に返す
+                      widget.onCellEditing(_itemValue);
+                    });
+                  },
+                  padding: new EdgeInsets.all(0.0),
+                  icon: Icon(Icons.add, color: Colors.blueAccent,size: 25.0),
+                  ),
+              ) : Container(),
+            ]
+          ),
+          Container(
+            child: ListView.builder(
+                padding: const EdgeInsets.all(8),
+                itemCount: _itemValue.sideEffectList.length,
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  return Dismissible(
+                    key: ObjectKey(_itemValue.sideEffectList[index]),
+                    child: _buildSideEffectRow(context, index),
+                    background: Container(color: Colors.red),
+                    onDismissed: (direction) async{
+                      setState(() {
+                        // 当該行を削除する
+                        var seInfo = _itemValue.sideEffectList.removeAt(index);
+
+                        widget.scaffoldKey.currentState..removeCurrentSnackBar()
+                        ..showSnackBar(
+                          SnackBar(
+                            content: Text("以下の行を削除しました。\n　くすり名: ${seInfo.drogoName} \n　症状：${seInfo.symptom}"),
+                            action: SnackBarAction(
+                              label: "元に戻す",
+                              onPressed: () async => setState(() {
+                                 _itemValue.sideEffectList.insert(index, seInfo);
+                                  widget.onCellEditing(_itemValue);
+                              }) // this is what you needed
+                            ),
+                            duration: Duration(seconds: 5),
+                          ),
+                        ).closed.then((value) {
+                            //Navigator.of(context).pop(_itemValue);
+                            // 呼び元に返す
+                            widget.onCellEditing(_itemValue);
+                            return Future.value(false);
+                        });
+                      });
+                    },
+                  );
+                },
+            ),
+          ),
+        ]
+      )
+    );
   }
 
- void _initSideEffectContents() {
-   _sideEffectContents.add(
-    Row(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: Text("副作用",
-            style: TextStyle(fontSize: 20.0),),
-        ),
-        Padding( padding: const EdgeInsets.only(top: 10.0),
-        ),
-        Container(
-          width: _screenWidth < 375 ? _screenWidth - 120 : null,
-          child: _screenWidth < 320 ? null : Text("該当の場合、最大５個まで記載可能",
-            style: TextStyle(fontSize: 12.0, height: 1.2), maxLines: 2,)
-        ),
-      ]
-    ),
-   );
+  Widget _buildSideEffectRow(BuildContext context, int index) {
+    return SideEffectEditRow(sideEffectInfo: _itemValue.sideEffectList[index],
+      onCellEditing: (newValue) {
+        SideEffectInfo value = newValue;
+        _itemValue.sideEffectList[index].id = index + 1;
+        if(value != null) {
+          _itemValue.sideEffectList[index].drogoName = value.drogoName;
+          _itemValue.sideEffectList[index].symptom = value.symptom;
 
-
-   _sideEffectContents.add(
-      Row(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 40.0),
-          ),
-          Container(
-            alignment: Alignment.center,
-            width: 90,
-            padding: EdgeInsets.symmetric(horizontal: 0.0),
-            child: Text('おくすり名'),
-          ),
-          Container(
-            alignment: Alignment.center,
-            //width: _screenWidth - 220,
-            padding: EdgeInsets.symmetric(horizontal: 0.0),
-            child: Text('　症状(いつ頃)', textAlign: TextAlign.right,),
-          ),
-          Container(
-            alignment: Alignment.bottomCenter,
-            width: 30,
-            height: 30,
-            child: IconButton(
-              onPressed: () {
-                setState(() {
-                  if(_usedCount  > _textList.length - 1) {return;}
-                  _usedCount++;
-                  _addSideEffectContents(index: _usedCount - 1);
-                });
-              },
-              padding: new EdgeInsets.all(0.0),
-              icon: Icon(Icons.add, color: Colors.blueAccent,size: 30.0),
-              ),
-          )
-        ]
-      )
-   );
-
-  _addSideEffectContents(index: 0);
-
- }
-
- void _addSideEffectContents({int index}) {
-   _sideEffectContents.add(
-      Row(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 40.0),
-          ),
-          Text("( ",
-              style: TextStyle(fontSize: 16.0),),
-          Container(
-            width: 90,
-            padding: EdgeInsets.symmetric(vertical: 5.0),
-            child: TextFormField(
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              decoration: InputDecoration(
-                hintText: 'くすり名を入力',
-              ),
-              style: TextStyle(fontSize: 12.0, height: 1.0),
-              onChanged: (text) {
-                setState(() {
-                 _textList[index][0] = text;
-                });
-              }
-            ),
-          ),
-          Text(" ) ", style: TextStyle(fontSize: 16.0),),
-          Container(
-            width: MediaQuery.of(context).size.width - 200,
-            padding: EdgeInsets.symmetric(vertical: 5.0),
-            child: TextFormField(
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              decoration: InputDecoration(
-                hintText: 'ヒフの胸部にかゆい(2020/8/1頃)',
-              ),
-              style: TextStyle(fontSize: 12.0, height: 1.0),
-              onChanged: (text) {
-                setState(() {
-                 _textList[index][1] = text;
-                });
-              }
-            ),
-          ),
-        ]
-      )
-   );
-
-
- }
+          // 親ページ画面へ反映する
+          widget.onCellEditing(_itemValue);
+        }
+    });
+  }
 
 }

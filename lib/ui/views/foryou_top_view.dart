@@ -26,7 +26,7 @@ class _ForyouTopViewState extends State<ForyouTopView> {
   // Const defines
   static const List<String> _kFunctionButtonTextList = ["Foryou情報を丸ごと見る", "編集方法について", "血液型を編集・確認する", 
     "既往歴を編集・確認する", "アレルギー歴を編集・確認する", "サプリメントなどを編集・確認する", "副作用歴を編集・確認する"];
-  static const List<IconData> _kFunctionButtonIconList = [Icons.present_to_all, Icons.description, Icons.edit_attributes, Icons.edit_attributes, Icons.edit_attributes, Icons.edit_attributes, Icons.edit_attributes];
+  static const List<IconData> _kFunctionButtonIconList = [Icons.present_to_all, Icons.description, Icons.mode_edit, Icons.mode_edit, Icons.mode_edit, Icons.mode_edit, Icons.mode_edit];
 
   //==========================>
 

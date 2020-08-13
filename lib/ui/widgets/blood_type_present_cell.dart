@@ -1,7 +1,7 @@
-import 'package:drogo_libro/core/models/foryou_info.dart';
 import 'package:flutter/material.dart';
 
 import 'package:drogo_libro/core/enums/code_enums.dart';
+import 'package:drogo_libro/core/models/foryou_info.dart';
 
 typedef CellEditingDelegate = void Function();
 class BloodTypePresentCell extends StatefulWidget {

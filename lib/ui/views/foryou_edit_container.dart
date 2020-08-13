@@ -90,8 +90,7 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
               child: ListView.builder(
                   padding: const EdgeInsets.all(8),
                   itemCount: 1,
-                  //scrollDirection: Axis.vertical,
-                  //shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
                   itemBuilder: (BuildContext context, int index) {
                     return _buildCardPart(context, index, viewModel);
                   }
@@ -100,7 +99,7 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
             Container(
               width: 200.0,
               height: 50.0,
-              margin: EdgeInsets.only(bottom: 20.0),
+              margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
               child: FlatButton(
                 onPressed: _isButtonEnabled ? () => _saveButtonOnTapped(viewModel) : null,
                 child: Text('保存',
@@ -144,7 +143,7 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
         );
       case ScreenRouteName.editMedicalHistory:
         return MedicalHistoryEditCell(
-          itemValue: ForyouInfo(medicalHistoryTypeList: _itemValue.medicalHistoryTypeList != null ? [..._itemValue.medicalHistoryTypeList] : null, 
+          itemValue: ForyouInfo(medicalHistoryTypeList: _itemValue.medicalHistoryTypeList != null ? [..._itemValue.medicalHistoryTypeList] : <bool>[], 
             medicalHdText: _itemValue.medicalHdText, medicalEtcText: _itemValue.medicalEtcText),
           onCellEditing: (newValue) {
             setState(() {
@@ -172,7 +171,7 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
         );
       case ScreenRouteName.editAllergy:
         return AllergyHistoryEditCell(
-          itemValue: ForyouInfo(allergyHistoryTypeList: _itemValue.allergyHistoryTypeList != null ? [..._itemValue.allergyHistoryTypeList] : null, 
+          itemValue: ForyouInfo(allergyHistoryTypeList: _itemValue.allergyHistoryTypeList != null ? [..._itemValue.allergyHistoryTypeList] : <bool>[], 
             allergyEtcText: _itemValue.allergyEtcText),
           onCellEditing: (newValue) {
             setState(() {
@@ -194,7 +193,7 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
         );
       case ScreenRouteName.editSuplements:
         return SuplementInfoEditCell(
-          itemValue: ForyouInfo(suplementTypeList: _itemValue.suplementTypeList != null ? [..._itemValue.suplementTypeList] : null, 
+          itemValue: ForyouInfo(suplementTypeList: _itemValue.suplementTypeList != null ? [..._itemValue.suplementTypeList] : <bool>[], 
             suplementEtcText: _itemValue.suplementEtcText),
           onCellEditing: (newValue) {
             setState(() {
@@ -215,7 +214,29 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
           }
         );
       case ScreenRouteName.editSideEffect:
-        return SideEffectEditCell();
+        return SideEffectEditCell(
+            itemValue: ForyouInfo(sideEffectList: _itemValue.sideEffectList != null ?
+             _itemValue.sideEffectList.map((e) => SideEffectInfo(id: e.id, drogoName: e.drogoName, symptom: e.symptom)).toList() : <SideEffectInfo>[], 
+          ),
+          onCellEditing: (newValue) {
+            setState(() {
+              ForyouInfo newItemValue = newValue;
+              /// each checkbox
+              if(!_isButtonEnabled) {
+                _isButtonEnabled = <T>(List<SideEffectInfo> list1, List<SideEffectInfo> list2) {
+                  if(list1.length != list2.length) return true;
+                  for(int idx = 0; idx < list1.length; idx++) {
+                    if(list1[idx].drogoName != list2[idx].drogoName) return true;
+                    if(list1[idx].symptom != list2[idx].symptom) return true;
+                  }
+                  return false;
+                }(_itemValue.sideEffectList, newItemValue.sideEffectList);
+              }
+              _itemValue.sideEffectList = newItemValue.sideEffectList;
+            });
+          },
+          scaffoldKey: _scaffoldKey,
+        );
       default:
         return Container();
     }
@@ -255,8 +276,8 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
               duration: Duration(seconds: 4),
             );
             _scaffoldKey.currentState.showSnackBar(snackBar).closed.then((value) {
-                Navigator.of(context).pop(_itemValue);
-                return Future.value(false);
+              Navigator.of(context).pop(_itemValue);
+              return Future.value(false);
             });
         } else {
           _showErrorSnackBarIfNeed(viewModel);
@@ -267,7 +288,7 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
       });
     });
   }
-  void _showErrorSnackBarIfNeed(ForyouViewModel viewModel) {
+  void _showErrorSnackBarIfNeed(ForyouViewModel viewModel) async{
     final snackBar = SnackBar(
         backgroundColor: Colors.red,
         content: Text('保存できません\n(error:${viewModel.updatedForyouInfo.errorCode})', style: TextStyle(color: Colors.white),),

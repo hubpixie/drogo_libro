@@ -13,7 +13,7 @@ import 'package:drogo_libro/ui/widgets/blood_type_present_cell.dart';
 import 'package:drogo_libro/ui/widgets/allergy_history_present_cell.dart';
 import 'package:drogo_libro/ui/widgets/suplement_info_present_cell.dart';
 import 'package:drogo_libro/ui/widgets/medical_history_present_cell.dart';
-import 'package:drogo_libro/ui/widgets/side_effect_edit_cell.dart';
+import 'package:drogo_libro/ui/widgets/side_effect_present_cell.dart';
 
 import 'base_view.dart';
 
@@ -171,7 +171,23 @@ class _ForyouPresentViewState extends State<ForyouPresentView> {
             });
           });
       case 4:
-        return SideEffectEditCell();
+        return SideEffectPresentCell(
+          itemValue: _itemValue,
+          onCellEditing: () {
+            Navigator.pushNamed(context, ScreenRouteName.editSideEffect.name)
+            .then((result) async {
+              setState(() {
+                ForyouInfo value = result;
+                if (value != null) {
+                  _itemValue.sideEffectList = value.sideEffectList;
+                }
+
+                // reload this page due to data updated.
+                Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (BuildContext context) => super.widget));
+              });
+            });
+          });
       default:
         return Container();
     }
@@ -182,6 +198,7 @@ class _ForyouPresentViewState extends State<ForyouPresentView> {
     if(viewModel.state == ViewState.Busy || viewModel.fetchedForyouInfo == null || !viewModel.fetchedForyouInfo.hasError) {
       return;
     }
+    print("error_message: [${viewModel.fetchedForyouInfo.errorCode}] ${viewModel.fetchedForyouInfo.message}");
     final snackBar = SnackBar(
         backgroundColor: Colors.red,
         content: Text('エラーが発生しました\n(error:${viewModel.fetchedForyouInfo.errorCode})', style: TextStyle(color: Colors.white),),
