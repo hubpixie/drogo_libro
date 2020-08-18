@@ -32,7 +32,6 @@ class _AllergyHistoryPresentCellState extends State<AllergyHistoryPresentCell> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
     _itemValue = widget.itemValue == null ? ForyouInfo() : widget.itemValue;
     _itemValue.allergyHistoryTypeList = _itemValue.allergyHistoryTypeList != null ? _itemValue.allergyHistoryTypeList : List.filled(AllergyTypes.values.length, false);
     _itemValue.allergyEtcText = _itemValue.allergyEtcText != null ? _itemValue.allergyEtcText : '';
@@ -53,10 +52,11 @@ class _AllergyHistoryPresentCellState extends State<AllergyHistoryPresentCell> {
                   child: Text("アレルギー",
                     style: TextStyle(fontSize: 20.0),),
                 ),
+                Spacer(),
                 Container(
                   width: 20,
                   height: 20,
-                  margin: EdgeInsets.only(left: screenWidth - 180),
+                  margin: EdgeInsets.only(right: 20),
                   alignment: Alignment.bottomCenter,
                   child: IconButton( //編集ボタン
                     onPressed: () {

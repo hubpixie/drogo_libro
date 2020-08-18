@@ -72,7 +72,7 @@ class _ForyouPresentViewState extends State<ForyouPresentView> {
             ]
           ),
           isLoading: () {
-            _showErrorSnackBarIfNeed(viewModel);
+            _showErrorSnackBarIfNeed(viewModel: viewModel);
             return viewModel.state == ViewState.Busy;
           }(),
         ),
@@ -194,14 +194,15 @@ class _ForyouPresentViewState extends State<ForyouPresentView> {
 
   }
   
-  void _showErrorSnackBarIfNeed(ForyouViewModel viewModel) {
+  void _showErrorSnackBarIfNeed({ForyouViewModel viewModel}) {
     if(viewModel.state == ViewState.Busy || viewModel.fetchedForyouInfo == null || !viewModel.fetchedForyouInfo.hasError) {
       return;
     }
-    print("error_message: [${viewModel.fetchedForyouInfo.errorCode}] ${viewModel.fetchedForyouInfo.message}");
+    print("error: [${viewModel.fetchedForyouInfo.errorCode}] ${viewModel.fetchedForyouInfo.message}");
+    int errorCode = viewModel.fetchedForyouInfo.errorCode;
     final snackBar = SnackBar(
         backgroundColor: Colors.red,
-        content: Text('エラーが発生しました\n(error:${viewModel.fetchedForyouInfo.errorCode})', style: TextStyle(color: Colors.white),),
+        content: Text('エラーが発生しました\n(error:$errorCode)', style: TextStyle(color: Colors.white),),
         action: SnackBarAction(
           label: 'OK',
           onPressed: () {

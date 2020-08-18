@@ -32,7 +32,6 @@ class _BloodTypePresentCellState extends State<BloodTypePresentCell> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
     _itemValue = widget.itemValue == null ? ForyouInfo() : widget.itemValue;
     _updateRadioTextColor();
     
@@ -51,10 +50,11 @@ class _BloodTypePresentCellState extends State<BloodTypePresentCell> {
                   child: Text("血液型",
                     style: TextStyle(fontSize: 20.0),),
                 ),
+                Spacer(),
                 Container(
                   width: 20,
                   height: 20,
-                  margin: EdgeInsets.only(left: screenWidth - 140),
+                  margin: EdgeInsets.only(right: 20),
                   alignment: Alignment.bottomCenter,
                   child: IconButton( //編集ボタン
                     onPressed: () {

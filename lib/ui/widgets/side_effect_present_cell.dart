@@ -31,7 +31,6 @@ class _SideEffectPresentCellState extends State<SideEffectPresentCell> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
     _itemValue = widget.itemValue == null ? ForyouInfo() : widget.itemValue;
     _itemValue.sideEffectList = _itemValue.sideEffectList != null ? _itemValue.sideEffectList : [];
     
@@ -46,10 +45,11 @@ class _SideEffectPresentCellState extends State<SideEffectPresentCell> {
                 child: Text("副作用",
                   style: TextStyle(fontSize: 20.0),),
               ),
+              Spacer(),
               Container(
                 width: 20,
                 height: 20,
-                margin: EdgeInsets.only(left: screenWidth - 140),
+                margin: EdgeInsets.only(right: 20),
                 alignment: Alignment.bottomCenter,
                 child: IconButton( //編集ボタン
                   onPressed: () {
@@ -60,7 +60,7 @@ class _SideEffectPresentCellState extends State<SideEffectPresentCell> {
                   padding: new EdgeInsets.all(0.0),
                   icon: Icon(Icons.edit, color: Colors.black38, size: 20.0),
                   ),
-              )
+              ),
             ]
           ),
           Row(
@@ -93,7 +93,7 @@ class _SideEffectPresentCellState extends State<SideEffectPresentCell> {
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  return SideEffectPresentRow(sideEffectInfo: _itemValue.sideEffectList[index],);
+                  return SideEffectPresentRow(rowIndex: index, sideEffectInfoList: _itemValue.sideEffectList,);
               },
             ),
           ) :

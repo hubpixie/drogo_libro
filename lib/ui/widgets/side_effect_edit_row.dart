@@ -4,10 +4,11 @@ import 'package:drogo_libro/core/models/foryou_info.dart';
 
 typedef CellEditingDelegate = void Function(dynamic);
 class SideEffectEditRow  extends StatefulWidget {
-  final SideEffectInfo sideEffectInfo;
+  final int rowIndex;
+  final List<SideEffectInfo> sideEffectInfoList;
   final CellEditingDelegate onCellEditing;
 
-  SideEffectEditRow({this.sideEffectInfo, this.onCellEditing});
+  SideEffectEditRow({this.rowIndex, this.sideEffectInfoList, this.onCellEditing});
 
   @override
   _SideEffectEditRowState createState() => _SideEffectEditRowState();
@@ -31,17 +32,17 @@ class _SideEffectEditRowState extends State<SideEffectEditRow> {
     // テキスト入力コントローラの初期化
     _textControllers = [TextEditingController(), TextEditingController()];
     _textControllers[_kIndexDrogo] = TextEditingController(
-      text: widget.sideEffectInfo.drogoName);
+      text: widget.sideEffectInfoList[widget.rowIndex].drogoName);
     _textControllers[_kIndexSymptom] = TextEditingController(
-      text: widget.sideEffectInfo.symptom);
+      text: widget.sideEffectInfoList[widget.rowIndex].symptom);
 
     // テキスト入力コントローラの監視イベント
     _textControllers[_kIndexDrogo].addListener(() { 
-      widget.onCellEditing(SideEffectInfo(id: widget.sideEffectInfo.id, drogoName: _textControllers[_kIndexDrogo].text, 
+      widget.onCellEditing(SideEffectInfo(id: widget.sideEffectInfoList[widget.rowIndex].id, drogoName: _textControllers[_kIndexDrogo].text, 
         symptom: _textControllers[_kIndexSymptom].text));
     });
     _textControllers[_kIndexSymptom].addListener(() { 
-      widget.onCellEditing(SideEffectInfo(id: widget.sideEffectInfo.id, drogoName: _textControllers[_kIndexDrogo].text, 
+      widget.onCellEditing(SideEffectInfo(id: widget.sideEffectInfoList[widget.rowIndex].id, drogoName: _textControllers[_kIndexDrogo].text, 
         symptom: _textControllers[_kIndexSymptom].text));
     });
     super.initState();
@@ -81,7 +82,7 @@ class _SideEffectEditRowState extends State<SideEffectEditRow> {
                 maxLines: null,
                 decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                  labelText: _fieldLabels[index],
+                  labelText: "${_fieldLabels[index]} [${widget.rowIndex+1}]",
                   hintText: _fieldHints[index],
                   fillColor: Colors.white,
                   enabledBorder: new OutlineInputBorder(

@@ -57,10 +57,11 @@ class _SuplementInfoPresentCellState extends State<SuplementInfoPresentCell> {
               ),
               Padding( padding: const EdgeInsets.only(top: 10.0),
               ),
+              Spacer(),
               Container(
                 width: 20,
                 height: 20,
-                margin: EdgeInsets.only(left: screenWidth < 300 ? screenWidth - 260 : screenWidth - 300),
+                margin: EdgeInsets.only(right: 20),
                 alignment: Alignment.bottomCenter,
                 child: IconButton( //編集ボタン
                   onPressed: () {

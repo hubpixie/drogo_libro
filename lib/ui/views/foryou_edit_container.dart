@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -27,22 +29,28 @@ class ForyouEditContainer extends StatefulWidget {
   _ForyouEditContainerState createState() => _ForyouEditContainerState();
 }
 
-class _ForyouEditContainerState extends State<ForyouEditContainer> {
+class _ForyouEditContainerState extends State<ForyouEditContainer>
+ with SingleTickerProviderStateMixin {
   GlobalKey<ScaffoldState> _scaffoldKey;
+  GlobalKey<SideEffectEditCellState> _keySideEffectEditCell;
   ForyouInfo _itemValue;
+  int _sideEffectCount;
   bool _isButtonEnabled = false;
 
   @override
   void initState() {
     _itemValue = widget.itemValue;
-   
+    _sideEffectCount = null;
+
     _scaffoldKey = GlobalKey<ScaffoldState>();
+    _keySideEffectEditCell = GlobalKey<SideEffectEditCellState>();
     super.initState();
   }
 
   @override
   void dispose() {
     _scaffoldKey = null;
+    _keySideEffectEditCell = null;
     super.dispose();
   }
 
@@ -57,7 +65,21 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
         appBar: AppBar(
           backgroundColor: AppColors.appBarBackgroundColor,
           title: Text(widget.title),
-        ),
+          actions: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: (_sideEffectCount != null && _sideEffectCount < SideEffectInfo.kListMxLength) ? GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _keySideEffectEditCell.currentState.addingRow(++_sideEffectCount);
+                  });
+                },
+                child: Icon(
+                    Icons.add
+                ),
+              ) : Container()
+            ),
+          ],        ),
         backgroundColor: AppColors.mainBackgroundColor,
         body: _dataBody(viewModel),
       ),
@@ -214,14 +236,15 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
           }
         );
       case ScreenRouteName.editSideEffect:
-        return SideEffectEditCell(
-            itemValue: ForyouInfo(sideEffectList: _itemValue.sideEffectList != null ?
+        _sideEffectCount = _itemValue.sideEffectList != null ? _itemValue.sideEffectList.length : null;
+        return SideEffectEditCell(key: _keySideEffectEditCell,
+          itemValue: ForyouInfo(sideEffectList: _itemValue.sideEffectList != null ?
              _itemValue.sideEffectList.map((e) => SideEffectInfo(id: e.id, drogoName: e.drogoName, symptom: e.symptom)).toList() : <SideEffectInfo>[], 
           ),
           onCellEditing: (newValue) {
             setState(() {
               ForyouInfo newItemValue = newValue;
-              /// each checkbox
+              /// Compare Side Effect data if changed
               if(!_isButtonEnabled) {
                 _isButtonEnabled = <T>(List<SideEffectInfo> list1, List<SideEffectInfo> list2) {
                   if(list1.length != list2.length) return true;
@@ -232,10 +255,10 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
                   return false;
                 }(_itemValue.sideEffectList, newItemValue.sideEffectList);
               }
+              _sideEffectCount = newItemValue.sideEffectList.length;
               _itemValue.sideEffectList = newItemValue.sideEffectList;
             });
           },
-          scaffoldKey: _scaffoldKey,
         );
       default:
         return Container();
@@ -280,18 +303,21 @@ class _ForyouEditContainerState extends State<ForyouEditContainer> {
               return Future.value(false);
             });
         } else {
-          _showErrorSnackBarIfNeed(viewModel);
+          _showErrorSnackBarIfNeed(viewModel: viewModel);
         }
 
       }).catchError((error) {
-        _showErrorSnackBarIfNeed(viewModel);
+        print("catchError $error");
+        _showErrorSnackBarIfNeed(viewModel: viewModel);
       });
     });
   }
-  void _showErrorSnackBarIfNeed(ForyouViewModel viewModel) async{
+  void _showErrorSnackBarIfNeed({ForyouViewModel viewModel}) async{
+    print("error: [${viewModel.fetchedForyouInfo.errorCode}] ${viewModel.fetchedForyouInfo.message}");
+    int errorCode = viewModel.fetchedForyouInfo.errorCode;
     final snackBar = SnackBar(
         backgroundColor: Colors.red,
-        content: Text('保存できません\n(error:${viewModel.updatedForyouInfo.errorCode})', style: TextStyle(color: Colors.white),),
+        content: Text('保存できません\n(error:$errorCode)', style: TextStyle(color: Colors.white),),
         action: SnackBarAction(
           label: 'OK',
           onPressed: () {

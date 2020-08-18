@@ -34,7 +34,6 @@ class _MedicalHistoryPresentCellState extends State<MedicalHistoryPresnetCell> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
     _itemValue = widget.itemValue == null ? ForyouInfo() : widget.itemValue;
     _itemValue.medicalHistoryTypeList = _itemValue.medicalHistoryTypeList != null ? _itemValue.medicalHistoryTypeList : List.filled(MedicalHistoryTypes.values.length, false);
     _itemValue.medicalHdText = _itemValue.medicalHdText != null ? _itemValue.medicalHdText : '';
@@ -56,10 +55,11 @@ class _MedicalHistoryPresentCellState extends State<MedicalHistoryPresnetCell> {
                   child: Text("既往歴",
                     style: TextStyle(fontSize: 20.0),),
                 ),
+                Spacer(),
                 Container(
                   width: 20,
                   height: 20,
-                  margin: EdgeInsets.only(left: screenWidth - 140),
+                  margin: EdgeInsets.only(right: 20),
                   alignment: Alignment.bottomCenter,
                   child: IconButton( //編集ボタン
                     onPressed: () {

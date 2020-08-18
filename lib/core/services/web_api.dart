@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 
 import 'package:http/io_client.dart';
 import 'package:http/http.dart' as http;
+import 'package:drogo_libro/config/app_env.dart';
 
 import 'package:drogo_libro/core/models/comment.dart';
 import 'package:drogo_libro/core/models/data_result.dart';
@@ -17,34 +18,31 @@ import 'package:drogo_libro/core/models/drogo_search_param.dart';
 
 /// The service responsible for networking requests
 class WebApi {
-  // static const _endpoint = 'https://jsonplaceholder.typicode.com';
-  // static const _endpoint = 'http://macbook-air.local:3000';
-  static const _endpoint = 'http://192.168.0.3:3000';
+  static final String _endpoint = AppEnv.apiBaseUrl;
   static const _commonHeaders = {'Accept': 'application/json', 
     'Content-type': 'application/json'};
-  
   static dynamic _httpClient;
-  dynamic client;
+  static dynamic _client;
 
   WebApi() {
     if (kIsWeb) {
       if (_httpClient == null) {
         _httpClient = new http.Client();
       }
-      client = _httpClient;
+      _client = _httpClient;
     } else {
       if (_httpClient == null) {
         _httpClient = new HttpClient()
           ..badCertificateCallback =
           ((X509Certificate cert, String host, int port) => true);
       } 
-      client = new IOClient(_httpClient);
+      _client = new IOClient(_httpClient);
     }
   }
 
   Future<DataResult> getUserProfile(int userId) async {
     // Get user profile for id
-    var response = await client.get('$_endpoint/users/$userId');
+    var response = await _client.get('$_endpoint/users/$userId');
 
     // Convert and return
     if(response.statusCode >= HttpStatus.badRequest) {
@@ -58,7 +56,7 @@ class WebApi {
 
   Future<DataResult> getPostsForUser(int userId) async {
     // Get user posts for id
-    var response = await client.get('$_endpoint/posts?userId=$userId');
+    var response = await _client.get('$_endpoint/posts?userId=$userId');
 
       // set result to return
       //
@@ -92,7 +90,7 @@ class WebApi {
           url += '&doctor_name_like=${param.doctorName}';
         }
       }
-      var response = await client.get(url);
+      var response = await _client.get(url);
 
       // set result to return
       //
@@ -114,7 +112,7 @@ class WebApi {
       var url = ('$_endpoint/foryou_infos?userId=$userId');
 
       try {
-        var response = await client.get(url);
+        var response = await _client.get(url);
         // set result to return
         //
         if(response.statusCode >= HttpStatus.badRequest) {
@@ -138,7 +136,7 @@ class WebApi {
     // Get user posts for id
     var url = ('$_endpoint/foryou_infos');
 
-    var response = await client.post(url, headers: _commonHeaders, body: jsonEncode(body.toJson()));
+    var response = await _client.post(url, headers: _commonHeaders, body: jsonEncode(body.toJson()));
 
     // set result to return
     //
@@ -159,7 +157,7 @@ class WebApi {
     // Get user posts for id
     var url = ('$_endpoint/foryou_infos/${body.id}');
 
-    var response = await client.put(url, headers: _commonHeaders, body: jsonEncode(body.toJson()));
+    var response = await _client.put(url, headers: _commonHeaders, body: jsonEncode(body.toJson()));
 
     // set result to return
     //
@@ -174,7 +172,7 @@ class WebApi {
 
   Future<DataResult> getCommentsForPost(int postId) async {
     // Get comments for post
-    var response = await client.get('$_endpoint/comments?postId=$postId');
+    var response = await _client.get('$_endpoint/comments?postId=$postId');
 
       // set result to return
       //

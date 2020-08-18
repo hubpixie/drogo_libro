@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:drogo_libro/main.dart';
+import 'package:drogo_libro/entry/app_entry.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
