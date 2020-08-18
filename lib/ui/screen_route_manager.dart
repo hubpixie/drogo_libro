@@ -11,9 +11,12 @@ import 'package:drogo_libro/ui/views/passcode_view.dart';
 import 'package:drogo_libro/ui/views/drogo_list_view.dart';
 import 'package:drogo_libro/ui/views/drogo_search_view.dart';
 import 'package:drogo_libro/ui/views/drogo_detail_view.dart';
+import 'package:drogo_libro/ui/views/foryou_present_view.dart';
+import 'package:drogo_libro/ui/views/foryou_edit_container.dart';
 
 
-class ScreenRouter {
+
+class ScreenRouteManager {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     ScreenRouteName sr = ScreenRouteNameSummary.fromString(settings.name);
     switch (sr) {
@@ -43,6 +46,21 @@ class ScreenRouter {
       case ScreenRouteName.showDrogoForgotHelp:
         return MaterialPageRoute(builder: (_) => Scaffold(appBar: AppBar(backgroundColor: Color(0xFF64B7DA), title: Text('おくすりを飲み忘れたら'),), 
             body: Container()));
+      case ScreenRouteName.presentForyouAll:
+        return MaterialPageRoute(builder: (_) => ForyouPresentView(title: 'For you一覧'), settings: settings);
+      case ScreenRouteName.usingForyou:
+        return MaterialPageRoute(builder: (_) => Scaffold(appBar: AppBar(backgroundColor: Color(0xFF64B7DA), title: Text('記載方法について'),), 
+            body: Container()));
+      case ScreenRouteName.editBloodType:
+        return MaterialPageRoute(builder: (_) => ForyouEditContainer(title: '血液型', routeName: ScreenRouteName.editBloodType, ), settings: settings);
+      case ScreenRouteName.editMedicalHistory:
+        return MaterialPageRoute(builder: (_) => ForyouEditContainer(title: '既往歴',routeName: ScreenRouteName.editMedicalHistory,), settings: settings);
+      case ScreenRouteName.editAllergy:
+        return MaterialPageRoute(builder: (_) => ForyouEditContainer(title: 'アレルギー', routeName: ScreenRouteName.editAllergy,), settings: settings);
+      case ScreenRouteName.editSuplements:
+        return MaterialPageRoute(builder: (_) => ForyouEditContainer(title: 'サプリメントなど', routeName: ScreenRouteName.editSuplements,), settings: settings);
+      case ScreenRouteName.editSideEffect:
+        return MaterialPageRoute(builder: (_) => ForyouEditContainer(title: '副作用', routeName: ScreenRouteName.editSideEffect,), settings: settings);
       case ScreenRouteName.post:
         var post = settings.arguments as Post;
         return MaterialPageRoute(builder: (_) => PostView(post: post), settings: settings);

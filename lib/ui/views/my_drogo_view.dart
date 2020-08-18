@@ -23,7 +23,6 @@ class MyDrogoView extends StatefulWidget {
 class _MyDrogoViewState extends State<MyDrogoView> {
   //==========================<
   // Const defines
-  static const int _kFunctionButtonCount = 6;
   static const List<String> _kFunctionButtonTextList = ["おくすり一覧", "おくすり検索", "おくすりを登録する", "気になったことを記録する", "お薬の飲み方", "おくすりを忘れたら"];
   static const List<IconData> _kFunctionButtonIconList = [Icons.list, Icons.search, Icons.edit, Icons.note, Icons.info_outline, Icons.help_outline];
 

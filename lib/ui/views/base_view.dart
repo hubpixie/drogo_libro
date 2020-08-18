@@ -15,12 +15,12 @@ class BaseView<T extends BaseViewModel> extends StatefulWidget {
 }
 
 class _BaseViewState<T extends BaseViewModel> extends State<BaseView<T>> {
-  T model = ServiceSetting.locator<T>();
+  T viewMOdel = ServiceSetting.locator<T>();
 
   @override
   void initState() {
     if (widget.onModelReady != null) {
-      widget.onModelReady(model);
+      widget.onModelReady(viewMOdel);
     }
     super.initState();
   }
@@ -28,7 +28,7 @@ class _BaseViewState<T extends BaseViewModel> extends State<BaseView<T>> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<T>(
-        create: (context) => model,
+        create: (context) => viewMOdel,
         child: Consumer<T>(builder: widget.builder));
   }
 }

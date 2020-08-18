@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:drogo_libro/ui/shared/app_colors.dart';
 import 'package:drogo_libro/ui/views/my_drogo_view.dart';
-import 'package:drogo_libro/ui/views/for_you_view.dart';
+import 'package:drogo_libro/ui/views/foryou_top_view.dart';
 import 'package:drogo_libro/ui/views/my_alarm_view.dart';
 import 'package:drogo_libro/ui/views/my_settings_view.dart';
 
@@ -18,7 +18,7 @@ class _MyTabsContainerState extends State<MyTabsContainer> {
   static const List<String> _tabTitles =  ["Myくすり", "For you", "アラーム", "設定"];
   static List<Widget> _widgetOptions = <Widget>[
     MyDrogoView(title: _tabTitles[0]),
-    ForyouView(title: _tabTitles[1]),
+    ForyouTopView(title: _tabTitles[1]),
     MyAlarmView(title: _tabTitles[2]),
     MySettingsView(),    
   ];

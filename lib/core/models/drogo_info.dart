@@ -1,5 +1,6 @@
 
 class DrogoSummary {
+  int id;
   String drogoName; //薬名
   int days; //何日分
   int unit; //単位
@@ -8,7 +9,7 @@ class DrogoSummary {
   int amount; //使用量/回
   String notaBene; //注意事項
 
-  DrogoSummary({this.drogoName, this.days, this.unit, this.usage, this.times, this.amount, this.notaBene});
+  DrogoSummary({this.id, this.drogoName, this.days, this.unit, this.usage, this.times, this.amount, this.notaBene});
 
   DrogoSummary.fromJson(Map<String, dynamic> json) {
     drogoName = json["drogo_name"];
@@ -49,8 +50,10 @@ class DrogoInfo {
     dispeningDate = json['dispening_date'];
     medicalInstituteName = json['medical_institute_name'];
     doctorName = json['doctor_name'];
-    final dsList = json['drogo_summary_list'] as List;
-    drogoSummaryList = dsList.map((element) => DrogoSummary.fromJson(element)).toList();
+    drogoSummaryList = () {
+      final dsList = json['drogo_summary_list'] as List;
+      return dsList.map((element) => DrogoSummary.fromJson(element)).toList();
+    }();
   }
 
   Map<String, dynamic> toJson() {
@@ -60,7 +63,8 @@ class DrogoInfo {
     data['dispening_date'] = this.dispeningDate;
     data['medical_institute_name'] = this.medicalInstituteName;
     data['doctor_name'] = this.doctorName;
-    data['drogo_summary_list'] = this.drogoSummaryList;
+    data['drogo_summary_list'] = this.drogoSummaryList.map((element) => element.toJson()).toList();
+    
     return data;
   }
 }

@@ -7,7 +7,7 @@ class LikeButtonModel extends BaseViewModel {
   PostsService _postsService = ServiceSetting.locator<PostsService>();
 
   int postLikes(int postId) {
-    return _postsService.posts
+    return _postsService.posts.result
         .firstWhere((post) => post.id == postId)
         .likes;
   }

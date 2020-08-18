@@ -5,13 +5,22 @@ enum ScreenRouteName {
   home,
   myTabs,
   passcode,
-  listupDrogo,
-  searchDrogo,
-  addDrogoDetail,
-  editDrogoDetail,
-  editMyMemo,
-  usingDrogo,
-  showDrogoForgotHelp,
+  // Myくすり
+  listupDrogo,    //一覧
+  searchDrogo,    //検索
+  addDrogoDetail, //登録
+  editDrogoDetail, //編集
+  editMyMemo,     //気になったことを記録
+  usingDrogo,     //薬の飲み方
+  showDrogoForgotHelp, //飲み忘れた時
+  // For you
+  presentForyouAll,    //Foryou　全部みる
+  usingForyou,    //記載方法
+  editBloodType, //血液型
+  editMedicalHistory,     //既往歴
+  editAllergy,     //アレルギー
+  editSuplements, //サプリメントなど
+  editSideEffect, //副作用
   post,
 }
 extension ScreenRouteNameSummary on ScreenRouteName {
@@ -42,6 +51,20 @@ extension ScreenRouteNameSummary on ScreenRouteName {
         return 'usingDrogo';
       case ScreenRouteName.showDrogoForgotHelp:
         return 'showDrogoForgotHelp';
+      case ScreenRouteName.presentForyouAll:
+        return 'presentForyouAll';
+      case ScreenRouteName.usingForyou:
+        return 'usingForyou';
+      case ScreenRouteName.editBloodType:
+        return 'editBloodType';
+      case ScreenRouteName.editMedicalHistory:
+        return 'editMedicalHistory';
+      case ScreenRouteName.editAllergy:
+        return 'editAllergy';
+      case ScreenRouteName.editSuplements:
+        return 'editSuplements';
+      case ScreenRouteName.editSideEffect:
+        return 'editSideEffect';
       case ScreenRouteName.post:
         return 'post';
       default:
