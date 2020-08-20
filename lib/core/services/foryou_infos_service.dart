@@ -2,10 +2,10 @@ import 'package:drogo_libro/core/models/foryou_info.dart';
 import 'package:drogo_libro/config/service_setting.dart';
 import 'package:drogo_libro/core/models/data_result.dart';
 
-import 'web_api.dart';
+import 'my_web_api.dart';
 
 class ForyouInfosService {
-  WebApi _api = ServiceSetting.locator<WebApi>();
+  MyWebApi _api = ServiceSetting.locator<MyWebApi>();
 
   
   DataResult _fetchedForyouInfo;

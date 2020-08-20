@@ -16,12 +16,11 @@ class MyTabsContainer extends StatefulWidget {
 class _MyTabsContainerState extends State<MyTabsContainer> {
   int _selectedIndex = 0;
   static const List<String> _tabTitles =  ["Myくすり", "For you", "アラーム", "設定"];
-  static List<Widget> _widgetOptions = <Widget>[
-    MyDrogoView(title: _tabTitles[0]),
-    ForyouTopView(title: _tabTitles[1]),
-    MyAlarmView(title: _tabTitles[2]),
-    MySettingsView(),    
-  ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -39,7 +38,12 @@ class _MyTabsContainerState extends State<MyTabsContainer> {
       ),
       body: IndexedStack(
         index: _selectedIndex,
-        children: _widgetOptions,
+        children: <Widget>[
+          MyDrogoView(title: _tabTitles[0]),
+          ForyouTopView(title: _tabTitles[1]),
+          MyAlarmView(title: _tabTitles[2]),
+          MySettingsView(),  
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

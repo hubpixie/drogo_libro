@@ -4,10 +4,10 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:drogo_libro/config/service_setting.dart';
 import 'package:drogo_libro/core/services/firebse_analytics_service.dart';
 import 'package:drogo_libro/core/enums/viewstate.dart';
-import 'package:drogo_libro/core/viewmodels/login_model.dart';
+import 'package:drogo_libro/core/viewmodels/login_view_model.dart';
 import 'package:drogo_libro/ui/shared/app_colors.dart';
 import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
-import 'package:drogo_libro/ui/widgets/login_header.dart';
+import 'package:drogo_libro/ui/widgets/login_header_cell.dart';
 import 'package:drogo_libro/ui/views/base_view.dart';
 
 class LoginView extends StatefulWidget {
@@ -26,7 +26,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseView<LoginModel>(
+    return BaseView<LoginViewModel>(
         builder: (context, viewModel, child) => Scaffold(
           backgroundColor: AppColors.mainBackgroundColor,
           body: LoadingOverlay(
@@ -34,7 +34,7 @@ class _LoginViewState extends State<LoginView> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                LoginHeader(
+                LoginHeaderCell(
                   validationMessage: viewModel.errorMessage,
                   controller: _controller),
                 FlatButton(

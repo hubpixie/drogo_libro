@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:drogo_libro/core/models/post.dart';
 
 import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
 import 'package:drogo_libro/ui/views/my_tabs_container.dart';
 import 'package:drogo_libro/ui/views/login_view.dart';
 import 'package:drogo_libro/ui/views/splash_view.dart';
-import 'package:drogo_libro/ui/views/post_view.dart';
 import 'package:drogo_libro/ui/views/passcode_view.dart';
 import 'package:drogo_libro/ui/views/drogo_list_view.dart';
 import 'package:drogo_libro/ui/views/drogo_search_view.dart';
@@ -61,9 +59,6 @@ class ScreenRouteManager {
         return MaterialPageRoute(builder: (_) => ForyouEditContainer(title: 'サプリメントなど', routeName: ScreenRouteName.editSuplements,), settings: settings);
       case ScreenRouteName.editSideEffect:
         return MaterialPageRoute(builder: (_) => ForyouEditContainer(title: '副作用', routeName: ScreenRouteName.editSideEffect,), settings: settings);
-      case ScreenRouteName.post:
-        var post = settings.arguments as Post;
-        return MaterialPageRoute(builder: (_) => PostView(post: post), settings: settings);
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

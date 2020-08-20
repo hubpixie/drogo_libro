@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:drogo_libro/core/models/user.dart';
 import 'package:drogo_libro/config/service_setting.dart';
 
-import 'web_api.dart';
+import 'my_web_api.dart';
 
 class AuthenticationService {
-  WebApi _api = ServiceSetting.locator<WebApi>();
+  MyWebApi _api = ServiceSetting.locator<MyWebApi>();
 
   StreamController<User> userController = StreamController<User>();
 

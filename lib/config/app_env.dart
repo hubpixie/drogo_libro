@@ -15,6 +15,8 @@ class AppEnv {
   static Flavor get flavor => _flavor;
   static String get apiBaseUrl => _apiBaseUrl;
   static String get apiKey => _apiKey;
+  static String get weatherApiBaseUrl => 'http://api.openweathermap.org';
+  static String get weatherApiKey => '2f8796eefe67558dc205b09dd336d022';
   
   static configure({@required Flavor flavor}) {
     _flavor = flavor;
@@ -25,7 +27,7 @@ class AppEnv {
         _apiKey = '';
         break;
       case Flavor.stagging:
-        _apiBaseUrl = 'http://localhost:3000';
+        _apiBaseUrl = 'http://192.168.0.2:3000';
         _apiKey = '';
         break;
       case Flavor.product:

@@ -4,7 +4,7 @@ import 'package:drogo_libro/core/viewmodels/base_view_model.dart';
 
 import 'package:drogo_libro/config/service_setting.dart';
 
-class LoginModel extends BaseViewModel {
+class LoginViewModel extends BaseViewModel {
   final AuthenticationService _authenticationService = ServiceSetting.locator<AuthenticationService>();
 
   String errorMessage;

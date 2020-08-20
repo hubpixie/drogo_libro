@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:drogo_libro/ui/shared/text_styles.dart';
 import 'package:drogo_libro/ui/shared/ui_helpers.dart';
 
-class LoginHeader extends StatelessWidget {
+class LoginHeaderCell extends StatelessWidget {
   final TextEditingController controller;
   final String validationMessage;
 
-  LoginHeader({@required this.controller, this.validationMessage});
+  LoginHeaderCell({@required this.controller, this.validationMessage});
 
   @override
   Widget build(BuildContext context) {
