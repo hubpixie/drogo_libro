@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
 
+import 'package:drogo_libro/core/shared/weather_util.dart';
+
 class SplashView extends StatefulWidget {
   @override
   _SplashScreenState createState() => new _SplashScreenState();
@@ -13,10 +15,14 @@ class _SplashScreenState extends State<SplashView> {
 
   @override
   void initState() {
-    super.initState();
+    // ローマ字地名リストを予め読み込んでおく
+    WeatherUtil.shared.loadRomajiCityCsv();
+
+    // ログイン画面へ遷移する    
     Future.delayed(Duration(seconds: 2), () {
       navigationPage();
     });    
+    super.initState();
   }
 
 

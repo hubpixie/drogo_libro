@@ -42,7 +42,7 @@ class _MyTabsContainerState extends State<MyTabsContainer> {
           MyDrogoView(title: _tabTitles[0]),
           ForyouTopView(title: _tabTitles[1]),
           MyAlarmView(title: _tabTitles[2]),
-          MySettingsView(),  
+          MySettingsView(isTabAppeared: _selectedIndex == 3,),  
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

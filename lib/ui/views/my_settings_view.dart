@@ -7,7 +7,9 @@ import 'package:drogo_libro/ui/widgets/settings_menu_cell.dart';
 
 class MySettingsView extends StatelessWidget {
   final String title;
-  MySettingsView({this.title});
+  final bool isTabAppeared;
+
+  MySettingsView({this.title, this.isTabAppeared});
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +19,10 @@ class MySettingsView extends StatelessWidget {
           children: <Widget>[
             Positioned(
               child: Container(
-                color: AppColors.mainBackgroundColor,
-                height: 120,
+                color: AppColors.mainBackgroundColor.withAlpha(100),
+                height: 140,
                 width: MediaQuery.of(context).size.width,
-                child: WeatherPresentBanner(),
+                child: WeatherPresentBanner(isTabAppeared: this.isTabAppeared,),
               ),
               top: 0,
             ),
@@ -28,7 +30,7 @@ class MySettingsView extends StatelessWidget {
               child: Container(
                 child: SettingsMenuCell(),
               ),
-              top: 120,
+              top: 140,
             ),
             // Positioned(
             //   child: Container(

@@ -48,7 +48,8 @@ class _WeatherTopCellState extends State<WeatherTopCell> {
         Spacer(),
         Text('風速 ', style: TextStyle(color: Colors.black54),),
         Spacer(),
-        Text('${_itemValue.windSpeed} m/s (${_itemValue.getWindDirectionValue()})', style: TextStyle(fontSize: 16.0))
+        Text('${_itemValue.windSpeed } m/s (${_itemValue.getWindDirectionValue()})',
+          style: TextStyle(fontSize: 16.0)),
       ]);
     }
     wlist.add(

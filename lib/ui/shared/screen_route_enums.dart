@@ -21,7 +21,7 @@ enum ScreenRouteName {
   editAllergy,     //アレルギー
   editSuplements, //サプリメントなど
   editSideEffect, //副作用
-  post,
+  selectCity,     //地域設定
 }
 extension ScreenRouteNameSummary on ScreenRouteName {
 
@@ -65,8 +65,8 @@ extension ScreenRouteNameSummary on ScreenRouteName {
         return 'editSuplements';
       case ScreenRouteName.editSideEffect:
         return 'editSideEffect';
-      case ScreenRouteName.post:
-        return 'post';
+      case ScreenRouteName.selectCity:
+        return 'selectCity';
       default:
         return null;
     }

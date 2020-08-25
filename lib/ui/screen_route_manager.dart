@@ -11,8 +11,7 @@ import 'package:drogo_libro/ui/views/drogo_search_view.dart';
 import 'package:drogo_libro/ui/views/drogo_detail_view.dart';
 import 'package:drogo_libro/ui/views/foryou_present_view.dart';
 import 'package:drogo_libro/ui/views/foryou_edit_container.dart';
-
-
+import 'package:drogo_libro/ui/views/city_selector_view.dart';
 
 class ScreenRouteManager {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -59,6 +58,9 @@ class ScreenRouteManager {
         return MaterialPageRoute(builder: (_) => ForyouEditContainer(title: 'サプリメントなど', routeName: ScreenRouteName.editSuplements,), settings: settings);
       case ScreenRouteName.editSideEffect:
         return MaterialPageRoute(builder: (_) => ForyouEditContainer(title: '副作用', routeName: ScreenRouteName.editSideEffect,), settings: settings);
+      case ScreenRouteName.selectCity:
+        return MaterialPageRoute(builder: (_) => CitySelectorView(title: '地域設定', 
+        cityItem: settings.arguments,), settings: settings);
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

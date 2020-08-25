@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:drogo_libro/config/service_setting.dart';
 import 'package:drogo_libro/core/enums/viewstate.dart';
 
@@ -26,19 +24,19 @@ class WeatherViewModel extends BaseViewModel {
 
   /// Get weather info 
   /// 
-  Future getWeatherData({@required String cityName}) async {
+  Future getWeatherData({String cityNameCd, String zipCd}) async {
 
     setState(ViewState.Busy);
-    await _weatherService.getWeatherData(cityName: cityName);
+    await _weatherService.getWeatherData(cityNameCd: cityNameCd, zipCd: zipCd);
     setState(ViewState.Idle);
   }
 
   /// Get weather forecast 
   /// 
-  Future getForecast({@required String cityName}) async {
+  Future getForecast({String cityNameCd, String zipCd}) async {
 
     setState(ViewState.Busy);
-    await _weatherService.getForecast(cityName: cityName);
+    await _weatherService.getForecast(cityNameCd: cityNameCd, zipCd: zipCd);
     setState(ViewState.Idle);
   }
 

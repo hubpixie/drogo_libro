@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'package:drogo_libro/core/models/city_info.dart';
 import 'package:drogo_libro/core/shared/weather_util.dart';
 
 enum TemperatureUnit {
@@ -46,10 +48,10 @@ class WeatherInfo {
   String description;
   String iconCode;
   String main;
-  String cityName;
+  CityInfo city;
 
   double windSpeed;
-  double windDeg;
+  int windDeg;
 
   Temperature temperature;
   Temperature maxTemperature;
@@ -68,7 +70,7 @@ class WeatherInfo {
       this.description,
       this.iconCode,
       this.main,
-      this.cityName,
+      this.city,
       this.windSpeed,
       this.windDeg,
       this.temperature,
@@ -76,15 +78,28 @@ class WeatherInfo {
       this.minTemperature,
       this.forecast});
 
-  WeatherInfo.fromJson(Map<String, dynamic> json) {
+  WeatherInfo.fromJson(Map<String, dynamic> json, {String zipCd}) {
     final weather = json['weather'].first;
-
     id = weather['id'];
     time = json['dt'];
     description = weather['description'];
     iconCode = weather['icon'];
     main = weather['main'];
-    cityName = json['name'];
+    city = CityInfo(
+      id: json['id'], 
+      name: json['name'], 
+      nameDesc: () {
+        CityInfo cinfo;
+        try {
+          String name = json['name'];
+          cinfo =  WeatherUtil.shared.romajiCityList.firstWhere((element) => element.name == name);
+        } catch(error) {
+        }
+        return cinfo != null ? cinfo.nameDesc.replaceAll(RegExp(r'都|府|市'), '') : json['name'];
+      }(),
+      zip: zipCd != null && zipCd.isNotEmpty ? zipCd.split(',').first : '',
+      countryCode: json['sys']['country'],
+    );
     temperature = Temperature(json['main']['temp']);
     maxTemperature = Temperature(json['main']['temp_max']);
     minTemperature = Temperature(json['main']['temp_min']);
@@ -114,8 +129,9 @@ class WeatherInfo {
 
 extension WeatherInfoEx on WeatherInfo {
   bool get hasPrecit => this.rain != null || this.snow != null;
-  String getPrecipLabel() => WeatherUtil.getPrecipLabel(rain: this.rain, snow: this.snow);
-  String getPrecipValue() => WeatherUtil.getPrecipValue(rain: this.rain, snow: this.snow);
-  String getWindDirectionValue() => WeatherUtil.getWindDirectionValue(degree: this.windDeg);
-  IconData getIconData() => WeatherUtil.getIconData(iconCode: this.iconCode);
+  String getWeatherDesc() => WeatherUtil.shared.getWeatherDesc(weatherId: this.id);
+  String getPrecipLabel() => WeatherUtil.shared.getPrecipLabel(rain: this.rain, snow: this.snow);
+  String getPrecipValue() => WeatherUtil.shared.getPrecipValue(rain: this.rain, snow: this.snow);
+  String getWindDirectionValue() => WeatherUtil.shared.getWindDirectionValue(degree: this.windDeg);
+  IconData getIconData() => WeatherUtil.shared.getIconData(iconCode: this.iconCode);
 }
