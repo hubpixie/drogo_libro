@@ -108,7 +108,7 @@ extension BloodTypeDescripts on BloodTypes {
   }
 }
 
-///  （血液型）
+///  （アレルギー）
 enum AllergyTypes {
   milk,     //牛乳
   egg,      //卵
@@ -259,7 +259,42 @@ extension MedicalHistoryTypeDescripts on MedicalHistoryTypes {
   }
 }
 
-typedef PreSortProc = List<int> Function(List<int>);
+/// (温度単位)
+enum TemperatureUnit {
+  kelvin,
+  celsius,
+  fahrenheit
+}
+
+extension TemperatureUnitDescripts on TemperatureUnit {
+  String get name {
+    switch (this) {
+      case TemperatureUnit.kelvin:
+        return '°K';
+      case TemperatureUnit.celsius:
+        return '°C';//
+      case TemperatureUnit.fahrenheit:
+        return '°F';
+      default:
+        return null;
+    }
+  }
+  static TemperatureUnit fromString(String string) {
+    return TemperatureUnit.values.firstWhere((element) => element.name == string);
+  }
+
+  String get stringClass {
+    switch (this) {
+      case TemperatureUnit.kelvin:
+      case TemperatureUnit.celsius:
+      case TemperatureUnit.fahrenheit:
+        return this.toString().split(".").last;
+      default:
+        return null;
+    }
+  }
+}
+
 class CodeEnumsUtil {
   /// Convert a rawValue to enum value
   ///  - param [enumValues] : all enums of T

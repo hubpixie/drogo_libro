@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import 'package:drogo_libro/core/shared/string_util.dart';
 import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
 import 'package:drogo_libro/ui/views/my_tabs_container.dart';
 import 'package:drogo_libro/ui/views/login_view.dart';
 import 'package:drogo_libro/ui/views/splash_view.dart';
-import 'package:drogo_libro/ui/views/passcode_view.dart';
 import 'package:drogo_libro/ui/views/drogo_list_view.dart';
 import 'package:drogo_libro/ui/views/drogo_search_view.dart';
 import 'package:drogo_libro/ui/views/drogo_detail_view.dart';
 import 'package:drogo_libro/ui/views/foryou_present_view.dart';
 import 'package:drogo_libro/ui/views/foryou_edit_container.dart';
 import 'package:drogo_libro/ui/views/city_selector_view.dart';
+import 'package:drogo_libro/ui/views/passcode_panel.dart';
+import 'package:drogo_libro/ui/views/passcode_settings_view.dart';
+import 'package:drogo_libro/ui/views/passcode_edit_view.dart';
 
 class ScreenRouteManager {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -23,16 +26,14 @@ class ScreenRouteManager {
         return MaterialPageRoute(builder: (_) => SplashView(), settings: settings);
       case ScreenRouteName.login:
         return MaterialPageRoute(builder: (_) => LoginView(), settings: settings);
-      case ScreenRouteName.passcode:
-        return MaterialPageRoute(builder: (_) => PasscodeView(title: 'Passcode Lock Screen'), settings: settings);
       case ScreenRouteName.listupDrogo:
         return MaterialPageRoute(builder: (_) => DrogoListView(title: 'おくすり一覧'), settings: settings);
       case ScreenRouteName.searchDrogo:
         return MaterialPageRoute(builder: (_) => DrogoSearchView(title: 'おくすり検索'), settings: settings);
       case ScreenRouteName.addDrogoDetail:
       case ScreenRouteName.editDrogoDetail:
-          final Map<String, dynamic> arg = settings.arguments;
-        return MaterialPageRoute(builder: (_) => DrogoDetailView(drogoItem: arg != null ? arg["drogoItem"] : null), 
+          final Map<String, dynamic> args = settings.arguments;
+        return MaterialPageRoute(builder: (_) => DrogoDetailView(drogoItem: args != null ? args["drogoItem"] : null), 
           settings: settings);
       case ScreenRouteName.editMyMemo:
         return MaterialPageRoute(builder: (_) => Scaffold(appBar: AppBar(backgroundColor: Color(0xFF64B7DA), title: Text('気になったことを記録する'),), 
@@ -61,6 +62,25 @@ class ScreenRouteManager {
       case ScreenRouteName.selectCity:
         return MaterialPageRoute(builder: (_) => CitySelectorView(title: '地域設定', 
         cityItem: settings.arguments,), settings: settings);
+      case ScreenRouteName.passcode:
+        StringUtil().readEncrptedData();
+        final Map<String, dynamic> args = settings.arguments;
+        return MaterialPageRoute(builder: (_) => PasscodePanel(
+            title: 'Passcode Lock Screen',
+            onValidate: (enteredValue) => 
+              StringUtil().encryptedPcode == StringUtil().encryptedString(enteredValue),
+            cancelable: (args == null ?? true) || (args['cancel'] as bool) == true ? true : false,
+          ), 
+          settings: settings);
+      case ScreenRouteName.changePasscodeSettings:
+        return MaterialPageRoute(builder: (_) => PasscodeSettingsView(title: 'パスコード表示設定'), settings: settings);
+      case ScreenRouteName.editPasscode:
+          final Map<String, dynamic> args = settings.arguments;
+        return MaterialPageRoute(builder: (_) => PasscodeEditView(
+            title: 'パスコード入力・変更', 
+            passcode: args != null ? args['pcd'] : '',
+          ), 
+          settings: settings);
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(
@@ -70,4 +90,5 @@ class ScreenRouteManager {
                 ));
     }
   }
+
 }

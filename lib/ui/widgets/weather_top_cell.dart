@@ -29,9 +29,10 @@ class _WeatherTopCellState extends State<WeatherTopCell> {
   List<Widget> _buildTopWidgets() {
     List<Widget> wlist = <Widget>[
       Padding(padding: EdgeInsets.only(left: 10.0),),
-      Text('${DateUtil.getDateMDEString()} ', style: TextStyle(fontSize: 16.0),),
+      Text('${DateUtil().getDateMDEString()} ', style: TextStyle(fontSize: 16.0),),
       Spacer(),
-      Text('湿度 ', style: TextStyle(color: Colors.black54),),
+      Text('湿度 ', 
+        style: TextStyle(fontSize: 11.0, color: Colors.black54),),
       Spacer(),
       Text('${_itemValue.humidity}% ', style: TextStyle(fontSize: 16.0)),
     ];
@@ -39,17 +40,19 @@ class _WeatherTopCellState extends State<WeatherTopCell> {
     if(_itemValue.hasPrecit) {
       wlist.addAll([
         Spacer(),
-        Text('${_itemValue.getPrecipLabel()} ', style: TextStyle(color: Colors.black54),),
+        Text('${_itemValue.getPrecipLabel()} ', style: TextStyle(fontSize: 11.0, color: Colors.black54),),
         Spacer(),
         Text('${_itemValue.getPrecipValue()}', style: TextStyle(fontSize: 16.0))
       ]);
     } else {
       wlist.addAll([
         Spacer(),
-        Text('風速 ', style: TextStyle(color: Colors.black54),),
+        Text('風速 ', style: TextStyle(fontSize: 11.0, color: Colors.black54),),
         Spacer(),
-        Text('${_itemValue.windSpeed } m/s (${_itemValue.getWindDirectionValue()})',
-          style: TextStyle(fontSize: 16.0)),
+        Text('${_itemValue.windSpeed } ',
+          style: TextStyle(fontSize: 14.0)),
+        Text('m/s (${_itemValue.getWindDirectionValue()})',
+          style: TextStyle(fontSize: 11.0)),
       ]);
     }
     wlist.add(

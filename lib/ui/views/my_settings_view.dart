@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 
 import 'package:drogo_libro/ui/shared/app_colors.dart';
 import 'package:drogo_libro/ui/views/weather_present_banner.dart';
-import 'package:drogo_libro/ui/widgets/settings_menu_cell.dart';
+import 'package:drogo_libro/ui/views/settings_menu.dart';
 
 class MySettingsView extends StatelessWidget {
   final String title;
   final bool isTabAppeared;
+
+  final GlobalKey<WeatherPresentBannerState> _weatherBannerKey = GlobalKey<WeatherPresentBannerState>();
 
   MySettingsView({this.title, this.isTabAppeared});
 
@@ -17,30 +19,20 @@ class MySettingsView extends StatelessWidget {
       child: Scaffold(
         body: Stack(
           children: <Widget>[
-            Positioned(
-              child: Container(
+            Container(
                 color: AppColors.mainBackgroundColor.withAlpha(100),
-                height: 140,
+                height: 160,
                 width: MediaQuery.of(context).size.width,
-                child: WeatherPresentBanner(isTabAppeared: this.isTabAppeared,),
-              ),
-              top: 0,
+                child: WeatherPresentBanner(
+                  key: _weatherBannerKey,
+                  isTabAppeared: this.isTabAppeared,),
             ),
-            Positioned(
-              child: Container(
-                child: SettingsMenuCell(),
-              ),
-              top: 140,
+            Container(
+              margin: EdgeInsets.only(top: 160),
+              height: MediaQuery.of(context).size.height - 220,
+              width: MediaQuery.of(context).size.width,
+              child: SettingsMenu(weatherBannerKey: _weatherBannerKey,),
             ),
-            // Positioned(
-            //   child: Container(
-            //     color: Colors.black38,
-            //     height: 60,
-            //     width: MediaQuery.of(context).size.width,
-            //     child: Text('Footer'),
-            //   ),
-            //   bottom: 0,
-            // ),
           ],
         ),
       ),

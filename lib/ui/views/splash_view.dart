@@ -16,7 +16,7 @@ class _SplashScreenState extends State<SplashView> {
   @override
   void initState() {
     // ローマ字地名リストを予め読み込んでおく
-    WeatherUtil.shared.loadRomajiCityCsv();
+    WeatherUtil().loadRomajiCityCsv();
 
     // ログイン画面へ遷移する    
     Future.delayed(Duration(seconds: 2), () {

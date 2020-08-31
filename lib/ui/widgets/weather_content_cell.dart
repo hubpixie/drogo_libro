@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:drogo_libro/core/enums/code_enums.dart';
 import 'package:drogo_libro/core/models/weather_info.dart';
 import 'package:drogo_libro/core/models/city_info.dart';
 
@@ -7,9 +8,10 @@ typedef CellEditingDelegate = void Function(dynamic);
 
 class WeatherContentCell  extends StatefulWidget {
   final WeatherInfo itemValue;
+  final TemperatureUnit temprtUnit;
   final CellEditingDelegate onCellEditing;
 
-  WeatherContentCell({this.itemValue, this.onCellEditing});
+  WeatherContentCell({this.itemValue, this.temprtUnit, this.onCellEditing});
 
   @override
   _WeatherContentCellState createState() => _WeatherContentCellState();
@@ -26,24 +28,37 @@ class _WeatherContentCellState extends State<WeatherContentCell> {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
     _itemValue = widget.itemValue;
 
     return Container(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Padding(padding: EdgeInsets.only(left: 30.0),),
+          Spacer(),
           Container(
-           // width: 40,
+            //width: screenWidth >= 320 && screenWidth <= 360  ? 120 : 150,
+            constraints: BoxConstraints(
+              minWidth: 80, 
+              maxWidth: () {
+                if(screenWidth <= 280) return 110.0;
+                if(screenWidth <= 360) return 150.0;
+                if(screenWidth <= 420) return 180.0;
+                else return 250.0;                
+              }()),
             padding: EdgeInsets.symmetric(vertical: 5.0),
             child: GestureDetector(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text('${_itemValue.city.nameDesc}', 
+                    softWrap: false, 
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(fontSize: 24.0)),
                   Text('${_itemValue.getWeatherDesc()}', 
-                    style: TextStyle(fontSize: 14.0, color: Colors.black45)),
+                    softWrap: false, 
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 11.0, color: Colors.black45)),
               ],),
               onTap: () {
                 setState(() {
@@ -55,7 +70,7 @@ class _WeatherContentCellState extends State<WeatherContentCell> {
             )
           ),
           Spacer(),
-          Text('${_itemValue.temperature.celsius.round()}°', style: TextStyle(fontSize: 28.0)),
+          Text('${_itemValue.temperature.as(widget.temprtUnit).round()}°', style: TextStyle(fontSize: 40.0)),
           Spacer(),
           Container(
             child: Icon( _itemValue != null ?  _itemValue.getIconData() : null,
@@ -75,13 +90,13 @@ class _WeatherContentCellState extends State<WeatherContentCell> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('${_itemValue.maxTemperature.celsius.round()}°', 
+                Text('${_itemValue.maxTemperature.as(widget.temprtUnit).round()}°', 
                   style: TextStyle(fontSize: 16.0)),
-                Text('${ _itemValue.minTemperature.celsius.round()}°', 
+                Text('${ _itemValue.minTemperature.as(widget.temprtUnit).round()}°', 
                   style: TextStyle(fontSize: 16.0, color: Colors.black45)),
               ],)
           ),
-          Padding(padding: EdgeInsets.only(right: 30.0),),
+          Spacer(),
         ],
       )
     );

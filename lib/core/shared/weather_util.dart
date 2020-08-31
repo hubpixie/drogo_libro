@@ -53,14 +53,11 @@ enum _WindDirection {
 }
 
 class WeatherUtil {
-  static WeatherUtil _shared;
-
-  static WeatherUtil get shared {
-    if(_shared == null) {
-      _shared = WeatherUtil();
-    } 
-    return _shared;
+  static final WeatherUtil _instance = WeatherUtil._internal();
+  factory WeatherUtil() {
+    return _instance;
   }
+  WeatherUtil._internal();
 
   List<CityInfo> _romajiCityList;
   List<CityInfo> get romajiCityList => _romajiCityList;
@@ -88,7 +85,7 @@ class WeatherUtil {
   String getWindDirectionValue({dynamic degree}) {
     double deg = (dynamic value) {
       if(value == null) return 0;
-      return value + 22.5 >= 360 ? value + 22.5 - 360 : value;
+      return value + 22.5 >= 360 ? value + 22.5 - 360 : value + 22.5;
     }(degree);
     int directNum = (deg / 45).floor();
     _WindDirection direct = _WindDirection.values[directNum];
@@ -167,7 +164,7 @@ class WeatherUtil {
       case 781: return '竜巻';
       case 800: return '晴れ';
       case 801: return '薄い雲';
-      case 802: return '雲';
+      case 802: return '曇り';
       case 803: return '曇りがち';
       case 804: return '厚い雲'; 
       default: return ''; 

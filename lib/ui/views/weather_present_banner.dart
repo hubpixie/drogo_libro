@@ -1,9 +1,10 @@
-import 'package:drogo_libro/core/models/city_info.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:drogo_libro/core/enums/code_enums.dart';
 import 'package:drogo_libro/core/enums/viewstate.dart';
 import 'package:drogo_libro/core/viewmodels/weather_view_model.dart';
+import 'package:drogo_libro/core/models/city_info.dart';
 
 import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
 import 'package:drogo_libro/ui/shared/ui_helpers.dart';
@@ -16,17 +17,18 @@ import 'base_view.dart';
 class WeatherPresentBanner  extends StatefulWidget {
   final bool isTabAppeared;
 
-  WeatherPresentBanner({this.isTabAppeared});
+  WeatherPresentBanner({Key key, this.isTabAppeared}) : super(key: key);
 
   @override
-  _WeatherPresentBannerState createState() => _WeatherPresentBannerState();
+  WeatherPresentBannerState createState() => WeatherPresentBannerState();
 }
 
-class _WeatherPresentBannerState extends State<WeatherPresentBanner> with WidgetsBindingObserver {
+class WeatherPresentBannerState extends State<WeatherPresentBanner> with WidgetsBindingObserver {
   String _cityNameCd;
   String _zipCd;
   GlobalKey<BaseViewState> _reloaderKey;
   bool _isTabFirstAppeared = true;
+  TemperatureUnit _temprtUnit;
 
   @override
   void initState() {
@@ -52,13 +54,10 @@ class _WeatherPresentBannerState extends State<WeatherPresentBanner> with Widget
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if(state == AppLifecycleState.resumed){
+    // App call resume if background end.
+    if(state == AppLifecycleState.resumed && widget.isTabAppeared){
       // reload this banner due to parameter changed.
-      setState(() {
-        if (_reloaderKey.currentState != null && !_isTabFirstAppeared) {
-          _reloaderKey.currentState.reload();
-        }
-      });
+      this.reloadData();
     }
     super.didChangeAppLifecycleState(state);
   }
@@ -66,12 +65,7 @@ class _WeatherPresentBannerState extends State<WeatherPresentBanner> with Widget
   @override
   Widget build(BuildContext context) {
     if(widget.isTabAppeared) {
-      setState(() {
-        // reload this banner due to parameter changed.
-        if (_reloaderKey.currentState != null && !_isTabFirstAppeared) {
-          _reloaderKey.currentState.reload();
-        }
-      });
+      this.reloadData();
     }
 
     return ( _cityNameCd == null || _cityNameCd.isEmpty) && (_zipCd == null || _zipCd.isEmpty) ?
@@ -101,25 +95,47 @@ class _WeatherPresentBannerState extends State<WeatherPresentBanner> with Widget
             children: <Widget>[
               UIHelper.verticalSpaceSmall(),
               WeatherTopCell(itemValue: viewModel.fetchedWeatherInfo.result,),
-              UIHelper.verticalSpaceSmall(),
-              WeatherContentCell(itemValue: viewModel.fetchedWeatherInfo.result,
-              onCellEditing: (arguments) {
-                Navigator.pushNamed(context, ScreenRouteName.selectCity.name, arguments: arguments)
-                .then((value) {
+              UIHelper.verticalSpaceSmallest(),
+              WeatherContentCell(
+                itemValue: viewModel.fetchedWeatherInfo.result,
+                temprtUnit: _temprtUnit,
+                onCellEditing: (arguments) {
+                  Navigator.pushNamed(context, ScreenRouteName.selectCity.name, arguments: arguments)
+                  .then((value) {
                     List<String> cityValue = value;
-                    print('cityValue = $cityValue');
                     if(cityValue != null && cityValue.length > 1 ) {
-                      _savePrefsData(cityValue);
+                      _savePrefsData(cityValue: cityValue);
                     }
-                });
+                  });
               }),
-              UIHelper.verticalSpaceSmall(),
-              WeatherFunctionCell(),
-              UIHelper.verticalSpaceSmall(),
+              UIHelper.verticalSpaceSmallest(),
+              WeatherFunctionCell(
+                itemValue: viewModel.fetchedWeatherInfo.result,
+                temprtUnit: _temprtUnit,
+              ),
             ],);
           }
         }
       );
+  }
+
+/// データリロード処理
+  void reloadData({String cityNameCd, String zipCd, TemperatureUnit temprtUnit}) {
+    setState(() {
+      if(cityNameCd != null) {
+        _cityNameCd = cityNameCd;
+      }
+      if(zipCd != null) {
+        _zipCd = zipCd;
+      }
+      if(temprtUnit != null) {
+        _temprtUnit = temprtUnit;
+      }
+      // reload this banner due to parameter changed.
+      if (_reloaderKey.currentState != null && !_isTabFirstAppeared) {
+        _reloaderKey.currentState.reload();
+      }
+    });
   }
 
   Widget _buildMessageArea({BuildContext context, String message, bool needsReload = false}) {
@@ -156,14 +172,10 @@ class _WeatherPresentBannerState extends State<WeatherPresentBanner> with Widget
                 ScreenRouteName.selectCity.name, 
                 arguments: CityInfo(name: 'Tokyo', countryCode: 'JP') )
               .then((value) async {
-                setState(() {
-                  List<String> cityValue = value;
-                  print('cityValue = $cityValue');
-                  if(cityValue != null && cityValue.length > 1) {
-                    _zipCd = cityValue[0];
-                    _cityNameCd = cityValue[1];
-                  }
-                });
+                List<String> cityValue = value;
+                if(cityValue != null && cityValue.length > 1) {
+                  _savePrefsData(cityValue: cityValue);
+                }
               });
             }
           ),
@@ -172,21 +184,21 @@ class _WeatherPresentBannerState extends State<WeatherPresentBanner> with Widget
     );
   }
 
-  void _readPrefsData() async {
+  Future<void> _readPrefsData() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       _zipCd = (prefs.getString('zipCd') ?? '');
       _cityNameCd = (prefs.getString('cityNameCd') ?? 'Tokyo,JP');
-      print('_readPrefsData : _cityNameCd = $_cityNameCd');
+      _temprtUnit = (prefs.getInt('temprtUnit') != null ? 
+        TemperatureUnit.values[prefs.getInt('temprtUnit')] : TemperatureUnit.celsius);
     });
   }
 
-  void  _savePrefsData(List<String> cityValue) async {
+  Future<void>  _savePrefsData({List<String> cityValue}) async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       prefs.setString('zipCd', cityValue[0]);
       prefs.setString('cityNameCd', cityValue[1]);
-      print('_savePrefsData : _cityNameCd = ${prefs.getString('cityNameCd') ?? 'Tokyo,JP'}');
       _zipCd = cityValue[0];
       _cityNameCd = cityValue[1];
     });

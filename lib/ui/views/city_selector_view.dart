@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:drogo_libro/core/models/city_info.dart';
@@ -30,15 +31,17 @@ class _CitySelectorViewState extends State<CitySelectorView> {
 
   @override
   void initState() {
-    _cityName = widget.cityItem.name;
-    _zip = widget.cityItem.zip;
-    _countryCd = widget.cityItem.countryCode;
+    setState(() {
+      _cityName = widget.cityItem.name;
+      _zip = widget.cityItem.zip;
+      _countryCd = widget.cityItem.countryCode;
 
-    _cityNameTextController = TextEditingController(
-      text: _zip != null && _zip.isNotEmpty ? _zip : _cityName);
-    _countryCdTextController = TextEditingController(text: _countryCd);
+      _cityNameTextController = TextEditingController(
+        text: _zip != null && _zip.isNotEmpty ? _zip : _cityName);
+      _countryCdTextController = TextEditingController(text: _countryCd);
 
-    _cityMode = _zip != null && _zip.isNotEmpty ? _CityInputMode.zip : _CityInputMode.cityName;
+      _cityMode = _zip != null && _zip.isNotEmpty ? _CityInputMode.zip : _CityInputMode.cityName;
+    });
     super.initState();
   }
 
@@ -84,9 +87,10 @@ class _CitySelectorViewState extends State<CitySelectorView> {
               value: _CityInputMode.zip,
               groupValue: _cityMode,
               onChanged: (_CityInputMode value) {
+                FocusScope.of(context).unfocus();
                 setState(() {
-                 _cityMode = value;
-                 _cityNameTextController.text = '';
+                  _cityMode = value;
+                  _cityNameTextController.text = _zip;
                 });
               } ,
               
@@ -114,9 +118,10 @@ class _CitySelectorViewState extends State<CitySelectorView> {
               value: _CityInputMode.cityName,
               groupValue: _cityMode,
               onChanged: (_CityInputMode value) {
+                FocusScope.of(context).unfocus();
                 setState(() {
                   _cityMode = value;
-                 _cityNameTextController.text = _cityName;
+                  _cityNameTextController.text = _cityName;
                 });
               } 
             ),
@@ -155,7 +160,10 @@ class _CitySelectorViewState extends State<CitySelectorView> {
             Container(
               width: MediaQuery.of(context).size.width - 160,
               child: TextFormField(
-                keyboardType: _cityMode == _CityInputMode.zip ? TextInputType.number: TextInputType.text,
+                keyboardType: _cityMode == _CityInputMode.zip ? TextInputType.numberWithOptions(signed: true) : TextInputType.text,
+                inputFormatters: _cityMode == _CityInputMode.zip ? <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp(r'\d+|\-')),
+                ] : null,
                 // maxLines: null,
                 controller: _cityNameTextController,
                 autofocus: true,

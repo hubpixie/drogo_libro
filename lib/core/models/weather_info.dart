@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:drogo_libro/core/enums/code_enums.dart';
 import 'package:drogo_libro/core/models/city_info.dart';
 import 'package:drogo_libro/core/shared/weather_util.dart';
-
-enum TemperatureUnit {
-  kelvin,
-  celsius,
-  fahrenheit
-}
+import 'package:drogo_libro/core/shared/date_util.dart';
 
 class Temperature{
   final double _kelvin;
@@ -53,6 +49,7 @@ class WeatherInfo {
   double windSpeed;
   int windDeg;
 
+  Temperature feelsLike;
   Temperature temperature;
   Temperature maxTemperature;
   Temperature minTemperature;
@@ -73,6 +70,7 @@ class WeatherInfo {
       this.city,
       this.windSpeed,
       this.windDeg,
+      this.feelsLike,
       this.temperature,
       this.maxTemperature,
       this.minTemperature,
@@ -92,14 +90,16 @@ class WeatherInfo {
         CityInfo cinfo;
         try {
           String name = json['name'];
-          cinfo =  WeatherUtil.shared.romajiCityList.firstWhere((element) => element.name == name);
+          cinfo =  WeatherUtil().romajiCityList.firstWhere((element) => element.name == name);
         } catch(error) {
         }
         return cinfo != null ? cinfo.nameDesc.replaceAll(RegExp(r'都|府|市'), '') : json['name'];
       }(),
       zip: zipCd != null && zipCd.isNotEmpty ? zipCd.split(',').first : '',
       countryCode: json['sys']['country'],
+      timezone: json['timezone'],
     );
+    feelsLike = Temperature(json['main']['feels_like']);
     temperature = Temperature(json['main']['temp']);
     maxTemperature = Temperature(json['main']['temp_max']);
     minTemperature = Temperature(json['main']['temp_min']);
@@ -129,9 +129,11 @@ class WeatherInfo {
 
 extension WeatherInfoEx on WeatherInfo {
   bool get hasPrecit => this.rain != null || this.snow != null;
-  String getWeatherDesc() => WeatherUtil.shared.getWeatherDesc(weatherId: this.id);
-  String getPrecipLabel() => WeatherUtil.shared.getPrecipLabel(rain: this.rain, snow: this.snow);
-  String getPrecipValue() => WeatherUtil.shared.getPrecipValue(rain: this.rain, snow: this.snow);
-  String getWindDirectionValue() => WeatherUtil.shared.getWindDirectionValue(degree: this.windDeg);
-  IconData getIconData() => WeatherUtil.shared.getIconData(iconCode: this.iconCode);
+  String getSunsetFormattedString() => DateUtil().getHMMString(timestamp: this.sunset, timezone: this.city.timezone);
+  String getSunriseFormattedString() => DateUtil().getHMMString(timestamp: this.sunrise, timezone: this.city.timezone);
+  String getWeatherDesc() => WeatherUtil().getWeatherDesc(weatherId: this.id);
+  String getPrecipLabel() => WeatherUtil().getPrecipLabel(rain: this.rain, snow: this.snow);
+  String getPrecipValue() => WeatherUtil().getPrecipValue(rain: this.rain, snow: this.snow);
+  String getWindDirectionValue() => WeatherUtil().getWindDirectionValue(degree: this.windDeg);
+  IconData getIconData() => WeatherUtil().getIconData(iconCode: this.iconCode);
 }
