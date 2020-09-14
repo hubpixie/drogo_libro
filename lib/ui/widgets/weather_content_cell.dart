@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:drogo_libro/core/enums/code_enums.dart';
 import 'package:drogo_libro/core/models/weather_info.dart';
-import 'package:drogo_libro/core/models/city_info.dart';
 
-typedef CellEditingDelegate = void Function(dynamic);
-
+typedef CellEditingDelegate = void Function();
 class WeatherContentCell  extends StatefulWidget {
   final WeatherInfo itemValue;
   final TemperatureUnit temprtUnit;
@@ -62,9 +60,7 @@ class _WeatherContentCellState extends State<WeatherContentCell> {
               ],),
               onTap: () {
                 setState(() {
-                  widget.onCellEditing(CityInfo(
-                    name: widget.itemValue.city.name, zip: widget.itemValue.city.zip, countryCode: widget.itemValue.city.countryCode)
-                  );
+                  widget.onCellEditing();
                 });
               },
             )

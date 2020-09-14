@@ -29,6 +29,5 @@ class StringUtil {
     final prefs = await SharedPreferences.getInstance();
     _isPcodeHidden = prefs.getBool('isPasscodeHidden') ?? true;
     _encryptedPcode = prefs.getString('pcd') ?? '';
-  }
-
+  }  
 }

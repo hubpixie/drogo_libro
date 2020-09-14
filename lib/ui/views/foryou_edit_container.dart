@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -65,21 +66,23 @@ class _ForyouEditContainerState extends State<ForyouEditContainer>
         appBar: AppBar(
           backgroundColor: AppColors.appBarBackgroundColor,
           title: Text(widget.title),
+          centerTitle: Platform.isAndroid ? false : true,
           actions: <Widget>[
             Padding(
               padding: EdgeInsets.only(right: 20.0),
-              child: (_sideEffectCount != null && _sideEffectCount < SideEffectInfo.kListMxLength) ? GestureDetector(
-                onTap: () {
+              child: (_sideEffectCount != null && _sideEffectCount < SideEffectInfo.kListMxLength) ? IconButton(
+                onPressed: () {
                   setState(() {
                     _keySideEffectEditCell.currentState.addingRow(++_sideEffectCount);
                   });
                 },
-                child: Icon(
+                icon: Icon(
                     Icons.add
                 ),
               ) : Container()
             ),
-          ],        ),
+          ],
+        ),
         backgroundColor: AppColors.mainBackgroundColor,
         body: _dataBody(viewModel),
       ),

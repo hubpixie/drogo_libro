@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
+
 import 'package:drogo_libro/config/service_setting.dart';
 import 'package:drogo_libro/core/models/data_result.dart';
+import 'package:drogo_libro/core/models/city_info.dart';
 
 import 'weather_web_api.dart';
 
@@ -22,14 +25,14 @@ class WeatherInfosService {
 
   /// Get weather info 
   /// 
-  Future getWeatherData({String cityNameCd, String zipCd}) async {
-    _fetchedWeatherInfo = await _api.getWeatherData(cityNameCd: cityNameCd, zipCd: zipCd);
+  Future getWeatherData({@required CityInfo cityParam}) async {
+    _fetchedWeatherInfo = await _api.getWeatherData(cityParam: cityParam);
   }
 
   /// Get weather forecast
   /// 
-  Future getForecast({String cityNameCd, String zipCd}) async {
-    _fetchedForecast = await _api.getForecast(cityNameCd: cityNameCd, zipCd: zipCd);
+  Future getForecast({@required CityInfo cityParam}) async {
+    _fetchedForecast = await _api.getForecast(cityParam: cityParam);
   }
 
 } 

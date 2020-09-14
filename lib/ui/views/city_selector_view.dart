@@ -1,9 +1,10 @@
+import 'package:drogo_libro/core/shared/city_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'package:drogo_libro/core/models/city_info.dart';
 
+import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
 import 'package:drogo_libro/ui/shared/app_colors.dart';
 
 enum _CityInputMode {
@@ -22,26 +23,29 @@ class CitySelectorView extends StatefulWidget {
 }
 
 class _CitySelectorViewState extends State<CitySelectorView> {
-  String _cityName;
-  String _zip;
-  String _countryCd;
+  CityInfo _cityItem;
   TextEditingController _cityNameTextController;
   TextEditingController _countryCdTextController;
   _CityInputMode _cityMode;
+  String _countryNameDesc;
 
   @override
   void initState() {
-    setState(() {
-      _cityName = widget.cityItem.name;
-      _zip = widget.cityItem.zip;
-      _countryCd = widget.cityItem.countryCode;
+    _cityItem = CityInfo(
+      name: widget.cityItem.name,
+      nameDesc: widget.cityItem.nameDesc,
+      zip: widget.cityItem.zip,
+      countryCode: widget.cityItem.countryCode,
+      isFavorite: widget.cityItem.isFavorite
+    );
+    _countryNameDesc = CityUtil().getCountryNameDesc(countryCode: _cityItem.countryCode);
 
-      _cityNameTextController = TextEditingController(
-        text: _zip != null && _zip.isNotEmpty ? _zip : _cityName);
-      _countryCdTextController = TextEditingController(text: _countryCd);
+    _cityNameTextController = TextEditingController(
+      text: _cityItem.zip != null && _cityItem.zip.isNotEmpty ? _cityItem.zip : _cityItem.name);
+    _countryCdTextController = TextEditingController(text: _cityItem.countryCode);
 
-      _cityMode = _zip != null && _zip.isNotEmpty ? _CityInputMode.zip : _CityInputMode.cityName;
-    });
+    _cityMode = _cityItem.zip != null && _cityItem.zip.isNotEmpty ? _CityInputMode.zip : _CityInputMode.cityName;
+
     super.initState();
   }
 
@@ -59,12 +63,14 @@ class _CitySelectorViewState extends State<CitySelectorView> {
       onWillPop: () async {
         // キーボードを閉じる
         FocusScope.of(context).unfocus();
-        Navigator.of(context).pop([
-          _cityMode == _CityInputMode.zip ? 
-            '${_cityNameTextController.text},${_countryCdTextController.text ?? ''}' : '',
-          _cityMode == _CityInputMode.cityName ?
-            '${_cityNameTextController.text},${_countryCdTextController.text ?? ''}' : '',
-        ]);
+        Navigator.of(context).pop(
+          CityInfo(
+            zip:_cityMode == _CityInputMode.zip ? _cityNameTextController.text: '',
+            name: _cityMode == _CityInputMode.cityName ? _cityNameTextController.text: '',
+            countryCode: _countryCdTextController.text ?? 'JP',
+            isFavorite: _cityItem.isFavorite
+          )
+        );
         return Future.value(false);
       },
       child: Scaffold(
@@ -72,6 +78,7 @@ class _CitySelectorViewState extends State<CitySelectorView> {
           backgroundColor: AppColors.appBarBackgroundColor,
           title: Text(widget.title),
         ),
+        resizeToAvoidBottomPadding: false,
         body: _buildInputContent(context),
       )
     );
@@ -90,7 +97,7 @@ class _CitySelectorViewState extends State<CitySelectorView> {
                 FocusScope.of(context).unfocus();
                 setState(() {
                   _cityMode = value;
-                  _cityNameTextController.text = _zip;
+                  _cityNameTextController.text = _cityItem.zip;
                 });
               } ,
               
@@ -121,7 +128,7 @@ class _CitySelectorViewState extends State<CitySelectorView> {
                 FocusScope.of(context).unfocus();
                 setState(() {
                   _cityMode = value;
-                  _cityNameTextController.text = _cityName;
+                  _cityNameTextController.text = _cityItem.name;
                 });
               } 
             ),
@@ -175,16 +182,21 @@ class _CitySelectorViewState extends State<CitySelectorView> {
             // 国名コード
             Container(
               width: 40,
-              child: TextFormField(
-                keyboardType: TextInputType.name,
-                // maxLines: null,
-                controller: _countryCdTextController,
-                maxLength: 2,
-                maxLengthEnforced: false,
-                autofocus: true,
-                decoration: InputDecoration(
-                  counterText: '',
-                  hintText: 'JP')
+              child: GestureDetector(
+                onTap: () => _countryCodeTextDidChange(),
+                child: AbsorbPointer(
+                  child: TextFormField(
+                    keyboardType: TextInputType.name,
+                    // maxLines: null,
+                    controller: _countryCdTextController,
+                    maxLength: 2,
+                    maxLengthEnforced: false,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      counterText: '',
+                      hintText: 'JP')
+                  ),
+                ),
               ),
             ),
           ],
@@ -193,30 +205,57 @@ class _CitySelectorViewState extends State<CitySelectorView> {
           children: [
             Spacer(),
             Container(
-              margin: EdgeInsets.only(right: 0),
-              child: FlatButton(
-                onPressed: () => setState(() {
-                _launchInBrowser('http://www.kc.tsukuba.ac.jp/ulismeta/metadata/standard/cntry_code.html');
-                }),
-                child: const Text('国名コード一覧', 
-                  style: TextStyle(color: Colors.blueAccent),),
-              )
-            ,),
+              margin: EdgeInsets.only(right: 10),
+              width: 110,
+              child: Text(_countryNameDesc, 
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 14.0
+                ),
+              ),
+            ),
           ],
         ),
+        Row(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: Text(" ",
+                style: TextStyle(fontSize: 16.0),),
+            ),
+            Checkbox(
+              value: _cityItem.isFavorite,
+              onChanged: (bool value) {
+                setState(() {
+                  _cityItem.isFavorite = value;
+                });
+              },
+            ),
+            Container(
+              height: 40,
+              alignment: Alignment.centerLeft,
+              child: Text('お気に入り登録', style: TextStyle(fontSize: 16.0),),
+            ),
+          ],
+        )
       ],
     );
   }
 
- Future<void> _launchInBrowser(String url) async {
-    if (await canLaunch(url)) {
-      await launch(
-        url,
-        forceSafariVC: false,
-        forceWebView: false,
-      );
-    } else {
-      throw 'Could not launch $url';
-    }
+void _countryCodeTextDidChange() {
+    Navigator.pushNamed(context, 
+      ScreenRouteName.selectCountry.name, 
+      arguments: {'countryCode': _countryCdTextController.text}
+    )
+    .then((value) async {
+      CountryInfo countryValue = value;
+      if(countryValue != null) {
+        setState(() {
+          _countryCdTextController.text = countryValue.code;
+          _countryNameDesc = countryValue.jpName;
+        });
+      }
+    });
   }
+
 }

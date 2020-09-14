@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:drogo_libro/core/enums/code_enums.dart';
 import 'package:drogo_libro/core/models/city_info.dart';
+import 'package:drogo_libro/core/shared/city_util.dart';
 
 import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
 import 'package:drogo_libro/ui/shared/app_colors.dart';
@@ -15,9 +16,10 @@ import 'package:drogo_libro/ui/widgets/expandable_list_widget.dart';
 
 
 class SettingsMenu  extends StatefulWidget {
-  final   GlobalKey<WeatherPresentBannerState> weatherBannerKey;
+  final GlobalKey<WeatherPresentBannerState> weatherBannerKey;
+  final TemperatureUnit temprtUnit;
 
-  SettingsMenu({this.weatherBannerKey});
+  SettingsMenu({this.weatherBannerKey, this.temprtUnit});
 
   @override
   _SettingsMenuState createState() => _SettingsMenuState();
@@ -30,10 +32,9 @@ class _SettingsMenuState extends State<SettingsMenu> {
     version: '1.0.0',
     buildNumber: 'Unknown',
   );
+  CityInfo _cityParam;
   TemperatureUnit _temprtUnit;
-
-  String _cityNameCd;
-  String _zipCd;
+  bool _temprtUnitSwichTapped;
 
   @override
   void initState() {
@@ -41,16 +42,24 @@ class _SettingsMenuState extends State<SettingsMenu> {
     _initPackageInfo();
 
     // アプリ設定取得
+    _cityParam = CityInfo();
+    _temprtUnit = TemperatureUnit.celsius;
     _readPrefsData();
 
-    // その他の初期化
-    _temprtUnit = TemperatureUnit.celsius;
+    // その他初期化
+    _temprtUnitSwichTapped = false;
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    //　呼び元から渡された時　かつ　温度単位スイッチがタップされてない時
+    if(widget.temprtUnit != null && !_temprtUnitSwichTapped) {
+      _temprtUnit = widget.temprtUnit;
+    }
+    _temprtUnitSwichTapped = false;
+    
     return Container(
         padding: EdgeInsets.only(left: 10, right: 10, top: 15),
        // child: Expanded(
@@ -67,6 +76,7 @@ class _SettingsMenuState extends State<SettingsMenu> {
                   Switch(
                     value: _temprtUnit == TemperatureUnit.fahrenheit,
                     onChanged: (value) {
+                      _temprtUnitSwichTapped = true;
                       setState(() {
                         _savePrefsData(
                           temprtUnit: value ? TemperatureUnit.fahrenheit : TemperatureUnit.celsius);
@@ -79,7 +89,6 @@ class _SettingsMenuState extends State<SettingsMenu> {
               ),
               _buildDivider(),
               _buildRowInSection(context, '地域変更', 
-                rowBorderDecoration: _buildBoxDecoration(end: true),
                 children: <Widget>[
                   _buildRowIndicator(),
                 ],
@@ -87,18 +96,36 @@ class _SettingsMenuState extends State<SettingsMenu> {
                   await _readPrefsData();
                   Navigator.pushNamed(context, 
                     ScreenRouteName.selectCity.name, 
-                    arguments: CityInfo(
-                      name: _cityNameCd != null && _cityNameCd.isNotEmpty ? _cityNameCd.split(',').first: 'Tokyo',
-                      zip: _zipCd != null && _zipCd.isNotEmpty ? _zipCd.split(',').first: '',
-                      countryCode: () {
-                        if(_cityNameCd != null && _cityNameCd.isNotEmpty) return  _cityNameCd.split(',').last;
-                        else if (_zipCd != null && _zipCd.isNotEmpty) return _zipCd.split(',').last;
-                        else return 'JP';
-                      }()) )
+                    arguments: {'city': CityInfo(
+                      zip: _cityParam.zip,
+                      name: _cityParam.name,
+                      nameDesc: _cityParam.nameDesc,
+                      countryCode: _cityParam.countryCode,
+                      isFavorite: _cityParam.isFavorite,
+                    )}
+                  )
                   .then((value) async {
-                    List<String> cityValue = value;
-                    if(cityValue != null && cityValue.length > 1) {
+                    CityInfo cityValue = value;
+                    if(cityValue != null) {
                       _savePrefsData(cityValue: cityValue);
+                    }
+                  });
+                },
+              ),
+              _buildDivider(),
+              _buildRowInSection(context, 'お気に入り（地域）', 
+                rowBorderDecoration: _buildBoxDecoration(end: true),
+                children: <Widget>[
+                  _buildRowIndicator(),
+                ],
+                onTap: () async {
+                  Navigator.pushNamed(context, 
+                    ScreenRouteName.selectCityFavorite.name
+                  ).then((value) async{
+                    CityInfo cityValue2 = value;
+                    if(cityValue2 != null  ) {
+                      await _savePrefsData(cityValue: cityValue2);
+                      //BaseView.of(context).reload();
                     }
                   });
                 },
@@ -311,12 +338,14 @@ class _SettingsMenuState extends State<SettingsMenu> {
 
   Future<void> _readPrefsData() async {
     final prefs = await SharedPreferences.getInstance();
+    await CityUtil().readCityInfoFromPref(isDefault: true);
+    
     setState(() {
-      String zipCd = (prefs.getString('zipCd') ?? '');
-      if(zipCd != _zipCd) _zipCd = zipCd;
-
-      String cityNameCd = (prefs.getString('cityNameCd') ?? 'Tokyo,JP');
-      if(cityNameCd != _cityNameCd) _cityNameCd = cityNameCd;
+      _cityParam.zip = CityUtil().savedCity.zip;
+      _cityParam.name = CityUtil().savedCity.name;
+      _cityParam.nameDesc = CityUtil().savedCity.nameDesc;
+      _cityParam.countryCode = CityUtil().savedCity.countryCode;
+      _cityParam.isFavorite =  CityUtil().savedCity.isFavorite;
 
       TemperatureUnit temprtUnit = (prefs.getInt('temprtUnit') != null ? 
         TemperatureUnit.values[prefs.getInt('temprtUnit')] : TemperatureUnit.celsius);
@@ -324,17 +353,20 @@ class _SettingsMenuState extends State<SettingsMenu> {
     });
   }
 
-  Future<void>  _savePrefsData({List<String> cityValue, TemperatureUnit temprtUnit}) async {
+  Future<void>  _savePrefsData({CityInfo cityValue, TemperatureUnit temprtUnit}) async {
     final prefs = await SharedPreferences.getInstance();
+
     setState(() {
       if (cityValue != null) {
-        prefs.setString('zipCd', cityValue[0]);
-        prefs.setString('cityNameCd', cityValue[1]);
-        _zipCd = cityValue[0];
-        _cityNameCd = cityValue[1];
+        _cityParam.zip = cityValue.zip;
+        _cityParam.name = cityValue.name;
+        _cityParam.nameDesc = cityValue.nameDesc;
+        _cityParam.countryCode = cityValue.countryCode;
+        _cityParam.isFavorite = cityValue.isFavorite;
+
         // 画面上部のバナーを最新表示する
         if(widget.weatherBannerKey.currentState != null) {
-          widget.weatherBannerKey.currentState.reloadData(cityNameCd: _cityNameCd, zipCd: _zipCd);
+          widget.weatherBannerKey.currentState.reloadData(cityParam: _cityParam);
         } 
       } else if (temprtUnit != null) {
         prefs.setInt('temprtUnit', temprtUnit.index);

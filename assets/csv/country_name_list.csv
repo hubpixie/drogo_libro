@@ -1,0 +1,261 @@
+ID,コード,国名,日本語表記,地域
+1,AC,Ascension Island,アセンション島,アフリカ
+2,AD,Andorra,アンドラ,欧州
+3,AE,United Arab Emirates,アラブ首長国連邦,中近東
+4,AF,Afghanistan,アフガニスタン,アジア
+5,AG,Antigua And Barbuda,アンティグア・バーブーダ,中南米
+6,AI,Anguilla,アンギラ,中南米
+7,AL,Albania,アルバニア,欧州
+8,AM,Armenia,アルメニア,東欧
+9,AN,Netherlands Antilles,オランダ領アンティル,中南米
+10,AO,Angola,アンゴラ,アフリカ
+11,AP,Asia Pacific,アジア太平洋連合,アジア
+12,AQ,Antarctica,南極,南極
+13,AR,Argentina,アルゼンチン,中南米
+14,AS,American Samoa,アメリカ領サモア,オセアニア
+15,AT,Austria,オーストリア,欧州
+16,AU,Australia,オーストラリア,オセアニア
+17,AW,Aruba,アルバ,中南米
+18,AX,Åland Islands,オーランド諸島,欧州
+19,AZ,Azerbaijan,アゼルバイジャン,東欧
+20,BA,Bosnia And Herzegowina,ボスニア・ヘルツェゴビナ,欧州
+21,BB,Barbados,バルバドス,中南米
+22,BD,Bangladesh,バングラデシュ,アジア
+23,BE,Belgium,ベルギー,欧州
+24,BF,Burkina Faso,ブルキナファソ,アフリカ
+25,BG,Bulgaria,ブルガリア,欧州
+26,BH,Bahrain,バーレーン,中近東
+27,BI,Burundi,ブルンジ,アフリカ
+28,BJ,Benin,ベナン,アフリカ
+29,BL,Saint Barthélemy,サン・バルテルミー島,中米
+30,BM,Bermuda,バミューダ諸島,北米
+31,BN,Brunei Darussalam,ブルネイ,アジア
+32,BO,Bolivia,ボリビア,中南米
+33,BQ,Bonaire,ボネール島,中南米
+34,BR,Brazil,ブラジル,中南米
+35,BS,Bahamas,バハマ,中南米
+36,BT,Bhutan,ブータン,アジア
+37,BV,Bouvet Island,ブーベ島,南極
+38,BW,Botswana,ボツワナ,アフリカ
+39,BY,Belarus,ベラルーシ,東欧
+40,BZ,Belize,ベリーズ,中南米
+41,CA,Canada,カナダ,北米
+42,CC,Cocos (Keeling) Islands,ココス諸島,アジア
+43,CD,Democratic Republic of the Congo,コンゴ民主共和国,アフリカ
+44,CF,Central African Republic,中央アフリカ共和国,アフリカ
+45,CG,Congo,コンゴ共和国,アフリカ
+46,CH,Switzerland,スイス,欧州
+47,CI,Côte d'Ivoire,コートジボワール,アフリカ
+48,CK,Cook Islands,クック諸島,オセアニア
+49,CL,Chile,チリ,中南米
+50,CM,Cameroon,カメルーン,アフリカ
+51,CN,China,中国,アジア
+52,CO,Colombia,コロンビア,中南米
+53,CR,Costa Rica,コスタリカ,中米
+54,CS,Czechoslovakia (former),旧チェコスロバキア,欧州
+55,CU,Cuba,キューバ,中南米
+56,CV,Cape Verde,カーボベルデ,アフリカ
+57,CW,Curaçao,キュラソー島,中南米
+58,CX,Christmas Island,クリスマス島,オセアニア
+59,CY,Cyprus,キプロス,中近東
+60,CZ,Czech Republic,チェコ,欧州
+61,DE,Germany,ドイツ,欧州
+62,DJ,Djibouti,ジブチ,アフリカ
+63,DK,Denmark,デンマーク,欧州
+64,DM,Dominica,ドミニカ国,中南米
+65,DO,Dominican Republic,ドミニカ共和国,中南米
+66,DZ,Algeria,アルジェリア,アフリカ
+67,EC,Ecuador,エクアドル,中南米
+68,EE,Estonia,エストニア,東欧
+69,EG,Egypt,エジプト,中近東
+70,EH,Western Sahara,西サハラ,アフリカ
+71,ER,Eritrea,エリトリア,アフリカ
+72,ES,Spain,スペイン,欧州
+73,ET,Ethiopia,エチオピア,アフリカ
+74,EU,EU,欧州連合,欧州
+75,FI,Finland,フィンランド,欧州
+76,FJ,Fiji,フィジー,オセアニア
+77,FK,Falkland Islands (Malvinas),フォークランド諸島,中南米
+78,FM,"Micronesia, Federated States Of",ミクロネシア連邦,オセアニア
+79,FO,Faroe Islands,フェロー諸島,欧州
+80,FR,France,フランス,欧州
+81,GA,Gabon,ガボン,アフリカ
+82,GB,Great Britain(United Kingdom),イギリス,欧州
+83,GD,Grenada,グレナダ,中南米
+84,GE,Georgia,ジョージア,東欧
+85,GF,French Guiana,フランス領ギアナ,中南米
+86,GG,Guernsey,ガーンジー,欧州
+87,GH,Ghana,ガーナ,アフリカ
+88,GI,Gibraltar,ジブラルタル,欧州
+89,GL,Greenland,グリーンランド,欧州
+90,GM,Gambia,ガンビア,アフリカ
+91,GN,Guinea,ギニア,アフリカ
+92,GP,Guadeloupe,グアドループ,中南米
+93,GQ,Equatorial Guinea,赤道ギニア,アフリカ
+94,GR,Greece,ギリシャ,欧州
+95,GS,South Georgia And The South Sandwich Islands,サウスジョージア・サウスサンドウィッチ諸島,中南米
+96,GT,Guatemala,グアテマラ,中米
+97,GU,Guam,グアム,オセアニア
+98,GW,Guinea-Bissau,ギニアビサウ,アフリカ
+99,GY,Guyana,ガイアナ,中南米
+100,HK,Hong Kong,香港,アジア
+101,HM,Heard And Mc Donald Islands,ハード島とマクドナルド諸島,アフリカ
+102,HN,Honduras,ホンジュラス,中南米
+103,HR,Croatia (Hrvatska),クロアチア,欧州
+104,HT,Haiti,ハイチ,中南米
+105,HU,Hungary,ハンガリー,欧州
+106,ID,Indonesia,インドネシア,アジア
+107,IE,Ireland,アイルランド,欧州
+108,IL,Israel,イスラエル,中近東
+109,IM,Isle of Man,マン島,欧州
+110,IN,India,インド,アジア
+111,IO,British Indian Ocean Territory,イギリス領インド洋地域,アフリカ
+112,IQ,Iraq,イラク,中近東
+113,IR,Iran (Islamic Republic Of),イラン,中近東
+114,IS,Iceland,アイスランド,欧州
+115,IT,Italy,イタリア,欧州
+116,JE,Jersey,ジャージー,欧州
+117,JM,Jamaica,ジャマイカ,中南米
+118,JO,Jordan,ヨルダン,中近東
+119,JP,Japan,日本,アジア
+120,KE,Kenya,ケニア,アフリカ
+121,KG,Kyrgyzstan,キルギス,中央アジア
+122,KH,Cambodia,カンボジア,アジア
+123,KI,Kiribati,キリバス,オセアニア
+124,KM,Comoros,コモロ,アフリカ
+125,KN,Saint Kitts And Nevis,セントクリストファー・ネイビス,中南米
+126,KP,Korea(North),北朝鮮,アジア
+127,KR,"Korea, Republic Of",韓国,アジア
+128,KRD,Iraqi Kurdistan,クルディスタン地域,中近東
+129,KW,Kuwait,クウェート,中近東
+130,KY,Cayman Islands,ケイマン諸島,中南米
+131,KZ,Kazakhstan,カザフスタン,中央アジア
+132,LA,Laos,ラオス,アジア
+133,LB,Lebanon,レバノン,中近東
+134,LC,Saint Lucia,セントルシア,中南米
+135,LI,Liechtenstein,リヒテンシュタイン,欧州
+136,LK,Sri Lanka,スリランカ,アジア
+137,LR,Liberia,リベリア,アフリカ
+138,LS,Lesotho,レソト,アフリカ
+139,LT,Lithuania,リトアニア,東欧
+140,LU,Luxembourg,ルクセンブルク,欧州
+141,LV,Latvia,ラトビア,東欧
+142,LY,Libyan Arab Jamahiriya,リビア,アフリカ
+143,MA,Morocco,モロッコ,アフリカ
+144,MC,Monaco,モナコ,欧州
+145,MD,"Moldova, Republic Of",モルドバ,東欧
+146,ME,Montenegro,モンテネグロ,欧州
+147,MG,Madagascar,マダガスカル,アフリカ
+148,MH,Marshall Islands,マーシャル諸島,オセアニア
+149,MK,"Macedonia, The Former Yugoslav Republic Of",マケドニア,欧州
+150,ML,Mali,マリ,アフリカ
+151,MM,Myanmar,ミャンマー,アジア
+152,MN,Mongolia,モンゴル,アジア
+153,MO,Macau,マカオ,アジア
+154,MP,Northern Mariana Islands,北マリアナ諸島,オセアニア
+155,MQ,Martinique,マルティニーク,中南米
+156,MR,Mauritania,モーリタニア,アフリカ
+157,MS,Montserrat,モントセラト,中南米
+158,MT,Malta,マルタ,欧州
+159,MU,Mauritius,モーリシャス,アフリカ
+160,MV,Maldives,モルディブ,アジア
+161,MW,Malawi,マラウイ,アフリカ
+162,MX,Mexico,メキシコ,北米
+163,MY,Malaysia,マレーシア,アジア
+164,MZ,Mozambique,モザンビーク,アフリカ
+165,NA,Namibia,ナミビア,アフリカ
+166,NC,New Caledonia,ニューカレドニア,オセアニア
+167,NE,Niger,ニジェール,アフリカ
+168,NF,Norfolk Island,ノーフォーク島,オセアニア
+169,NG,Nigeria,ナイジェリア,アフリカ
+170,NI,Nicaragua,ニカラグア,中米
+171,NL,Netherlands,オランダ,欧州
+172,NO,Norway,ノルウェー,欧州
+173,NP,Nepal,ネパール,アジア
+174,NR,Nauru,ナウル,オセアニア
+175,NT,Neutral Zone,中立地帯,中近東
+176,NU,Niue,ニウエ,オセアニア
+177,NZ,New Zealand,ニュージーランド,オセアニア
+178,OM,Oman,オマーン,中近東
+179,PA,Panama,パナマ,中南米
+180,PE,Peru,ペルー,中南米
+181,PF,French Polynesia,フランス領ポリネシア,オセアニア
+182,PG,Papua New Guinea,パプアニューギニア,オセアニア
+183,PH,Philippines,フィリピン,アジア
+184,PK,Pakistan,パキスタン,アジア
+185,PL,Poland,ポーランド,欧州
+186,PM,St. Pierre And Miquelon,サンピエール島・ミクロン島,北米
+187,PN,Pitcairn,ピトケアン諸島,オセアニア
+188,PR,Puerto Rico,プエルトリコ,中南米
+189,PS,Palestina,パレスチナ,欧州
+190,PT,Portugal,ポルトガル,欧州
+191,PW,Palau,パラオ,アジア
+192,PY,Paraguay,パラグアイ,中南米
+193,QA,Qatar,カタール,中近東
+194,RE,Reunion,レユニオン,アフリカ
+195,RO,Romania,ルーマニア,欧州
+196,RS,Serbia,セルビア,欧州
+197,RU,Russian Federation,ロシア,ロシア
+198,RW,Rwanda,ルワンダ,アフリカ
+199,SA,Saudi Arabia,サウジアラビア,中近東
+200,SB,Solomon Islands,ソロモン諸島,オセアニア
+201,SC,Seychelles,セーシェル,アフリカ
+202,SD,Sudan,スーダン,アフリカ
+203,SE,Sweden,スウェーデン,欧州
+204,SG,Singapore,シンガポール,アジア
+205,SH,St. Helena,セントヘレナ,アフリカ
+206,SI,Slovenia,スロベニア,欧州
+207,SJ,Svalbard And Jan Mayen Islands,スヴァールバル諸島・ヤンマイエン島,欧州
+208,SK,Slovakia (Slovak Republic),スロバキア,欧州
+209,SL,Sierra Leone,シエラレオネ,アフリカ
+210,SM,San Marino,サンマリノ,欧州
+211,SN,Senegal,セネガル,アフリカ
+212,SO,Somalia,ソマリア,アフリカ
+213,SR,Suriname,スリナム,中南米
+214,SS,South Sudan,南スーダン,アフリカ
+215,ST,Sao Tome And Principe,サントメ・プリンシペ,アフリカ
+216,SU,USSR (former),旧ソビエト連邦,ロシア
+217,SV,El Salvador,エルサルバドル,中米
+218,SX,Sint Maarten,シント・マールテン,中米
+219,SY,Syrian Arab Republic,シリア,中近東
+220,SZ,Swaziland,スワジランド,アフリカ
+221,TC,Turks And Caicos Islands,タークス・カイコス諸島,中南米
+222,TD,Chad,チャド,アフリカ
+223,TF,French Southern Territories,フランス領南方・南極地域,南極
+224,TG,Togo,トーゴ,アフリカ
+225,TH,Thailand,タイ,アジア
+226,TJ,Tajikistan,タジキスタン,中央アジア
+227,TK,Tokelau,トケラウ,オセアニア
+228,TL,Timor-Leste,東ティモール,アジア
+229,TM,Turkmenistan,トルクメニスタン,中央アジア
+230,TN,Tunisia,チュニジア,アフリカ
+231,TO,Tonga,トンガ,オセアニア
+232,TP,Timor-Leste,東ティモール,アジア
+233,TR,Turkey,トルコ,中近東
+234,TT,Trinidad And Tobago,トリニダード・トバゴ,中南米
+235,TV,Tuvalu,ツバル,オセアニア
+236,TW,"Taiwan, Province Of China",台湾,アジア
+237,TZ,"Tanzania, United Republic Of",タンザニア,アフリカ
+238,UA,Ukraine,ウクライナ,東欧
+239,UG,Uganda,ウガンダ,アフリカ
+240,UK,United Kingdom,イギリス,欧州
+241,UM,United States Minor Outlying Islands,合衆国領有小離島,北米
+242,US,United States,アメリカ,北米
+243,UY,Uruguay,ウルグアイ,中南米
+244,UZ,Uzbekistan,ウズベキスタン,中央アジア
+245,VA,Vatican City State (Holy See),バチカン市国,欧州
+246,VC,Saint Vincent And The Grenadines,セントビンセント・グレナディーン,中南米
+247,VE,Venezuela,ベネズエラ,中南米
+248,VG,Virgin Islands (British),イギリス領ヴァージン諸島,中南米
+249,VI,Virgin Islands (U.S.),アメリカ領ヴァージン諸島,中南米
+250,VN,Viet Nam,ベトナム,アジア
+251,VU,Vanuatu,バヌアツ,オセアニア
+252,WF,Wallis And Futuna Islands,ウォリス・フツナ,オセアニア
+253,WS,Samoa,サモア,オセアニア
+254,YE,Yemen,イエメン,中近東
+255,YT,Mayotte,マヨット島,アフリカ
+256,YU,Yugoslavia,ユーゴスラビア,欧州
+257,ZA,South Africa,南アフリカ,アフリカ
+258,ZM,Zambia,ザンビア,アフリカ
+259,ZR,Zaire,ザイール,アフリカ
+260,ZW,Zimbabwe,ジンバブエ,アフリ

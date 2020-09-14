@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:csv/csv.dart';
-import 'package:flutter/services.dart' show rootBundle;
-
-import 'package:drogo_libro/core/models/city_info.dart';
 
 /// Exposes specific weather icons
 /// https://openweathermap.org/weather-conditions
@@ -59,8 +55,6 @@ class WeatherUtil {
   }
   WeatherUtil._internal();
 
-  List<CityInfo> _romajiCityList;
-  List<CityInfo> get romajiCityList => _romajiCityList;
 
   String getPrecipLabel({double rain, double snow}) {
     String ret = '';
@@ -82,7 +76,7 @@ class WeatherUtil {
     return ret;
   }
 
-  String getWindDirectionValue({dynamic degree}) {
+  String getWindDirectionValue({double degree}) {
     double deg = (dynamic value) {
       if(value == null) return 0;
       return value + 22.5 >= 360 ? value + 22.5 - 360 : value + 22.5;
@@ -195,14 +189,5 @@ class WeatherUtil {
       case '50n': return WeatherIcons.mist_night;
       default: return WeatherIcons.clear_day;
     }
-  }
-
-  void loadRomajiCityCsv() async {
-    final myData = await rootBundle.loadString('assets/csv/romaji-chimei-all-u.csv');
-    List<List<dynamic>> list = CsvToListConverter().convert(myData, fieldDelimiter: ',', eol: '\n');
-      _romajiCityList = list.map((element) => CityInfo(
-        name: element[3],
-        nameDesc: element[0],
-      )).toList();
   }
 }

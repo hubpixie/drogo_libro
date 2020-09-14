@@ -20,10 +20,14 @@ enum ScreenRouteName {
   editAllergy,     //アレルギー
   editSuplements, //サプリメントなど
   editSideEffect, //副作用
+  // settings tab
   selectCity,     //地域設定
   passcode,   //パスコード表示画面
   changePasscodeSettings,     //パスコード表示設定画面
-  editPasscode,     //パスコード編集画面
+  editPasscode,           //パスコード編集画面
+  presentWeeklyForecast,  //週間天気予報画面
+  selectCityFavorite,     //お気に入り一覧（地域）
+  selectCountry,     //国名コード一覧選択
 }
 extension ScreenRouteNameSummary on ScreenRouteName {
 
@@ -73,6 +77,12 @@ extension ScreenRouteNameSummary on ScreenRouteName {
         return 'changePasscodeSettings';
       case ScreenRouteName.editPasscode:
         return 'editPasscode';
+      case ScreenRouteName.presentWeeklyForecast:
+        return 'presentWeeklyForecast';
+      case ScreenRouteName.selectCityFavorite:
+        return 'selectCityFavorite';
+      case ScreenRouteName.selectCountry:
+        return 'selectCountry';
       default:
         return null;
     }

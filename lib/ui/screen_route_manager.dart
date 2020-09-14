@@ -1,3 +1,4 @@
+import 'package:drogo_libro/ui/views/weekly_forecast_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -15,6 +16,8 @@ import 'package:drogo_libro/ui/views/city_selector_view.dart';
 import 'package:drogo_libro/ui/views/passcode_panel.dart';
 import 'package:drogo_libro/ui/views/passcode_settings_view.dart';
 import 'package:drogo_libro/ui/views/passcode_edit_view.dart';
+import 'package:drogo_libro/ui/views/city_favorites_view.dart';
+import 'package:drogo_libro/ui/views/country_selector_view.dart';
 
 class ScreenRouteManager {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -60,8 +63,9 @@ class ScreenRouteManager {
       case ScreenRouteName.editSideEffect:
         return MaterialPageRoute(builder: (_) => ForyouEditContainer(title: '副作用', routeName: ScreenRouteName.editSideEffect,), settings: settings);
       case ScreenRouteName.selectCity:
+        final Map<String, dynamic> args = settings.arguments;
         return MaterialPageRoute(builder: (_) => CitySelectorView(title: '地域設定', 
-        cityItem: settings.arguments,), settings: settings);
+        cityItem: args != null ? args['city'] : null,), settings: settings);
       case ScreenRouteName.passcode:
         StringUtil().readEncrptedData();
         final Map<String, dynamic> args = settings.arguments;
@@ -81,6 +85,22 @@ class ScreenRouteManager {
             passcode: args != null ? args['pcd'] : '',
           ), 
           settings: settings);
+      case ScreenRouteName.presentWeeklyForecast:
+          final Map<String, dynamic> args = settings.arguments;
+        return MaterialPageRoute(builder: (_) => WeeklyForecastView(
+            title: '天気予報', 
+            cityItem: args != null ? args['city'] : null,
+            temprtUnit: args != null ? args['temprtUnit'] : null,
+          ), 
+          settings: settings);
+      case ScreenRouteName.selectCityFavorite:
+        return MaterialPageRoute(builder: (_) => CityFavoritesView(title: 'お気に入り（地域）'), settings: settings);
+      case ScreenRouteName.selectCountry:
+          final Map<String, dynamic> args = settings.arguments;
+        return MaterialPageRoute(builder: (_) => CountrySelectorView(
+          title: '国名コード',
+          countryCode: args != null ? args['countryCode'] : 'JP'
+        ), settings: settings);
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

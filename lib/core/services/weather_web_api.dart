@@ -1,5 +1,5 @@
 import 'dart:convert';
-import "dart:io";
+import 'package:flutter/foundation.dart';
 
 import 'package:drogo_libro/config/app_env.dart';
 import 'package:drogo_libro/core/services/base_api_client.dart';
@@ -35,10 +35,10 @@ class WeatherWebApi {
     }
   }
 
-  Future<DataResult> getWeatherData({String cityNameCd, String zipCd}) async {
-    final url = cityNameCd != null && cityNameCd.isNotEmpty ?
-     '$_endpoint/data/2.5/weather?q=$cityNameCd&appid=$_apiKey' :
-     '$_endpoint/data/2.5/weather?zip=$zipCd&appid=$_apiKey'
+  Future<DataResult> getWeatherData({@required CityInfo cityParam}) async {
+    final url = cityParam.zip != null && cityParam.zip.isNotEmpty ?
+     '$_endpoint/data/2.5/weather?zip=${cityParam.zip},${cityParam.countryCode}&appid=$_apiKey' :
+     '$_endpoint/data/2.5/weather?q=${cityParam.name},${cityParam.countryCode}&appid=$_apiKey'
      ;
     print('getWeatherData $url');
 
@@ -49,7 +49,7 @@ class WeatherWebApi {
       if(response.statusCode >= HttpStatus.badRequest) {
           return DataResult.error(response.statusCode, response.body);
       } else if(response.body != null) {
-        return DataResult<WeatherInfo>.success(response.statusCode, WeatherInfo.fromJson(json.decode(response.body), zipCd: zipCd));
+        return DataResult<WeatherInfo>.success(response.statusCode, WeatherInfo.fromJson(json.decode(response.body), zip: cityParam.zip));
       } else {
         return DataResult<WeatherInfo>.success(response.statusCode, null);
       }
@@ -59,11 +59,12 @@ class WeatherWebApi {
 
   }
 
-  Future<DataResult> getForecast({String cityNameCd, String zipCd}) async {
-    final url = cityNameCd != null && cityNameCd.isNotEmpty ?
-     '$_endpoint/data/2.5/weather?q=$cityNameCd&appid=$_apiKey' :
-     '$_endpoint/data/2.5/weather?zip=$cityNameCd&appid=$_apiKey'
+  Future<DataResult> getForecast({@required CityInfo cityParam}) async {
+    final url = cityParam.zip != null && cityParam.zip.isNotEmpty ?
+     '$_endpoint/data/2.5/forecast?zip=${cityParam.zip},${cityParam.countryCode}&appid=$_apiKey' :
+     '$_endpoint/data/2.5/forecast?q=${cityParam.name},${cityParam.countryCode}&appid=$_apiKey'
      ;
+    print('getForecast $url');
 
       try {
         final response = await BaseApiClient.client.get(url);
@@ -72,14 +73,14 @@ class WeatherWebApi {
         if(response.statusCode >= HttpStatus.badRequest) {
           return DataResult.error(response.statusCode, response.body);
         } else if(response.body != null) {
-          var parsed = json.decode(response.body) as List<dynamic>;
+          var parsed = json.decode(response.body)['list'] as List<dynamic>;
           var ret = parsed.map((element) => WeatherInfo.fromJson(element)).toList();
           return DataResult<List<WeatherInfo>>.success(response.statusCode, ret);
         } else {
           return DataResult<List<WeatherInfo>>.success(response.statusCode, null);
         }
       } catch(error) {
-          return DataResult<List<WeatherInfo>>.error(HttpStatus.otherError, error);
+        return DataResult<List<WeatherInfo>>.error(HttpStatus.otherError, error);
       }
 
   }

@@ -13,13 +13,33 @@ class DateUtil {
     DateTime datetime = date == null ? DateTime.now() : date;
 
     var formatter = new DateFormat('M/d (E)', "ja_JP");
-    var formatted = formatter.format(datetime); // DateからString
-    return formatted;
+    return formatter.format(datetime); // DateからString
+  }
+
+  String getDateMDEStringWithTimestamp({int timestamp, int timezone}) {
+    if(timestamp == null) return '';
+    initializeDateFormatting("ja_JP");
+
+    DateTime datetime = DateTime.fromMillisecondsSinceEpoch(
+                      (timestamp + timezone) * 1000, isUtc: true);
+
+    var formatter = new DateFormat('M/d (E)', "ja_JP");
+    return formatter.format(datetime); // DateからString
+  }
+
+  String getDateMDStringWithTimestamp({int timestamp, int timezone}) {
+    if(timestamp == null) return '';
+    DateTime datetime = DateTime.fromMillisecondsSinceEpoch(
+                      (timestamp + timezone) * 1000, isUtc: true);
+
+    var formatter = new DateFormat('M/d');
+    return formatter.format(datetime); // DateからString
   }
 
   String getHMMString({int timestamp, int timezone}) {
-    DateTime dt = DateTime.fromMillisecondsSinceEpoch(
+    if(timestamp == null) return '';
+    DateTime datetime = DateTime.fromMillisecondsSinceEpoch(
                       (timestamp + timezone) * 1000, isUtc: true);
-    return DateFormat('H:mm').format(dt);
+    return DateFormat('H:mm').format(datetime);
   } 
 }

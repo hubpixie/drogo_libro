@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'package:drogo_libro/core/enums/code_enums.dart';
 import 'package:drogo_libro/core/models/weather_info.dart';
-import 'package:drogo_libro/core/models/city_info.dart';
 
-typedef CellEditingDelegate = void Function(dynamic);
+typedef PresentWeeklyForecastDelegate = void Function();
 
 class WeatherFunctionCell  extends StatefulWidget {
   final WeatherInfo itemValue;
   final TemperatureUnit temprtUnit;
-  final CellEditingDelegate onCellEditing;
+  final PresentWeeklyForecastDelegate onPresentWeeklyForecast;
 
-  WeatherFunctionCell({this.itemValue, this.temprtUnit, this.onCellEditing});
+  WeatherFunctionCell({this.itemValue, this.temprtUnit, this.onPresentWeeklyForecast});
 
   @override
   _WeatherDetailPresentCellState createState() => _WeatherDetailPresentCellState();
@@ -35,13 +34,7 @@ class _WeatherDetailPresentCellState extends State<WeatherFunctionCell> {
             child: FlatButton(
               child: Text('週間予報', 
                     style: TextStyle(fontSize: 18.0)),
-              onPressed: () {
-                setState(() {
-                  // widget.onCellEditing(CityInfo(
-                  //   name: widget.itemValue.city.name, zip: widget.itemValue.city.zip, countryCode: widget.itemValue.city.countryCode)
-                  // );
-                });
-              },
+              onPressed: () => widget.onPresentWeeklyForecast(),
             ),
           ),
           Spacer(),

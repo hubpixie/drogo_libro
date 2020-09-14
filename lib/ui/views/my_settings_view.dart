@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 // import 'package:provider/provider.dart';
 
+import 'package:drogo_libro/core/enums/code_enums.dart';
+
 import 'package:drogo_libro/ui/shared/app_colors.dart';
 import 'package:drogo_libro/ui/views/weather_present_banner.dart';
 import 'package:drogo_libro/ui/views/settings_menu.dart';
 
-class MySettingsView extends StatelessWidget {
+
+class MySettingsView extends StatefulWidget {
   final String title;
   final bool isTabAppeared;
 
-  final GlobalKey<WeatherPresentBannerState> _weatherBannerKey = GlobalKey<WeatherPresentBannerState>();
-
   MySettingsView({this.title, this.isTabAppeared});
+  @override
+  _MySettingsViewState createState() => _MySettingsViewState();
+}
+
+class _MySettingsViewState extends State<MySettingsView> {
+  final GlobalKey<WeatherPresentBannerState> _weatherBannerKey = GlobalKey<WeatherPresentBannerState>();
+  TemperatureUnit _temprtUnit;
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +33,25 @@ class MySettingsView extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 child: WeatherPresentBanner(
                   key: _weatherBannerKey,
-                  isTabAppeared: this.isTabAppeared,),
+                  isTabAppeared: widget.isTabAppeared,
+                  onCellEditing: (value) {
+                    TemperatureUnit temprtUnit = value;
+                    if(temprtUnit != null) {
+                      setState(() {
+                        _temprtUnit = temprtUnit;
+                      });
+                    }
+                  },
+                ),
             ),
             Container(
               margin: EdgeInsets.only(top: 160),
               height: MediaQuery.of(context).size.height - 220,
               width: MediaQuery.of(context).size.width,
-              child: SettingsMenu(weatherBannerKey: _weatherBannerKey,),
+              child: SettingsMenu(
+                weatherBannerKey: _weatherBannerKey,
+                temprtUnit: _temprtUnit,
+              ),
             ),
           ],
         ),
