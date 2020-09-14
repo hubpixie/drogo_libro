@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import 'package:drogo_libro/core/shared/string_util.dart';
+import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
+
 import 'package:drogo_libro/ui/shared/app_colors.dart';
 import 'package:drogo_libro/ui/views/my_drogo_view.dart';
 import 'package:drogo_libro/ui/views/foryou_top_view.dart';
@@ -13,15 +16,44 @@ class MyTabsContainer extends StatefulWidget {
   _MyTabsContainerState createState() => _MyTabsContainerState();
 }
 
-class _MyTabsContainerState extends State<MyTabsContainer> {
+class _MyTabsContainerState extends State<MyTabsContainer> with WidgetsBindingObserver{
   int _selectedIndex = 0;
   static const List<String> _tabTitles =  ["Myくすり", "For you", "アラーム", "設定"];
-  static List<Widget> _widgetOptions = <Widget>[
-    MyDrogoView(title: _tabTitles[0]),
-    ForyouTopView(title: _tabTitles[1]),
-    MyAlarmView(title: _tabTitles[2]),
-    MySettingsView(),    
-  ];
+
+  @override
+  void initState() {
+
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    // App call resume if background end.
+    if(state == AppLifecycleState.resumed) {
+      // パスコード設定をチェックし、設定された際、表示させる
+      await StringUtil().readEncrptedData();
+      if (StringUtil().isPcodeHidden == false 
+      && (StringUtil().encryptedPcode ?? '').isNotEmpty) {
+        Navigator.pushNamed(context, 
+          ScreenRouteName.passcode.name,
+          arguments: {'cancel': false}).then((value) {
+          final bool auth = value ?? false;
+          if(auth) {
+           // nextCall();
+          }
+        });
+      }
+    }
+    super.didChangeAppLifecycleState(state);
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -39,7 +71,12 @@ class _MyTabsContainerState extends State<MyTabsContainer> {
       ),
       body: IndexedStack(
         index: _selectedIndex,
-        children: _widgetOptions,
+        children: <Widget>[
+          MyDrogoView(title: _tabTitles[0]),
+          ForyouTopView(title: _tabTitles[1]),
+          MyAlarmView(title: _tabTitles[2]),
+          MySettingsView(isTabAppeared: _selectedIndex == 3,),  
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

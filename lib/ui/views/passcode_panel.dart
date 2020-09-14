@@ -2,16 +2,21 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:passcode_screen/passcode_screen.dart';
+import 'package:drogo_libro/ui/shared/app_colors.dart';
 
-class PasscodeView extends StatefulWidget {
-  PasscodeView({Key key, this.title}) : super(key: key);
+typedef ValidateDelegate = bool Function(String);
+class PasscodePanel extends StatefulWidget {
   final String title;
+  final ValidateDelegate onValidate;
+  final bool cancelable;
+
+  PasscodePanel({Key key, this.title, this.onValidate, this.cancelable = true}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _PasscodeViewState();
+  State<StatefulWidget> createState() => _PasscodePanelState();
 }
 
-class _PasscodeViewState extends State<PasscodeView> {
+class _PasscodePanelState extends State<PasscodePanel> {
   final StreamController<bool> _verificationNotifier = StreamController<bool>.broadcast();
 
   bool isAuthenticated = false;
@@ -26,7 +31,7 @@ class _PasscodeViewState extends State<PasscodeView> {
             ),
             passwordEnteredCallback: _onPasscodeEntered,
             cancelButton: Text(
-              'Cancel',
+              widget.cancelable ?  'Cancel' : '',
               style: const TextStyle(fontSize: 16, color: Colors.white),
               semanticsLabel: 'Cancel',
             ),
@@ -36,18 +41,19 @@ class _PasscodeViewState extends State<PasscodeView> {
               semanticsLabel: 'Delete',
             ),
             shouldTriggerVerification: _verificationNotifier.stream,
-            backgroundColor: Colors.black.withOpacity(0.8),
-            cancelCallback: _onPasscodeCancelled,
+            backgroundColor: AppColors.mainBackgroundColor.withAlpha(100).withOpacity(0.8),
+            cancelCallback: widget.cancelable ? _onPasscodeCancelled : null,
           );
   }
 
   _onPasscodeEntered(String enteredPasscode) {
-    bool isValid = '123456' == enteredPasscode;
+    bool isValid = widget.onValidate(enteredPasscode) ?? true;
     _verificationNotifier.add(isValid);
     if (isValid) {
       setState(() {
         this.isAuthenticated = isValid;
       });
+      Navigator.maybePop(context, isValid);
     }
   }
 

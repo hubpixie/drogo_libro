@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 /// Contains useful functions to reduce boilerplate code
 class UIHelper {
   // Vertical spacing constants. Adjust to your liking.
+  static const double _VerticalSpaceSmallest = 1.0;
   static const double _VerticalSpaceSmall = 10.0;
   static const double _VerticalSpaceMedium = 20.0;
   static const double _VerticalSpaceLarge = 60.0;
@@ -11,6 +12,11 @@ class UIHelper {
   static const double _HorizontalSpaceSmall = 10.0;
   static const double _HorizontalSpaceMedium = 20.0;
   static const double HorizontalSpaceLarge = 60.0;
+
+  /// Returns a vertical space with height set to [_VerticalSpaceSmallest]
+  static Widget verticalSpaceSmallest() {
+    return verticalSpace(_VerticalSpaceSmallest);
+  }
 
   /// Returns a vertical space with height set to [_VerticalSpaceSmall]
   static Widget verticalSpaceSmall() {
