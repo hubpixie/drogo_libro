@@ -12,23 +12,33 @@ import 'package:drogo_libro/core/models/user.dart';
 import 'package:drogo_libro/core/models/drogo_search_param.dart';
 
 /// The service responsible for networking requests
-class MyWebApi extends BaseApiClient {
+class MyWebApi  {
   static final String _endpoint = AppEnv.apiBaseUrl;
 
-  //MyWebApi();
+  MyWebApi() {
+    BaseApiClient(); 
+  }
 
   Future<DataResult> getUserProfile(int userId) async {
     // Get user profile for id
-    final response = await BaseApiClient.client.get('$_endpoint/users/$userId');
+    try {
+      final response = await BaseApiClient.client.get('$_endpoint/users/$userId',
+        // headers: {HttpHeaders.authorizationHeader: BaseApiClient.commonHeaders['Authorization']},
+      );
 
-    // Convert and return
-    if(response.statusCode >= HttpStatus.badRequest) {
-        return DataResult.error(response.statusCode, response.body);
-    } else if(response.body != null) {
-      return DataResult<User>.success(response.statusCode, User.fromJson(json.decode(response.body)));
-    } else {
-      return DataResult<User>.success(response.statusCode, null);
+      // Convert and return
+      if(response.statusCode >= HttpStatus.badRequest) {
+          return DataResult.error(response.statusCode, response.body);
+      } else if(response.body != null) {
+        return DataResult<User>.success(response.statusCode, User.fromJson(json.decode(response.body)));
+      } else {
+        return DataResult<User>.success(response.statusCode, null);
+      }
+    } catch(error) {
+      print("error = ${error.toString()}");
+      return DataResult<User>.error(HttpStatus.otherError, error);
     }
+
   }
 
   Future<DataResult> getDrogoInfosForUser(int userId,
@@ -50,7 +60,11 @@ class MyWebApi extends BaseApiClient {
           url += '&doctor_name_like=${param.doctorName}';
         }
       }
-      final response = await BaseApiClient.client.get(url);
+
+    try {
+      final response = await BaseApiClient.client.get(url,
+        // headers: {HttpHeaders.authorizationHeader: BaseApiClient.commonHeaders['Authorization']},
+      );
 
       // set result to return
       //
@@ -63,6 +77,9 @@ class MyWebApi extends BaseApiClient {
       } else {
         return DataResult<List<DrogoInfo>>.success(response.statusCode, null);
       }
+    } catch(error) {
+      return DataResult<List<DrogoInfo>>.error(HttpStatus.otherError, error);
+    }
   }
   
   /// Get Foryou info (http/get)
@@ -72,7 +89,10 @@ class MyWebApi extends BaseApiClient {
       final url = ('$_endpoint/foryou_infos?userId=$userId');
 
       try {
-        final response = await BaseApiClient.client.get(url);
+        final response = await BaseApiClient.client.get(url,
+          //headers: {HttpHeaders.authorizationHeader: BaseApiClient.commonHeaders['Authorization']},
+        );
+
         // set result to return
         //
         if(response.statusCode >= HttpStatus.badRequest) {
@@ -87,7 +107,6 @@ class MyWebApi extends BaseApiClient {
       } catch(error) {
           return DataResult<ForyouInfo>.error(HttpStatus.otherError, error);
       }
-
   }
 
   /// Create Foryou info (http/post)

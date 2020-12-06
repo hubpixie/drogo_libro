@@ -63,7 +63,6 @@ class _CityFavoritesViewState extends State<CityFavoritesView> {
               padding: EdgeInsets.only(right: 10.0),
               child: IconButton(
                 onPressed: _cityFavoritsList != null && _cityFavoritsList.length > 1 ?  () async{
-    print('_selectedIndex.1 = $_selectedIndex');
                   CityInfo cityValue = _cityFavoritsList[_selectedIndex];
                   _sortedByAscending *= -1;
                   _cityFavoritsList.sort((cityInfo1, cityInfo2) {
@@ -186,9 +185,7 @@ class _CityFavoritesViewState extends State<CityFavoritesView> {
   Future<void> _saveFavoriteData({CityInfo cityValue}) async {
     await CityUtil().saveCityListIntoPref(cityList: _cityFavoritsList, selectedItem: cityValue);
 
-    print('_selectedIndex.2 = $_selectedIndex');
     _selectedIndex = CityUtil().selectedFavoriteIndex;
-    print('_selectedIndex.3 = $_selectedIndex');
     setState(() {
       if(_selectedIndex >= 0) {
         for(int i = 0; i < _checkedStatusList.length; i ++) {

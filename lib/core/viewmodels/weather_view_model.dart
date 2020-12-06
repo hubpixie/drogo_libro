@@ -53,10 +53,11 @@ List<WeatherInfo> _makeWeeklyForecastData() {
 
       if(data != null && data.length > 0) {
         List<String> addedKeys = [];
-        String lastDateKey = DateUtil().getDateMDStringWithTimestamp(timestamp: data.last.time, timezone: todayWeather.city.timezone);
+        String lastDateKey = DateUtil().getDateMMDDStringWithTimestamp(timestamp: data.last.time, timezone: todayWeather.city.timezone);
+
         // 表示日数分の日付キーを作成しておく
         for(int i = 1; ; i ++) {
-          String dateKey = DateUtil().getDateMDStringWithTimestamp(timestamp: todayWeather.time + i * 24 * 3600, timezone: todayWeather.city.timezone);
+          String dateKey = DateUtil().getDateMMDDStringWithTimestamp(timestamp: todayWeather.time + i * 24 * 3600, timezone: todayWeather.city.timezone);
           if(dateKey.compareTo(lastDateKey) > 0) break;
           addedKeys.add(dateKey);
         }
@@ -64,7 +65,7 @@ List<WeatherInfo> _makeWeeklyForecastData() {
         // 日毎の気温データを取得
         for(int i = 0; i < addedKeys.length; i ++) {
           final subData = data.where((element) {
-            String dateKey = DateUtil().getDateMDStringWithTimestamp(timestamp: element.time, timezone: todayWeather.city.timezone);
+            String dateKey = DateUtil().getDateMMDDStringWithTimestamp(timestamp: element.time, timezone: todayWeather.city.timezone);
             return dateKey == addedKeys[i];
           });
           //　最高気温、最低気温

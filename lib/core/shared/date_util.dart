@@ -27,12 +27,12 @@ class DateUtil {
     return formatter.format(datetime); // DateからString
   }
 
-  String getDateMDStringWithTimestamp({int timestamp, int timezone}) {
+  String getDateMMDDStringWithTimestamp({int timestamp, int timezone}) {
     if(timestamp == null) return '';
     DateTime datetime = DateTime.fromMillisecondsSinceEpoch(
                       (timestamp + timezone) * 1000, isUtc: true);
 
-    var formatter = new DateFormat('M/d');
+    var formatter = new DateFormat('MM/dd');
     return formatter.format(datetime); // DateからString
   }
 
