@@ -8,31 +8,35 @@ import 'weather_web_api.dart';
 
 class WeatherInfosService {
   WeatherWebApi _api = ServiceSetting.locator<WeatherWebApi>();
-  
-  DataResult _fetchedCityNameFromLocation;
-  DataResult _fetchedWeatherInfo;
-  DataResult _fetchedForecast;
+
+  late DataResult _fetchedCityNameFromLocation;
+  late DataResult _fetchedWeatherInfo;
+  late DataResult _fetchedForecast;
   DataResult get fetchedCityNameFromLocation => _fetchedCityNameFromLocation;
   DataResult get fetchedWeatherInfo => _fetchedWeatherInfo;
   DataResult get fetchedForecast => _fetchedForecast;
 
   /// Get cityName
-  /// 
+  ///
   Future getCityNameFromLocation(
-      {double latitude, double longitude}) async {
-    _fetchedCityNameFromLocation = await _api.getCityNameFromLocation(latitude: latitude, longitude: longitude);
+      {double latitude = 0, double longitude = 0}) async {
+    _fetchedCityNameFromLocation = await _api.getCityNameFromLocation(
+        latitude: latitude, longitude: longitude);
   }
 
-  /// Get weather info 
-  /// 
-  Future getWeatherData({@required CityInfo cityParam}) async {
-    _fetchedWeatherInfo = await _api.getWeatherData(cityParam: cityParam);
+  /// Get weather info
+  ///
+  Future getWeatherData({@required CityInfo? cityParam}) async {
+    if (cityParam != null) {
+      _fetchedWeatherInfo = await _api.getWeatherData(cityParam: cityParam);
+    }
   }
 
   /// Get weather forecast
-  /// 
-  Future getForecast({@required CityInfo cityParam}) async {
-    _fetchedForecast = await _api.getForecast(cityParam: cityParam);
+  ///
+  Future getForecast({@required CityInfo? cityParam}) async {
+    if (cityParam != null) {
+      _fetchedForecast = await _api.getForecast(cityParam: cityParam);
+    }
   }
-
-} 
+}

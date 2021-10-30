@@ -8,19 +8,19 @@ enum Flavor {
 }
 
 class AppEnv {
-  static Flavor _flavor;
-  static String _apiBaseUrl;
-  static String _apiKey;
+  static Flavor? _flavor;
+  static String? _apiBaseUrl;
+  static String? _apiKey;
 
-  static Flavor get flavor => _flavor;
-  static String get apiBaseUrl => _apiBaseUrl;
-  static String get apiKey => _apiKey;
+  static Flavor? get flavor => _flavor;
+  static String? get apiBaseUrl => _apiBaseUrl;
+  static String? get apiKey => _apiKey;
   static String get weatherApiBaseUrl => 'http://api.openweathermap.org';
   static String get weatherApiKey => '2f8796eefe67558dc205b09dd336d022';
-  
-  static configure({@required Flavor flavor}) {
+
+  static configure({@required Flavor? flavor}) {
     _flavor = flavor;
-    switch(_flavor) {
+    switch (_flavor) {
       case Flavor.web:
       case Flavor.develop:
         _apiBaseUrl = 'http://localhost:3000';
@@ -31,7 +31,8 @@ class AppEnv {
         _apiKey = '';
         break;
       case Flavor.product:
-        _apiBaseUrl = 'https://my-json-server.typicode.com/hubpixie/drogo_libro';
+        _apiBaseUrl =
+            'https://my-json-server.typicode.com/hubpixie/drogo_libro';
         _apiKey = '';
         break;
       default:
@@ -40,6 +41,7 @@ class AppEnv {
         break;
     }
   }
+
   static String getString() {
     switch (_flavor) {
       case Flavor.web:

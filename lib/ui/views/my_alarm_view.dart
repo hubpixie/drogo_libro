@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 class MyAlarmView extends StatelessWidget {
   final String title;
-  MyAlarmView({this.title});
+  MyAlarmView({required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -27,5 +27,4 @@ class MyAlarmView extends StatelessWidget {
     //   ),
     // );
   }
-
 }

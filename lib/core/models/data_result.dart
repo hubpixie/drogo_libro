@@ -1,12 +1,13 @@
 import 'package:drogo_libro/core/enums/http_status.dart';
-class DataResult<T>{
+
+class DataResult<T> {
   DataResult({this.errorCode, this.message, this.result});
 
-  int errorCode;
+  int? errorCode;
   dynamic message;
-  T result;
+  T? result;
 
-  bool get hasError => (this.errorCode >= HttpStatus.badRequest);
+  bool get hasError => ((this.errorCode ?? 0) >= HttpStatus.badRequest);
   bool get isNotFound => (this.errorCode == HttpStatus.notFound);
   bool get hasData {
     if (this.result == null || this.errorCode == HttpStatus.notFound) {
@@ -20,7 +21,7 @@ class DataResult<T>{
     return ret;
   }
 
-  DataResult.success(int code, T result) {
+  DataResult.success(int code, T? result) {
     this.errorCode = code;
     this.result = result;
   }

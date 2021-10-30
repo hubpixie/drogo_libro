@@ -1,16 +1,24 @@
 import 'package:drogo_libro/core/shared/city_util.dart';
 
 class CityInfo {
-  int id;
-  String zip;
-  String langCode;
-  String name; //English name
-  String nameDesc; // Name description with current locale.
-  String countryCode;
-  int timezone;
-  bool isFavorite;
+  late int id;
+  late String zip;
+  late String langCode;
+  late String name; //English name
+  late String nameDesc; // Name description with current locale.
+  late String countryCode;
+  late int timezone;
+  late bool isFavorite;
 
-  CityInfo({this.id, this.zip = '', this.langCode = 'ja', this.name='Tokyo', this.nameDesc, this.countryCode = 'JP', this.timezone, this.isFavorite = false});
+  CityInfo(
+      {this.id = 0,
+      this.zip = '',
+      this.langCode = 'ja',
+      this.name = 'Tokyo',
+      this.nameDesc = '',
+      this.countryCode = 'JP',
+      this.timezone = 0,
+      this.isFavorite = false});
 
   CityInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -29,8 +37,9 @@ class CityInfo {
     data['zip'] = this.zip;
     data['lang_code'] = this.langCode;
     data['name'] = this.name;
-    data['name_desc'] = this.nameDesc == null || this.nameDesc.isEmpty ? 
-      CityUtil().getCityNameDesc(name: this.name) : this.nameDesc;
+    data['name_desc'] = this.nameDesc.isEmpty
+        ? CityUtil().getCityNameDesc(name: this.name)
+        : this.nameDesc;
     data['country_code'] = this.countryCode;
     data['timezone'] = this.timezone;
     data['is_favorite'] = this.isFavorite;
@@ -40,11 +49,11 @@ class CityInfo {
 }
 
 class CountryInfo {
-  int id;
-  String code;
-  String enName; //English name
-  String jpName;
-  String continent; //i.e, Asia, America, Africa.
+  int? id;
+  String? code;
+  String? enName; //English name
+  String? jpName;
+  String? continent; //i.e, Asia, America, Africa.
 
   CountryInfo({this.id, this.code, this.enName, this.jpName, this.continent});
 }

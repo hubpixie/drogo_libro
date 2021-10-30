@@ -6,10 +6,11 @@ import 'package:drogo_libro/core/viewmodels/base_view_model.dart';
 import 'package:drogo_libro/config/service_setting.dart';
 
 class BaseView<T extends BaseViewModel> extends StatefulWidget {
-  final Widget Function(BuildContext context, T model, Widget child) builder;
-  final Function(T) onModelReady;
+  final Widget Function(BuildContext context, T model, Widget? child) builder;
+  final Function(T)? onModelReady;
 
-  BaseView({Key key, this.builder, this.onModelReady}) : super(key: key);
+  BaseView({Key? key, required this.builder, this.onModelReady})
+      : super(key: key);
 
   @override
   BaseViewState<T> createState() => BaseViewState<T>();
@@ -36,7 +37,7 @@ class BaseViewState<T extends BaseViewModel> extends State<BaseView<T>> {
   }
 
   Future<void> reload() async {
-    if(this.isLoading) {
+    if (this.isLoading) {
       return;
     }
     setState(() {
@@ -44,11 +45,10 @@ class BaseViewState<T extends BaseViewModel> extends State<BaseView<T>> {
     });
 
     if (widget.onModelReady != null) {
-      await widget.onModelReady(viewModel);
+      await widget.onModelReady!(viewModel);
       setState(() {
         isLoading = false;
       });
     }
   }
-
 }
