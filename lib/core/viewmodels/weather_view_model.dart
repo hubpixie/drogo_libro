@@ -45,10 +45,12 @@ class WeatherViewModel extends BaseViewModel {
   }
 
   List<WeatherInfo> _makeWeeklyForecastData() {
-    WeatherInfo? todayWeather = ?.fetchedWeatherInfo.result;
+    WeatherInfo? todayWeather =
+        _weatherService?.fetchedWeatherInfo.result as WeatherInfo?;
 
     if (_weatherService?.fetchedForecast != null) {
-      List<WeatherInfo>? data = _weatherService?.fetchedForecast.result;
+      List<WeatherInfo>? data =
+          _weatherService?.fetchedForecast.result as List<WeatherInfo>?;
       List<WeatherInfo> ret = <WeatherInfo>[];
       double maxTempForecast;
       double minTempForecast;
@@ -60,12 +62,14 @@ class WeatherViewModel extends BaseViewModel {
             timezone: todayWeather?.city?.timezone ?? 0);
 
         // 表示日数分の日付キーを作成しておく
-        for (int i = 1;; i++) {
+        for (int i = 1; i <= 7; i++) {
           String dateKey = DateUtil().getDateMMDDStringWithTimestamp(
-              timestamp: todayWeather?.time ?? 0 + i * 24 * 3600,
+              timestamp: (todayWeather?.time ?? 0) + i * 24 * 3600,
               timezone: todayWeather?.city?.timezone ?? 0);
           if (dateKey.compareTo(lastDateKey) > 0) break;
-          addedKeys.add(dateKey);
+          if (!addedKeys.contains(dateKey)) {
+            addedKeys.add(dateKey);
+          }
         }
 
         // 日毎の気温データを取得
@@ -133,8 +137,12 @@ class WeatherViewModel extends BaseViewModel {
       await _weatherService?.getForecast(cityParam: cityParam);
       // 当日の予報データ編集
       _hourlyForecastData = _makeHourlyForecastData();
+      print(
+          'weather_view_model - getWeatherData - 010: _hourlyForecastData: count = ${_hourlyForecastData.length}');
       // 当日の予報データ編集
       _weeklyForecastData = _makeWeeklyForecastData();
+      print(
+          'weather_view_model - getWeatherData - 010: _weeklyForecastData: count = ${_weeklyForecastData.length}');
     }
 
     setState(ViewState.Idle);

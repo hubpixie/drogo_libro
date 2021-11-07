@@ -19,7 +19,7 @@ class MySettingsView extends StatefulWidget {
 class _MySettingsViewState extends State<MySettingsView> {
   final GlobalKey<WeatherPresentBannerState> _weatherBannerKey =
       GlobalKey<WeatherPresentBannerState>();
-  late TemperatureUnit _temprtUnit;
+  TemperatureUnit? _temprtUnit;
 
   @override
   Widget build(BuildContext context) {

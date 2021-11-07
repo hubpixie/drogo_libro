@@ -372,8 +372,6 @@ class _ForyouEditContainerState extends State<ForyouEditContainer>
   }
 
   void _showErrorSnackBarIfNeed({ForyouViewModel? viewModel}) async {
-    print(
-        "error: [${viewModel?.fetchedForyouInfo.errorCode}] ${viewModel?.fetchedForyouInfo.message}");
     int errorCode = viewModel?.fetchedForyouInfo.errorCode ?? 0;
     final snackBar = SnackBar(
       backgroundColor: Colors.red,

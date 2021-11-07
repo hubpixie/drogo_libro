@@ -14,7 +14,7 @@ class DataResult<T> {
       return false;
     }
     bool ret = true;
-    if (result is List) {
+    if (result != null && result is List) {
       List<dynamic> data = this.result as List<dynamic>;
       ret = data.isNotEmpty;
     }

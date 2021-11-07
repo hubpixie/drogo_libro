@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_analytics/observer.dart';
 
 import 'package:drogo_libro/core/services/authentication_service.dart';
 import 'package:drogo_libro/config/service_setting.dart';
@@ -25,16 +24,16 @@ class MyApp extends StatelessWidget {
           onGenerateRoute: ScreenRouteManager.generateRoute,
           navigatorObservers: kIsWeb
               ? []
-              : _getFAObservers(
-                  ServiceSetting.locator<FirebaseAnalyticsService>().observer)),
+              : [ServiceSetting.locator<FirebaseAnalyticsService>().observer!]),
     );
   }
 
+/*
   List<FirebaseAnalyticsObserver> _getFAObservers(
       FirebaseAnalyticsObserver? observer) {
     if (observer != null) {
       return [observer];
     }
     return [];
-  }
+  }*/
 }

@@ -216,8 +216,6 @@ class _ForyouPresentViewState extends State<ForyouPresentView> {
         !(viewModel?.fetchedForyouInfo.hasError ?? false)) {
       return;
     }
-    print(
-        "error: [${viewModel?.fetchedForyouInfo.errorCode}] ${viewModel?.fetchedForyouInfo.message}");
     int errorCode = viewModel?.fetchedForyouInfo.errorCode ?? 0;
     final snackBar = SnackBar(
       backgroundColor: Colors.red,

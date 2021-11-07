@@ -22,7 +22,7 @@ class MyWebApi {
     // Get user profile for id
     try {
       final response = await BaseApiClient.client.get(
-        '$_endpoint/users/$userId',
+        Uri.parse('$_endpoint/users/$userId'),
         // headers: {HttpHeaders.authorizationHeader: BaseApiClient.commonHeaders['Authorization']},
       );
 
@@ -36,7 +36,7 @@ class MyWebApi {
         return DataResult<User>.success(response.statusCode, null);
       }
     } catch (error) {
-      print("error = ${error.toString()}");
+      print("getUserProfile:error = ${error.toString()}");
       return DataResult<User>.error(HttpStatus.otherError, error);
     }
   }
@@ -63,7 +63,7 @@ class MyWebApi {
 
     try {
       final response = await BaseApiClient.client.get(
-        url,
+        Uri.parse(url),
         // headers: {HttpHeaders.authorizationHeader: BaseApiClient.commonHeaders['Authorization']},
       );
 
@@ -91,7 +91,7 @@ class MyWebApi {
 
     try {
       final response = await BaseApiClient.client.get(
-        url,
+        Uri.parse(url),
         //headers: {HttpHeaders.authorizationHeader: BaseApiClient.commonHeaders['Authorization']},
       );
 

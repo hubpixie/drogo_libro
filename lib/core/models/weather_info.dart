@@ -85,12 +85,12 @@ class WeatherInfo {
     iconCode = weather['icon'];
     main = weather['main'];
     city = CityInfo(
-      id: json['id'],
-      name: json['name'],
-      nameDesc: CityUtil().getCityNameDesc(name: json['name']),
+      id: json['id'] ?? 0,
+      name: json['name'] ?? 'Tokyo',
+      nameDesc: CityUtil().getCityNameDesc(name: json['name'] ?? ''),
       zip: zip,
-      countryCode: json['sys']['country'],
-      timezone: json['timezone'],
+      countryCode: json['sys']?['country'] ?? 'JP',
+      timezone: json['timezone'] ?? 0,
     );
     feelsLike = Temperature(_toDouble(json['main']['feels_like']) ?? 0);
     temperature = Temperature(_toDouble(json['main']['temp']) ?? 0);

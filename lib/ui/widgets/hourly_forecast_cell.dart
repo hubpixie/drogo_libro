@@ -13,8 +13,8 @@ class HourlyForecastCell extends StatefulWidget {
 }
 
 class _HourlyForecastCellState extends State<HourlyForecastCell> {
-  late List<WeatherInfo> _hourlyForecastValue;
-  late TemperatureUnit _temprtUnit;
+  List<WeatherInfo>? _hourlyForecastValue;
+  TemperatureUnit? _temprtUnit;
 
   @override
   void initState() {
@@ -25,14 +25,13 @@ class _HourlyForecastCellState extends State<HourlyForecastCell> {
   Widget build(BuildContext context) {
     _hourlyForecastValue = widget.hourlyForecastValue ?? [];
     _temprtUnit = widget.temprtUnit ?? TemperatureUnit.celsius;
-
     return Padding(
       padding: EdgeInsets.all(10),
       // width: 75,
       // height: 100.0,
       child: ListView.builder(
           padding: const EdgeInsets.all(8),
-          itemCount: _hourlyForecastValue.length,
+          itemCount: _hourlyForecastValue?.length,
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
@@ -42,8 +41,8 @@ class _HourlyForecastCellState extends State<HourlyForecastCell> {
   }
 
   Widget _buildHourlyItem(BuildContext context, int index) {
-    WeatherInfo hourValue = _hourlyForecastValue.length > index
-        ? _hourlyForecastValue[index]
+    WeatherInfo hourValue = (_hourlyForecastValue?.length ?? 0) > index
+        ? _hourlyForecastValue![index]
         : WeatherInfo();
 
     return Column(
@@ -59,7 +58,7 @@ class _HourlyForecastCellState extends State<HourlyForecastCell> {
             size: 40,
           ),
         ),
-        Text('${hourValue.temperature?.as(_temprtUnit).round()}°'),
+        Text('${hourValue.temperature?.as(_temprtUnit!).round()}°'),
       ],
     );
   }

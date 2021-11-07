@@ -28,7 +28,8 @@ class CityUtil {
   String getCityNameDesc({@required String? name}) {
     CityInfo? cinfo;
     try {
-      cinfo = _romajiCityList.firstWhere((element) => element.name == name);
+      cinfo = _romajiCityList
+          .firstWhere((element) => element.name == (name ?? 'Tokyo'));
     } catch (error) {}
     return cinfo?.nameDesc.replaceAll(RegExp(r'都|府|県|市'), '') ?? (name ?? '');
   }

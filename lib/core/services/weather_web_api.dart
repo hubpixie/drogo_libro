@@ -21,7 +21,7 @@ class WeatherWebApi {
     print('getCityNameFromLocation $url');
 
     try {
-      final response = await BaseApiClient.client.get(url);
+      final response = await BaseApiClient.client.get(Uri.parse(url));
       if (response.statusCode >= HttpStatus.badRequest) {
         return DataResult.error(response.statusCode, response.body);
       } else if (response.body != null) {
@@ -31,18 +31,19 @@ class WeatherWebApi {
         return DataResult<CityInfo>.success(response.statusCode, null);
       }
     } catch (error) {
+      print("getCityNameFromLocation: error = ${error.toString()}");
       return DataResult<CityInfo>.error(HttpStatus.otherError, error);
     }
   }
 
   Future<DataResult> getWeatherData({@required CityInfo? cityParam}) async {
-    final url = cityParam?.zip != null
+    final url = !(cityParam?.zip.isEmpty ?? true)
         ? '$_endpoint/data/2.5/weather?zip=${cityParam?.zip},${cityParam?.countryCode}&appid=$_apiKey'
         : '$_endpoint/data/2.5/weather?q=${cityParam?.name},${cityParam?.countryCode}&appid=$_apiKey';
     print('getWeatherData $url');
 
     try {
-      final response = await BaseApiClient.client.get(url);
+      final response = await BaseApiClient.client.get(Uri.parse(url));
 
       // Convert and return
       if (response.statusCode >= HttpStatus.badRequest) {
@@ -56,31 +57,33 @@ class WeatherWebApi {
         return DataResult<WeatherInfo>.success(response.statusCode, null);
       }
     } catch (error) {
+      print("getWeatherData: error = ${error.toString()}");
       return DataResult<WeatherInfo>.error(HttpStatus.otherError, error);
     }
   }
 
   Future<DataResult> getForecast({@required CityInfo? cityParam}) async {
-    final url = cityParam?.zip != null
+    final url = !(cityParam?.zip.isEmpty ?? true)
         ? '$_endpoint/data/2.5/forecast?zip=${cityParam?.zip},${cityParam?.countryCode}&appid=$_apiKey'
         : '$_endpoint/data/2.5/forecast?q=${cityParam?.name},${cityParam?.countryCode}&appid=$_apiKey';
     print('getForecast $url');
 
     try {
-      final response = await BaseApiClient.client.get(url);
+      final response = await BaseApiClient.client.get(Uri.parse(url));
       // set result to return
       //
       if (response.statusCode >= HttpStatus.badRequest) {
         return DataResult.error(response.statusCode, response.body);
       } else if (response.body != null) {
-        var parsed = json.decode(response.body)['list'] as List<dynamic>;
+        var parsed = json.decode(response.body)['list'] as List<dynamic>?;
         var ret =
-            parsed.map((element) => WeatherInfo.fromJson(element)).toList();
+            parsed?.map((element) => WeatherInfo.fromJson(element)).toList();
         return DataResult<List<WeatherInfo>>.success(response.statusCode, ret);
       } else {
         return DataResult<List<WeatherInfo>>.success(response.statusCode, null);
       }
     } catch (error) {
+      print("getForecast: error = ${error.toString()}");
       return DataResult<List<WeatherInfo>>.error(HttpStatus.otherError, error);
     }
   }
