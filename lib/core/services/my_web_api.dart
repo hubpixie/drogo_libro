@@ -119,7 +119,7 @@ class MyWebApi {
     // Get user posts for id
     final url = ('$_endpoint/foryou_infos');
 
-    final response = await BaseApiClient.client.post(url,
+    final response = await BaseApiClient.client.post(Uri.parse(url),
         headers: BaseApiClient.commonHeaders, body: jsonEncode(body.toJson()));
 
     // set result to return
@@ -143,7 +143,7 @@ class MyWebApi {
     // Get user posts for id
     final url = ('$_endpoint/foryou_infos/${body.id}');
 
-    final response = await BaseApiClient.client.put(url,
+    final response = await BaseApiClient.client.put(Uri.parse(url),
         headers: BaseApiClient.commonHeaders, body: jsonEncode(body.toJson()));
 
     // set result to return

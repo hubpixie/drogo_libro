@@ -137,12 +137,8 @@ class WeatherViewModel extends BaseViewModel {
       await _weatherService?.getForecast(cityParam: cityParam);
       // 当日の予報データ編集
       _hourlyForecastData = _makeHourlyForecastData();
-      print(
-          'weather_view_model - getWeatherData - 010: _hourlyForecastData: count = ${_hourlyForecastData.length}');
       // 当日の予報データ編集
       _weeklyForecastData = _makeWeeklyForecastData();
-      print(
-          'weather_view_model - getWeatherData - 010: _weeklyForecastData: count = ${_weeklyForecastData.length}');
     }
 
     setState(ViewState.Idle);
