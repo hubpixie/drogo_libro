@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 import 'package:drogo_libro/core/shared/string_util.dart';
 import 'package:drogo_libro/ui/shared/app_colors.dart';
@@ -11,19 +11,20 @@ class PasscodeEditView extends StatefulWidget {
   final String title;
   final String passcode;
 
-  PasscodeEditView({this.title, this.passcode});
+  PasscodeEditView({required this.title, required this.passcode});
 
   @override
- _PasscodeEditViewState createState() => _PasscodeEditViewState();
+  _PasscodeEditViewState createState() => _PasscodeEditViewState();
 }
 
 class _PasscodeEditViewState extends State<PasscodeEditView> {
-   GlobalKey<ScaffoldState> _scaffoldKey;
-  TextEditingController _passcodeTextController;
-  TextEditingController _passcodeConfirmedTextController;
-  String _oldPasscode;
-  FocusNode _passcodeFocusNode;
-  FocusNode _passcodeConfirmedFocusNode;
+  late GlobalKey<ScaffoldState> _scaffoldKey;
+  late TextEditingController _passcodeTextController;
+  late TextEditingController _passcodeConfirmedTextController;
+  late String _oldPasscode;
+  late FocusNode _passcodeFocusNode;
+  late FocusNode _passcodeConfirmedFocusNode;
+  late StreamSubscription<bool> _keyboardSubscription;
   bool _isPasscodeChanged = false;
   bool _isPasscodeEqual = true;
   bool _isPasscodeOK = false;
@@ -33,18 +34,17 @@ class _PasscodeEditViewState extends State<PasscodeEditView> {
     _scaffoldKey = GlobalKey<ScaffoldState>();
 
     _passcodeTextController = TextEditingController(text: '');
-    _oldPasscode = widget.passcode ?? '';
-    if(_oldPasscode.isEmpty) {
+    _oldPasscode = widget.passcode;
+    if (_oldPasscode.isEmpty) {
       StringUtil().readEncrptedData();
-     _oldPasscode = StringUtil().encryptedPcode ?? '';
+      _oldPasscode = StringUtil().encryptedPcode;
     }
     _passcodeConfirmedTextController = TextEditingController(text: '');
 
-    
     // 入力フォーカス関しイベント処理
     _passcodeFocusNode = FocusNode();
     _passcodeFocusNode.addListener(() {
-      if(!_passcodeFocusNode.hasFocus) {
+      if (!_passcodeFocusNode.hasFocus) {
         setState(() {
           _validatePasscodeOK();
         });
@@ -53,7 +53,7 @@ class _PasscodeEditViewState extends State<PasscodeEditView> {
 
     _passcodeConfirmedFocusNode = FocusNode();
     _passcodeConfirmedFocusNode.addListener(() {
-      if(!_passcodeConfirmedFocusNode.hasFocus) {
+      if (!_passcodeConfirmedFocusNode.hasFocus) {
         setState(() {
           _validatePasscodeOK();
         });
@@ -61,22 +61,22 @@ class _PasscodeEditViewState extends State<PasscodeEditView> {
     });
 
     // キーボード開閉時監視イベント作成
-    KeyboardVisibilityNotification().addNewListener(
-      onChange: (bool visible) {
-        if(!visible) {
-          if(_passcodeFocusNode.hasFocus) {
+    _keyboardSubscription = KeyboardVisibilityController().onChange.listen(
+      (bool visible) {
+        if (!visible) {
+          if (_passcodeFocusNode.hasFocus) {
             setState(() {
               _validatePasscodeOK();
             });
           }
-          if(_passcodeConfirmedFocusNode.hasFocus) {
+          if (_passcodeConfirmedFocusNode.hasFocus) {
             setState(() {
               _validatePasscodeOK();
             });
           }
         }
       },
-    );    
+    );
 
     super.initState();
   }
@@ -87,38 +87,37 @@ class _PasscodeEditViewState extends State<PasscodeEditView> {
     _passcodeConfirmedTextController.dispose();
     _passcodeFocusNode.dispose();
     _passcodeConfirmedFocusNode.dispose();
-    _scaffoldKey = null;
-
+    _keyboardSubscription.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        backgroundColor: AppColors.appBarBackgroundColor,
-        title: Text(widget.title),
-      ),
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          // キーボードを閉じる
-          FocusScope.of(context).unfocus();
-        },
-        child:_buildInputContent(context),
-      )
-    );
- }
+        key: _scaffoldKey,
+        appBar: AppBar(
+          backgroundColor: AppColors.appBarBackgroundColor,
+          title: Text(widget.title),
+        ),
+        body: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            // キーボードを閉じる
+            FocusScope.of(context).unfocus();
+          },
+          child: _buildInputContent(context),
+        ));
+  }
 
- Widget _buildInputContent(BuildContext context) {
-    return  Column(
+  Widget _buildInputContent(BuildContext context) {
+    return Column(
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Padding(padding: EdgeInsets.only(top: 60),),
+            Padding(
+              padding: EdgeInsets.only(top: 60),
+            ),
             // 郵便番号 / 市町村
             Container(
               width: MediaQuery.of(context).size.width - 140,
@@ -162,15 +161,12 @@ class _PasscodeEditViewState extends State<PasscodeEditView> {
             ),
           ],
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(!_isPasscodeEqual ?
-              'パスコード不一致' : '',
-              style: TextStyle(color: Colors.red),
-            )
-          ]
-        ),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+          Text(
+            !_isPasscodeEqual ? 'パスコード不一致' : '',
+            style: TextStyle(color: Colors.red),
+          )
+        ]),
         UIHelper.verticalSpaceLarge(),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -179,39 +175,60 @@ class _PasscodeEditViewState extends State<PasscodeEditView> {
             Container(
               width: 200,
               height: 50.0,
-              //margin: EdgeInsets.only(bottom: 50),
-              child: FlatButton(
-                onPressed: _isPasscodeOK ?
-                () async {
-                  // キーボードを閉じる
-                  FocusScope.of(context).unfocus();
-                  _savePrefsData(passcode: _passcodeTextController.text);
-                  final snackBar = SnackBar(
-                      backgroundColor: Colors.deepPurple[900],
-                      content: Text(_oldPasscode.isNotEmpty ? '更新しました' : '設定しました', style: TextStyle(color: Colors.white),),
-                      action: SnackBarAction(
-                        label: '',
-                        onPressed: () {},
-                      ),
-                      duration: Duration(seconds: 4),
-                    );
-                    _scaffoldKey.currentState.showSnackBar(snackBar).closed.then((value) {
-                      Navigator.of(context).pop<String>(
-                        _isPasscodeChanged ? _passcodeTextController.text : widget.passcode
-                      );
-                    return Future.value(false);
-                  });
-                }: null,
-                child: Text(_oldPasscode.isNotEmpty ? '更新する' : '設定する', 
+              child: TextButton(
+                onPressed: _isPasscodeOK
+                    ? () async {
+                        // キーボードを閉じる
+                        FocusScope.of(context).unfocus();
+                        _savePrefsData(passcode: _passcodeTextController.text);
+                        final snackBar = SnackBar(
+                          backgroundColor: Colors.deepPurple[900],
+                          content: Text(
+                            _oldPasscode.isNotEmpty ? '更新しました' : '設定しました',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          action: SnackBarAction(
+                            label: '',
+                            onPressed: () {},
+                          ),
+                          duration: Duration(seconds: 4),
+                        );
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(snackBar)
+                            .closed
+                            .then((value) {
+                          Navigator.of(context).pop<String>(_isPasscodeChanged
+                              ? _passcodeTextController.text
+                              : widget.passcode);
+                          return Future.value(false);
+                        });
+                      }
+                    : null,
+                child: Text(
+                  _oldPasscode.isNotEmpty ? '更新する' : '設定する',
                   style: TextStyle(
                     color: _isPasscodeOK ? Colors.white : Colors.white30,
                     fontSize: 20.0,
                   ),
                 ),
-                color: Colors.blueAccent,
-                disabledColor: Colors.grey[400],
-              )
-            ,),
+                // color: Colors.blueAccent,
+                // disabledColor: Colors.grey[400],
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                    (Set<MaterialState> states) {
+                      if (states.contains(MaterialState.pressed))
+                        return Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withOpacity(0.5);
+                      else if (states.contains(MaterialState.disabled))
+                        return Colors.grey[400]!;
+                      return Colors.blueAccent; // Use the component's default.
+                    },
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ],
@@ -220,25 +237,27 @@ class _PasscodeEditViewState extends State<PasscodeEditView> {
 
   void _validatePasscodeOK() {
     bool flag = false;
-    if(_passcodeTextController.text.length == 6 && _passcodeTextController.text.length == 6 ) {
-      flag = (_passcodeTextController.text == _passcodeConfirmedTextController.text);
+    if (_passcodeTextController.text.length == 6 &&
+        _passcodeTextController.text.length == 6) {
+      flag = (_passcodeTextController.text ==
+          _passcodeConfirmedTextController.text);
     }
     _isPasscodeOK = flag;
-    if(_passcodeTextController.text.isEmpty && _passcodeConfirmedTextController.text.isEmpty) {
+    if (_passcodeTextController.text.isEmpty &&
+        _passcodeConfirmedTextController.text.isEmpty) {
       _isPasscodeEqual = true;
     } else {
       _isPasscodeEqual = _isPasscodeOK;
     }
   }
 
-  Future<void>  _savePrefsData({String passcode = ''}) async {
+  Future<void> _savePrefsData({String passcode = ''}) async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       if (passcode.isNotEmpty) {
         _isPasscodeChanged = true;
         prefs.setString('pcd', StringUtil().encryptedString(passcode));
-      } 
+      }
     });
   }
-
 }

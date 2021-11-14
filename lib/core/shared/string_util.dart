@@ -1,7 +1,6 @@
 import 'package:encrypt/encrypt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class StringUtil {
   static final StringUtil _instance = StringUtil._internal();
   String _encryptedPcode = '';
@@ -15,7 +14,7 @@ class StringUtil {
   bool get isPcodeHidden => _isPcodeHidden;
   String get encryptedPcode => _encryptedPcode;
 
-  String encryptedString(String string) {
+  String encryptedString(String? string) {
     if (string == null || string.isEmpty) return '';
     final key = Key.fromUtf8('my 32 length key................');
     final iv = IV.fromLength(16);
@@ -29,5 +28,5 @@ class StringUtil {
     final prefs = await SharedPreferences.getInstance();
     _isPcodeHidden = prefs.getBool('isPasscodeHidden') ?? true;
     _encryptedPcode = prefs.getString('pcd') ?? '';
-  }  
+  }
 }

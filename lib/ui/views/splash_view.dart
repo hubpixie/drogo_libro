@@ -10,7 +10,7 @@ class SplashView extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashView> {
   void navigationPage() {
-    Navigator.pushNamed(context, ScreenRouteName.login.name);
+    Navigator.pushNamed(context, ScreenRouteName.login.name ?? '');
   }
 
   @override
@@ -20,41 +20,41 @@ class _SplashScreenState extends State<SplashView> {
     // 国名コードリストを予め読み込んでおく
     CityUtil().loadCountryNameCsv();
 
-    // ログイン画面へ遷移する    
+    // ログイン画面へ遷移する
     Future.delayed(Duration(seconds: 2), () {
       navigationPage();
-    });    
+    });
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       backgroundColor: Color(0xFFABC5FD),
       body: new Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ClipRRect(
-                child: new Image.asset(
+        alignment: Alignment.center,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ClipRRect(
+              child: new Image.asset(
                 'assets/images/launch.png',
                 fit: BoxFit.fill,
               ),
-                borderRadius: new BorderRadius.circular(8.0),
+              borderRadius: new BorderRadius.circular(8.0),
+            ),
+          ),
+          new Align(
+            alignment: Alignment.center,
+            child: new Container(
+              padding: EdgeInsets.fromLTRB(0, 80, 0, 0),
+              child: new CircularProgressIndicator(
+                backgroundColor: Colors.grey[850],
               ),
             ),
-            new Align(alignment: Alignment.center,
-              child:new Container(
-                  padding: EdgeInsets.fromLTRB(0, 80, 0, 0),
-                  child: new CircularProgressIndicator(
-                    backgroundColor: Colors.grey[850],
-                  ),
-              ),
-            )
-          ],
-        ),
-       );
+          )
+        ],
+      ),
+    );
   }
 }

@@ -1,37 +1,37 @@
 /// 遷移元画面クラス
 enum ScreenRouteName {
-  splash,  
+  splash,
   login,
   home,
   myTabs,
   // Myくすり
-  listupDrogo,    //一覧
-  searchDrogo,    //検索
+  listupDrogo, //一覧
+  searchDrogo, //検索
   addDrogoDetail, //登録
   editDrogoDetail, //編集
-  editMyMemo,     //気になったことを記録
-  usingDrogo,     //薬の飲み方
+  editMyMemo, //気になったことを記録
+  usingDrogo, //薬の飲み方
   showDrogoForgotHelp, //飲み忘れた時
   // For you
-  presentForyouAll,    //Foryou　全部みる
-  usingForyou,    //記載方法
+  presentForyouAll, //Foryou　全部みる
+  usingForyou, //記載方法
   editBloodType, //血液型
-  editMedicalHistory,     //既往歴
-  editAllergy,     //アレルギー
+  editMedicalHistory, //既往歴
+  editAllergy, //アレルギー
   editSuplements, //サプリメントなど
   editSideEffect, //副作用
   // settings tab
-  selectCity,     //地域設定
-  passcode,   //パスコード表示画面
-  changePasscodeSettings,     //パスコード表示設定画面
-  editPasscode,           //パスコード編集画面
-  presentWeeklyForecast,  //週間天気予報画面
-  selectCityFavorite,     //お気に入り一覧（地域）
-  selectCountry,     //国名コード一覧選択
+  selectCity, //地域設定
+  passcode, //パスコード表示画面
+  changePasscodeSettings, //パスコード表示設定画面
+  editPasscode, //パスコード編集画面
+  presentWeeklyForecast, //週間天気予報画面
+  selectCityFavorite, //お気に入り一覧（地域）
+  selectCountry, //国名コード一覧選択
 }
-extension ScreenRouteNameSummary on ScreenRouteName {
 
-  String get name {
+extension ScreenRouteNameSummary on ScreenRouteName {
+  String? get name {
     switch (this) {
       case ScreenRouteName.splash:
         return 'splash';
@@ -89,10 +89,11 @@ extension ScreenRouteNameSummary on ScreenRouteName {
   }
 
   static ScreenRouteName fromString(String string) {
-    return ScreenRouteName.values.firstWhere((element) => element.name == string);
+    return ScreenRouteName.values
+        .firstWhere((element) => element.name == string);
   }
 
-  String get stringClass {
+  String? get stringClass {
     switch (this) {
       case ScreenRouteName.home:
       case ScreenRouteName.login:

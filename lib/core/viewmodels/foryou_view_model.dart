@@ -10,13 +10,14 @@ import 'package:drogo_libro/core/services/foryou_infos_service.dart';
 import 'base_view_model.dart';
 
 class ForyouViewModel extends BaseViewModel {
-  ForyouInfosService _foryouService = ServiceSetting.locator<ForyouInfosService>();
-  
+  ForyouInfosService _foryouService =
+      ServiceSetting.locator<ForyouInfosService>();
+
   DataResult get fetchedForyouInfo => _foryouService.fetchedForyouInfo;
   DataResult get updatedForyouInfo => _foryouService.updatedForyouInfo;
 
   /// get foryou info
-  ///  
+  ///
   Future getForyouInfo(int userId) async {
     setState(ViewState.Busy);
     await _foryouService.getForyouInfoForUser(userId);
@@ -24,11 +25,13 @@ class ForyouViewModel extends BaseViewModel {
   }
 
   /// update foryou info
-  ///  
-  Future updateForyouInfo(ForyouInfo body) async {
-
+  ///
+  Future updateForyouInfo(ForyouInfo? body) async {
+    if (body == null) {
+      return;
+    }
     setState(ViewState.Busy);
-    if(body.id == null) {
+    if (body.id == null) {
       await _foryouService.createForyouInfo(body);
     } else {
       await _foryouService.updateForyouInfo(body);

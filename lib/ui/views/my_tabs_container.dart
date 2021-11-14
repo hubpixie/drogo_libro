@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 
 import 'package:drogo_libro/core/shared/string_util.dart';
 import 'package:drogo_libro/ui/shared/screen_route_enums.dart';
@@ -16,38 +14,36 @@ class MyTabsContainer extends StatefulWidget {
   _MyTabsContainerState createState() => _MyTabsContainerState();
 }
 
-class _MyTabsContainerState extends State<MyTabsContainer> with WidgetsBindingObserver{
+class _MyTabsContainerState extends State<MyTabsContainer>
+    with WidgetsBindingObserver {
   int _selectedIndex = 0;
-  static const List<String> _tabTitles =  ["Myくすり", "For you", "アラーム", "設定"];
+  static const List<String> _tabTitles = ["Myくすり", "For you", "アラーム", "設定"];
 
   @override
   void initState() {
-
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addObserver(this);
     super.initState();
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }
-
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     // App call resume if background end.
-    if(state == AppLifecycleState.resumed) {
+    if (state == AppLifecycleState.resumed) {
       // パスコード設定をチェックし、設定された際、表示させる
       await StringUtil().readEncrptedData();
-      if (StringUtil().isPcodeHidden == false 
-      && (StringUtil().encryptedPcode ?? '').isNotEmpty) {
-        Navigator.pushNamed(context, 
-          ScreenRouteName.passcode.name,
-          arguments: {'cancel': false}).then((value) {
-          final bool auth = value ?? false;
-          if(auth) {
-           // nextCall();
+      if (StringUtil().isPcodeHidden == false &&
+          (StringUtil().encryptedPcode).isNotEmpty) {
+        Navigator.pushNamed(context, ScreenRouteName.passcode.name ?? '',
+            arguments: {'cancel': false}).then((value) {
+          final bool? auth = value as bool?;
+          if (auth ?? false) {
+            // nextCall();
           }
         });
       }
@@ -75,7 +71,9 @@ class _MyTabsContainerState extends State<MyTabsContainer> with WidgetsBindingOb
           MyDrogoView(title: _tabTitles[0]),
           ForyouTopView(title: _tabTitles[1]),
           MyAlarmView(title: _tabTitles[2]),
-          MySettingsView(isTabAppeared: _selectedIndex == 3,),  
+          MySettingsView(
+            isTabAppeared: _selectedIndex == 3,
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -83,19 +81,19 @@ class _MyTabsContainerState extends State<MyTabsContainer> with WidgetsBindingOb
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text(_tabTitles[0]),
+            label: _tabTitles[0],
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.local_library),
-            title: Text(_tabTitles[1]),
+            label: _tabTitles[1],
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.alarm),
-            title: Text(_tabTitles[2]),
+            label: _tabTitles[2],
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            title: Text(_tabTitles[3]),
+            label: _tabTitles[3],
           ),
         ],
         currentIndex: _selectedIndex,

@@ -8,6 +8,6 @@ void main() {
   AppEnv.configure(flavor: Flavor.product);
   // APPの初期登録
   ServiceSetting.setup();
-  // APPの起動
+  // // APPの起動
   runApp(MyApp());
 }

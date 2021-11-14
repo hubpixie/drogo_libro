@@ -4,9 +4,9 @@ import 'package:drogo_libro/ui/shared/ui_helpers.dart';
 
 class LoginHeaderCell extends StatelessWidget {
   final TextEditingController controller;
-  final String validationMessage;
+  final String? validationMessage;
 
-  LoginHeaderCell({@required this.controller, this.validationMessage});
+  LoginHeaderCell({required this.controller, this.validationMessage});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class LoginHeaderCell extends StatelessWidget {
       Text('Enter a number between 1 - 10', style: subHeaderStyle),
       LoginTextField(controller),
       this.validationMessage != null
-          ? Text(validationMessage, style: TextStyle(color: Colors.red))
+          ? Text(validationMessage ?? '', style: TextStyle(color: Colors.red))
           : Container()
     ]);
   }

@@ -7,10 +7,9 @@ import 'package:drogo_libro/ui/shared/app_colors.dart';
 import 'package:drogo_libro/ui/views/weather_present_banner.dart';
 import 'package:drogo_libro/ui/views/settings_menu.dart';
 
-
 class MySettingsView extends StatefulWidget {
-  final String title;
-  final bool isTabAppeared;
+  final String? title;
+  final bool? isTabAppeared;
 
   MySettingsView({this.title, this.isTabAppeared});
   @override
@@ -18,8 +17,9 @@ class MySettingsView extends StatefulWidget {
 }
 
 class _MySettingsViewState extends State<MySettingsView> {
-  final GlobalKey<WeatherPresentBannerState> _weatherBannerKey = GlobalKey<WeatherPresentBannerState>();
-  TemperatureUnit _temprtUnit;
+  final GlobalKey<WeatherPresentBannerState> _weatherBannerKey =
+      GlobalKey<WeatherPresentBannerState>();
+  TemperatureUnit? _temprtUnit;
 
   @override
   Widget build(BuildContext context) {
@@ -28,21 +28,21 @@ class _MySettingsViewState extends State<MySettingsView> {
         body: Stack(
           children: <Widget>[
             Container(
-                color: AppColors.mainBackgroundColor.withAlpha(100),
-                height: 160,
-                width: MediaQuery.of(context).size.width,
-                child: WeatherPresentBanner(
-                  key: _weatherBannerKey,
-                  isTabAppeared: widget.isTabAppeared,
-                  onCellEditing: (value) {
-                    TemperatureUnit temprtUnit = value;
-                    if(temprtUnit != null) {
-                      setState(() {
-                        _temprtUnit = temprtUnit;
-                      });
-                    }
-                  },
-                ),
+              color: AppColors.mainBackgroundColor.withAlpha(100),
+              height: 160,
+              width: MediaQuery.of(context).size.width,
+              child: WeatherPresentBanner(
+                key: _weatherBannerKey,
+                isTabAppeared: widget.isTabAppeared ?? false,
+                onCellEditing: (value) {
+                  TemperatureUnit? temprtUnit = value;
+                  if (temprtUnit != null) {
+                    setState(() {
+                      _temprtUnit = temprtUnit;
+                    });
+                  }
+                },
+              ),
             ),
             Container(
               margin: EdgeInsets.only(top: 160),

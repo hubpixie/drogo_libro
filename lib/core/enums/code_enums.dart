@@ -1,17 +1,16 @@
-
 /// コード名称クラス
-/// 
+///
 
 ///  （飲み方）
 enum DrogoUsages {
-  beforeMeal,   //食前
-  afterMeal,    //食後
+  beforeMeal, //食前
+  afterMeal, //食後
   justBeforeMeal, //食直前
-  justAfterMeal,  //食直後
-  middleMeal,     //食間
-  beforeSleep,    //就寝前
-  eachHour,       //何時間ごと
-  oneShot         //頓服
+  justAfterMeal, //食直後
+  middleMeal, //食間
+  beforeSleep, //就寝前
+  eachHour, //何時間ごと
+  oneShot //頓服
 }
 
 extension DrogoUsageDescripts on DrogoUsages {
@@ -34,7 +33,7 @@ extension DrogoUsageDescripts on DrogoUsages {
       case DrogoUsages.oneShot:
         return '頓服';
       default:
-        return null;
+        return '';
     }
   }
 
@@ -54,19 +53,19 @@ extension DrogoUsageDescripts on DrogoUsages {
       case DrogoUsages.oneShot:
         return this.toString().split(".").last;
       default:
-        return null;
+        return '';
     }
   }
 }
 
 ///  （血液型）
 enum BloodTypes {
-  a,    //A型
-  b,    //B型
-  ab,   //AB型
-  o,    //O型
-  rhPlus,     //RH+型
-  rhMinus,    //RH-型
+  a, //A型
+  b, //B型
+  ab, //AB型
+  o, //O型
+  rhPlus, //RH+型
+  rhMinus, //RH-型
 }
 
 extension BloodTypeDescripts on BloodTypes {
@@ -85,7 +84,7 @@ extension BloodTypeDescripts on BloodTypes {
       case BloodTypes.rhMinus:
         return 'Rh-';
       default:
-        return null;
+        return '';
     }
   }
 
@@ -103,17 +102,17 @@ extension BloodTypeDescripts on BloodTypes {
       case BloodTypes.rhMinus:
         return this.toString().split(".").last;
       default:
-        return null;
+        return '';
     }
   }
 }
 
 ///  （アレルギー）
 enum AllergyTypes {
-  milk,     //牛乳
-  egg,      //卵
-  pollinosis,   //AB型
-  etc,    //O型
+  milk, //牛乳
+  egg, //卵
+  pollinosis, //AB型
+  etc, //O型
 }
 
 extension AllergyTypeDescripts on AllergyTypes {
@@ -128,7 +127,7 @@ extension AllergyTypeDescripts on AllergyTypes {
       case AllergyTypes.etc:
         return 'その他';
       default:
-        return null;
+        return '';
     }
   }
 
@@ -144,17 +143,17 @@ extension AllergyTypeDescripts on AllergyTypes {
       case AllergyTypes.etc:
         return this.toString().split(".").last;
       default:
-        return null;
+        return '';
     }
   }
 }
 
 ///  （服用中のサプリメントなど）
 enum SuplementTypes {
-  vitaminK,     //ビタミンK
-  stJohnsWort,  //セント・ジョーンズ・ワート
+  vitaminK, //ビタミンK
+  stJohnsWort, //セント・ジョーンズ・ワート
   gingyoLeafExtract, //イチョウ葉エキス
-  etc,      //その他
+  etc, //その他
 }
 
 extension SuplementTypeDescripts on SuplementTypes {
@@ -169,12 +168,13 @@ extension SuplementTypeDescripts on SuplementTypes {
       case SuplementTypes.etc:
         return 'その他';
       default:
-        return null;
+        return '';
     }
   }
 
   static SuplementTypes fromString(String string) {
-    return SuplementTypes.values.firstWhere((element) => element.name == string);
+    return SuplementTypes.values
+        .firstWhere((element) => element.name == string);
   }
 
   String get stringClass {
@@ -185,24 +185,24 @@ extension SuplementTypeDescripts on SuplementTypes {
       case SuplementTypes.etc:
         return this.toString().split(".").last;
       default:
-        return null;
+        return '';
     }
   }
 }
 
 ///  （主な既往歴）
 enum MedicalHistoryTypes {
-  hypertension,   //高血圧
+  hypertension, //高血圧
   hyperlipidemia, //高脂血症
-  dm,             //糖尿病
-  gdu,            //胃・十二指腸潰瘍
-  kd,             //腎臓病
-  asthma,         //喘息
-  bph,            //前立腺肥大
-  ld,             //肝臓病
-  glaucoma,       //緑内障
-  hd,             //心臓病
-  etc,            //その他
+  dm, //糖尿病
+  gdu, //胃・十二指腸潰瘍
+  kd, //腎臓病
+  asthma, //喘息
+  bph, //前立腺肥大
+  ld, //肝臓病
+  glaucoma, //緑内障
+  hd, //心臓病
+  etc, //その他
 }
 
 extension MedicalHistoryTypeDescripts on MedicalHistoryTypes {
@@ -231,12 +231,13 @@ extension MedicalHistoryTypeDescripts on MedicalHistoryTypes {
       case MedicalHistoryTypes.etc:
         return 'その他';
       default:
-        return null;
+        return '';
     }
   }
 
   static MedicalHistoryTypes fromString(String string) {
-    return MedicalHistoryTypes.values.firstWhere((element) => element.name == string);
+    return MedicalHistoryTypes.values
+        .firstWhere((element) => element.name == string);
   }
 
   String get stringClass {
@@ -254,17 +255,13 @@ extension MedicalHistoryTypeDescripts on MedicalHistoryTypes {
       case MedicalHistoryTypes.etc:
         return this.toString().split(".").last;
       default:
-        return null;
+        return '';
     }
   }
 }
 
 /// (温度単位)
-enum TemperatureUnit {
-  kelvin,
-  celsius,
-  fahrenheit
-}
+enum TemperatureUnit { kelvin, celsius, fahrenheit }
 
 extension TemperatureUnitDescripts on TemperatureUnit {
   String get name {
@@ -272,15 +269,17 @@ extension TemperatureUnitDescripts on TemperatureUnit {
       case TemperatureUnit.kelvin:
         return '°K';
       case TemperatureUnit.celsius:
-        return '°C';//
+        return '°C'; //
       case TemperatureUnit.fahrenheit:
         return '°F';
       default:
-        return null;
+        return '';
     }
   }
+
   static TemperatureUnit fromString(String string) {
-    return TemperatureUnit.values.firstWhere((element) => element.name == string);
+    return TemperatureUnit.values
+        .firstWhere((element) => element.name == string);
   }
 
   String get stringClass {
@@ -290,7 +289,7 @@ extension TemperatureUnitDescripts on TemperatureUnit {
       case TemperatureUnit.fahrenheit:
         return this.toString().split(".").last;
       default:
-        return null;
+        return '';
     }
   }
 }
@@ -299,15 +298,14 @@ class CodeEnumsUtil {
   /// Convert a rawValue to enum value
   ///  - param [enumValues] : all enums of T
   ///  - param [rawValue] : an index value of enum
-  static  T toAnyEnum<T>(List<T> enumValues, int rawValue) {
-    T ret;
-    for(int idx = 0; idx < enumValues.length; idx++) {
-      if(idx == rawValue) {
+  static T? toAnyEnum<T>(List<T> enumValues, int rawValue) {
+    T? ret;
+    for (int idx = 0; idx < enumValues.length; idx++) {
+      if (idx == rawValue) {
         ret = enumValues[idx];
         break;
       }
     }
     return ret;
   }
-
 }
